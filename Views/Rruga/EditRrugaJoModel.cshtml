@@ -1,0 +1,66 @@
+@model Rruga
+<partial name="NavPartial"/>
+<div class="mt-5 container">
+
+<div class="row">
+        <form asp-controller="Rruga" asp-action="EditedRrugaJoModel" asp-route-id="@ViewBag.id" method="post">
+    <div class="col-sm-6">
+                <div class="form-group">
+                    <span asp-validation-for="Emri"></span>
+                    <label asp-for="Emri"></label>
+                    <input asp-for="Emri" class="form-control">
+                </div>
+                <div class="form-group">
+                    <span asp-validation-for="Dogana"></span>
+                    <label asp-for="Dogana"></label>
+                    <input asp-for="Dogana" class="form-control">
+                </div>
+                <div class="form-group">
+                    <span asp-validation-for="NaftaShpenzuarLitra"></span>
+                    <label asp-for="NaftaShpenzuarLitra"></label>
+                    <input asp-for="NaftaShpenzuarLitra" class="form-control">
+                </div>
+                <div class="form-group">
+                    <span asp-validation-for="NaftaBlereLitra"></span>
+                    <label asp-for="NaftaBlereLitra"></label>
+                    <input asp-for="NaftaBlereLitra" class="form-control">
+                </div>
+                <div class="form-group">
+                    <span asp-validation-for="NaftaBlereCmim"></span>
+                    <label asp-for="NaftaBlereCmim"></label>
+                    <input asp-for="NaftaBlereCmim" class="form-control">
+                </div>
+                <div class="form-group">
+                    <span asp-validation-for="FitimeEkstra"></span>
+                    <label asp-for="FitimeEkstra"></label>
+                    <input asp-for="FitimeEkstra" class="form-control">
+                </div>
+                <div class="form-group">
+                    <span asp-validation-for="shpenzimeEkstra"></span>
+                    <label asp-for="shpenzimeEkstra"></label>
+                    <input asp-for="shpenzimeEkstra" class="form-control">
+                </div>
+                <div class="form-group">
+                    <span asp-validation-for="shenime"></span>
+                    <label asp-for="shenime"></label>
+                    <input asp-for="shenime" class="form-control">
+                </div>
+                <div class="form-group">
+                    <span asp-validation-for="ShoferId"></span>
+                    <label asp-for="ShoferId"></label>
+                    <select asp-for="ShoferId" asp-items="@ViewBag.shofers" class="form-control"></select>
+                </div>
+                <div class="form-group">
+                    <span asp-validation-for="PikaShkarkimiId"></span>
+                    <label asp-for="PikaShkarkimiId"></label>
+                    <select asp-for="PikaShkarkimiId" asp-items="@ViewBag.Pikat" class="form-control"></select>
+                </div>
+    </div>
+    <div class="col-sm-6">
+      <button type="submit" class="btn btn-primary mt-3">Ndrysho te dhenat</button>
+                <a asp-controller="Rruga" asp-action="AllRrugaJoModel" class="btn btn-primary mt-3 mr-3"> Kthehu pas</a>
+      </div>
+</form>
+</div> 
+</div>
+

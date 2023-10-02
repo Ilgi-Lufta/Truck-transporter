@@ -1,0 +1,25 @@
+@model Currency
+<partial name="NavPartial" />
+<div class="mt-5 container">
+    <h1 class="text-center mb-5">Krijo nje Currency</h1>
+    <div class="row">
+        <form asp-controller="Currency" asp-action="CreateCurrency" method="post">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <span asp-validation-for="CurrencyUnit"></span>
+                    <label asp-for="CurrencyUnit"></label>
+                    <input asp-for="CurrencyUnit" class="form-control">
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <button type="submit" class="btn btn-primary mt-3">Krijo Currency</button>
+                <a asp-controller="Currency" asp-action="AllCurrency" class="btn btn-primary mt-3 mr-3"> Kthehu pas</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+
+

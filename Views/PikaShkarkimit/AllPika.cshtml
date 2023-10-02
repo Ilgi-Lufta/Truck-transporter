@@ -1,0 +1,47 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+<partial name="NavPartial" />
+<div class="mt-5 container">
+
+    <form asp-controller="PikaShkarkimit" asp-action="AllPika">
+        <p>
+            <input type="text" placeholder="Kerko" name="SearchString" />
+            <input class="btn btn-primary" type="submit" value="Kerko" />
+        </p>
+    </form>
+    <a class="btn btn-primary" asp-action="AddPika" asp-controller="PikaShkarkimit"> Shto Pike Shkarkimi</a>
+
+    <div class="row">
+        <div class="col sm-6">
+            <table class="table table-striped table-bordered  ">
+                <thead>
+                    <tr>
+                        <th scope="col">Emri</th>
+                        <th scope="col">Pagesa</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ViewBag.Shofers)
+                    {
+                        <tr>
+                            <td scope="row"> @item.Emri</td>
+                            <td scope="row"> @item.Pagesa</td>
+
+
+                            <td scope="row">
+                                <a class="btn btn-primary" asp-action="EditPika" asp-controller="PikaShkarkimit" asp-route-id="@item.PikaShkarkimiId"> Edito</a>
+                                <a class="btn btn-danger" asp-action="FshiPika" asp-controller="PikaShkarkimit" asp-route-id="@item.PikaShkarkimiId"> Fshi</a>
+
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div>
+            </div>
+        </div>
+    </div>
+</div>
+

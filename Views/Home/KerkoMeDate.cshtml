@@ -1,0 +1,49 @@
+@* <partial name="NavPartial"/>
+<div class="mt-5 container">
+
+
+ <form asp-controller="Home" asp-action="KerkoMeDate">
+    <p>
+        Fillo <input class="ms-1" type="date" name="searchFirstTime" />
+        Perfundo <input class="ms-1" type="date" name="searchSecondTime" />
+        <input class="btn btn-primary" type="submit" value="Kerko" />
+    </p>
+</form>
+
+
+                <div class="row">
+   <div class="col sm-6">
+            <table class="table table-striped table-bordered  ">
+                <thead>
+                    <tr>
+                        <th   scope="col">Emri i pacientit</th>
+                        <th   scope="col">Emri i Analizes</th>
+                        <th   scope="col">Data</th>
+                        <th   scope="col">Pagesa</th>
+                        <th   scope="col">kryer</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ViewBag.Analiz )
+                    {
+                    <tr>
+                        <td scope="row"> @item.MyPacient.Emripacientit</td>
+                        <td scope="row"> @item.Emri</td>
+                        <td scope="row"> @item.CreatedAt</td>
+                        <td scope="row"> @item.Paguar</td>
+                        @if(@item.Pagesa){
+                        <td scope="row"> pagesa kryer</td>
+                        }else{
+                        <td scope="row"> pagesa pa kryer</td>
+                        }
+                    </tr>
+                         }
+        </tbody>
+    </table>
+    <h3>totali : @ViewBag.totali
+    </h3>
+    </div>
+    </div>
+    
+*@

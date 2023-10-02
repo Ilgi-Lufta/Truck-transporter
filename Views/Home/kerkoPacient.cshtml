@@ -1,0 +1,45 @@
+@*@{
+    ViewData["Title"] = "Kerko Pacient";
+}
+
+
+<partial name="NavPartial"/>
+<div class="mt-5 container">
+
+ <form asp-controller="Home" asp-action="kerkoPacient">
+    <p>
+        <input type="text" placeholder="Emri Pacientit" name="SearchString2" />
+        <input class="btn btn-primary" type="submit"  value="Kerko" />
+    </p>
+</form>
+<div class="row">
+   <div class="col sm-6">
+            <table class="table table-striped table-bordered  ">
+                <thead>
+                    <tr>
+                        <th   scope="col ">Emri</th>
+                        <th   scope="col ">Password</th>
+                        <th   scope="col ">Emri Analizes</th>
+                        <th   scope="col ">Data</th>
+                        
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ViewBag.Flete )
+                    {
+                    <tr>
+                        <td scope="row"> @item.MyPacient.Emripacientit</td>
+                        <td scope="row"> @item.MyPacient.Password</td>
+                        <td scope="row"><a asp-action="printo3" asp-route-id2="@item.FleteAnalizeId">@item.Emri </a></td>
+                        <td scope="row"> @item.CreatedAt</td>
+                    </tr>
+                         }
+        </tbody>
+    </table>
+    </div>
+    </div>
+    
+    </div>
+
+*@

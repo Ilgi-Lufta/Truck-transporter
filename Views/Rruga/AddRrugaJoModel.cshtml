@@ -1,0 +1,142 @@
+@model Rruga
+<partial name="NavPartial" />
+<div class="mt-5 container">
+    <h1 class="text-center mb-5">Krijo nje Rruge</h1>
+    <form asp-controller="Rruga" asp-action="CreateRrugaJoModel" method="post">
+        <div class="row">
+
+            <div class="col-sm-5">
+                <div class="form-group">
+                    <span asp-validation-for="Emri"></span>
+                    <label asp-for="Emri"></label>
+                    <input asp-for="Emri" class="form-control">
+                </div>
+                <div class="form-group">
+                    <span asp-validation-for="Dogana"></span>
+                    <label asp-for="Dogana"></label>
+                    <input asp-for="Dogana" class="form-control">
+                </div>
+                <div class="form-group">
+                    <span asp-validation-for="NaftaShpenzuarLitra"></span>
+                    <label asp-for="NaftaShpenzuarLitra"></label>
+                    <input asp-for="NaftaShpenzuarLitra" class="form-control">
+                </div>
+                <div class="form-group">
+                    <span asp-validation-for="PagesaShoferit"></span>
+                    <label asp-for="PagesaShoferit"></label>
+                    <input asp-for="PagesaShoferit" class="form-control">
+                </div>
+           
+                <div class="form-group">
+                    <span asp-validation-for="NaftaBlereLitra"></span>
+                    <label asp-for="NaftaBlereLitra"></label>
+                    <input asp-for="NaftaBlereLitra" class="form-control">
+                </div>
+                <div class="form-group">
+                    <span asp-validation-for="NaftaBlereCmim"></span>
+                    <label asp-for="NaftaBlereCmim"></label>
+                    <input asp-for="NaftaBlereCmim" class="form-control">
+                </div>
+
+            </div>
+            <div class="col-sm-5">
+                <div class="form-group">
+                    <span asp-validation-for="FitimeEkstra"></span>
+                    <label asp-for="FitimeEkstra"></label>
+                    <input asp-for="FitimeEkstra" class="form-control">
+                </div>
+                <div class="form-group">
+                    <span asp-validation-for="shpenzimeEkstra"></span>
+                    <label asp-for="shpenzimeEkstra"></label>
+                    <input asp-for="shpenzimeEkstra" class="form-control">
+                </div>
+                <div class="form-group">
+                    <span asp-validation-for="shenime"></span>
+                    <label asp-for="shenime"></label>
+                    <input asp-for="shenime" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <span asp-validation-for="ShoferId"></span>
+                    <label asp-for="ShoferId"></label>
+                    <select asp-for="ShoferId" asp-items="@ViewBag.shofers" class="form-control"></select>
+                </div>
+
+                @*<form asp-controller="Rruga" asp-action="CreateRrugaJoModel2" method="post">*@
+
+                <div class="form-group">
+                    <span asp-validation-for="PikaShkarkimiId"></span>
+                    <label asp-for="PikaShkarkimiId"></label>
+                    <select id="myDropdown" onchange="sendData(@ViewBag.id);" asp-for="PikaShkarkimiId" asp-items="@ViewBag.Pikat" class="form-control"></select>
+                </div>
+          @*          <button id="ilgi" hidden  type="submit" class="btn btn-primary mt-3">Krijo Rruge</button>
+                </form>*@
+                <div class="form-group">
+                    <span asp-validation-for="PikaPagesa"></span>
+                    <label asp-for="PikaPagesa"></label>
+                    <input id="paragraph" asp-for="PikaPagesa" class="form-control" value="@ViewBag.pagesa">
+                </div>
+        @*        <div class="form-group">
+                    <span asp-validation-for="PikaPagesa"></span>
+                    <label asp-for="PikaPagesa"></label>
+                    <input id="paragraph" asp-for="PikaPagesa" class="form-control">
+                </div>*@
+            </div>
+            <div>
+                <button type="submit" class="btn btn-primary mt-3">Krijo Rruge</button>
+                <a asp-controller="Rruga" asp-action="AllRrugaJoModel" class="btn btn-primary mt-3 mr-3"> Kthehu pas</a>
+            </div>
+        </div>
+
+
+    </form>
+</div>
+</div>
+
+@section Scripts{
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script>
+        function sendData(id) {
+            debugger
+            var selectedFilter = $("#myDropdown").val();
+            var selectedFilter2 = $("#paragraph");
+            
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("CreateRrugaJoModel2","Rruga")",
+                //url: "/Rruga/CreateRrugaJoModel2",
+                data: {id:id , val: selectedFilter },
+
+                success: function (result) {
+                    selectedFilter2[0].value = result;
+                },
+                error: function () {
+                    alert("there was an error");
+                }
+            })
+        }
+        function sendDataShofer(id) {
+            debugger
+            var selectedFilter = $("#myDropdown").val();
+            var selectedFilter2 = $("#paragraph");
+
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("CreateRrugaJoModel2","Rruga")",
+                //url: "/Rruga/CreateRrugaJoModel2",
+                data: { id: id, val: selectedFilter },
+
+                success: function (result) {
+                    selectedFilter2[0].value = result;
+                },
+                error: function () {
+                    alert("there was an error");
+                }
+            })
+        }
+    </script>
+}
+
+
+
+

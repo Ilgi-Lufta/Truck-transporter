@@ -1,0 +1,51 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+<partial name="NavPartial" />
+<div class="mt-5 container">
+
+    <form asp-controller="Rruga" asp-action="AllRruga">
+        <p>
+
+            <input type="text" placeholder="Emri Shoferit" name="SearchString" />
+            <input class="btn btn-primary" type="submit" value="Kerko" />
+        </p>
+    </form>
+    <a class="btn btn-primary" asp-action="AddRruga" asp-controller="Rruga"> Shto Rruge</a>
+
+    <div class="row">
+        <div class="col sm-6">
+            <table class="table table-striped table-bordered  ">
+                <thead>
+                    <tr>
+                        <th scope="col">Emri</th>
+                        <th scope="col">Dogana</th>
+                        <th scope="col">PagesaShoferit</th>
+                        <th scope="col">NaftaShpenzuarLitra</th>
+                        <th scope="col">Veprime</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ViewBag.Shofers)
+                    {
+                        <tr>
+                            <td scope="row"> @item.Emri</td>
+                            <td scope="row"> @item.Dogana</td>
+                            <td scope="row"> @item.PagesaShoferit</td>
+                            <td scope="row"> @item.NaftaShpenzuarLitra</td>
+                            <td scope="row">
+                                <a class="btn btn-primary" asp-action="EditRruga" asp-controller="Rruga" asp-route-id="@item.RrugaId"> Edito</a>
+                                <a class="btn btn-danger" asp-action="FshiRruga" asp-controller="Rruga" asp-route-id="@item.RrugaId"> Fshi</a>
+                                <a class="btn btn-success" asp-action="AddRrugaJoModel" asp-controller="Rruga" asp-route-id="@item.RrugaId"> Perdor</a>
+
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div>
+            </div>
+        </div>
+    </div>
+</div>
+

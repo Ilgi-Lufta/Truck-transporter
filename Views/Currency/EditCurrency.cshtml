@@ -1,0 +1,21 @@
+@model Currency
+<partial name="NavPartial" />
+<div class="mt-5 container">
+
+    <div class="row">
+        <form asp-controller="Currency" asp-action="EditedCurrency" asp-route-id="@ViewBag.id" method="post">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <span asp-validation-for="CurrencyUnit"></span>
+                    <label asp-for="CurrencyUnit"></label>
+                    <input asp-for="CurrencyUnit" class="form-control">
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <button type="submit" class="btn btn-primary mt-3">Ndrysho te dhenat</button>
+                <a asp-controller="Currency" asp-action="AllCurrency" class="btn btn-primary mt-3 mr-3"> Kthehu pas</a>
+            </div>
+        </form>
+    </div>
+</div>
+
