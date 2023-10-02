@@ -30,3 +30,10 @@ Nje dezajn me bashkekohor per te gjitha view
 - SQL
 - CSS/HTML
 - Bootstrap
+
+
+
+to do
+shtimi monedhes per cdo pagese/shpenzim
+implemetimi i shtimit ose zbritjes se gjendjes
+implementimi i query per llogaritjen e gjendjes
