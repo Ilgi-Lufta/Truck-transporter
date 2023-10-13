@@ -45,8 +45,7 @@ namespace BioLab.Controllers
                 }
                 //vendosim lidhjen one to many per analizat e adminit te loguar
                 // dhe e ruajm analizesn ne db
-                marrngaadd.Model = true;
-                marrngaadd.Amount = 0;
+             
                 _context.Add(marrngaadd);
                 _context.SaveChanges();
                 return RedirectToAction("AllCurrency");

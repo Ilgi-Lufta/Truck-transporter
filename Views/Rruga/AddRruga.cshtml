@@ -32,7 +32,11 @@
                     <label asp-for="ShoferId"></label>
                     <select asp-for="ShoferId" asp-items="@ViewBag.shofers" class="form-control"></select>
                 </div>
-
+                <div class="form-group">
+                    <span asp-validation-for="PagesaShoferitCurrencyId"></span>
+                    <label asp-for="PagesaShoferitCurrencyId"></label>
+                    <select asp-for="PagesaShoferitCurrencyId" asp-items="@ViewBag.currencys" class="form-control"></select>
+                </div>
  @*               <div class="form-group">
                     <span asp-validation-for="ShoferId"></span>
                     <label asp-for="ShoferId"></label>

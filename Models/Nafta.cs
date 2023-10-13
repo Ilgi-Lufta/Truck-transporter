@@ -17,4 +17,7 @@ public class Nafta
     public int? RrugaId { get; set; }
     public Rruga? Rruga { get; set; } 
     public DateTime CreatedDate { get; set; } = DateTime.Now;
+    public DateTime UpdatedDate { get; set; } = DateTime.Now;
+    public List<NaftaRruga> NaftaRrugas { get; set; } = new List<NaftaRruga>();
+
 }

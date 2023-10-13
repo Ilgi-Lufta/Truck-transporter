@@ -35,22 +35,28 @@ namespace BioLab.Controllers
 
                     ;
             }
-
-
             return View();
         }
 
         public IActionResult AddRruga()
         {
+            var AllCurrency = _context.Currencys.ToList();
+            if (AllCurrency != null)
+            {
+                List<SelectListItem> currencys = new List<SelectListItem>();
+                foreach (var currency in AllCurrency)
+                {
+                    currencys.Add(new SelectListItem { Text = currency.CurrencyUnit, Value = currency.CurrencyId.ToString() });
+                }
+                ViewBag.currencys = currencys;
+            }
             var AllShofer =_context.Shofers.ToList();
             if (AllShofer != null)
             {
                  List<SelectListItem> shofers = new List<SelectListItem>();
                 foreach (var shofer in AllShofer)
                 {
-
                     shofers.Add(new SelectListItem { Text = shofer.Emri, Value = shofer.ShoferId.ToString() });
-
                 }
             ViewBag.shofers = shofers;
             }
@@ -88,8 +94,21 @@ namespace BioLab.Controllers
                 marrngaadd.PikaShkarkimiId = _context.PikaShkarkimis.FirstOrDefault().PikaShkarkimiId;
                 marrngaadd.Model = true;
                // marrngaadd.PagesaShoferit
-            
+                   
+
+
                 _context.Add(marrngaadd);
+                _context.SaveChanges();
+
+                PagesaShoferit PagesaShoferit = new PagesaShoferit()
+                {
+                    CurrencyId = marrngaadd.PagesaShoferitCurrencyId,
+                    Pagesa = marrngaadd.PagesaShoferit,
+                    ShoferId = marrngaadd.ShoferId,
+                    RrugaId = marrngaadd.RrugaId,
+                    ShpenzimXhiro = true
+                };
+                _context.Add(PagesaShoferit);
                 _context.SaveChanges();
                 return RedirectToAction("AllRruga");
             }

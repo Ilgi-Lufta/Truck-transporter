@@ -1,5 +1,6 @@
 ﻿using BioLab.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BioLab.Controllers
 {
@@ -13,10 +14,7 @@ namespace BioLab.Controllers
             _logger = logger;
             _context = context;
         }
-        public IActionResult AddShofer()
-        {
-            return View();
-        }
+        
         public IActionResult AllShofer(string searchString)
         {
             var shofers = _context.Shofers.ToList();
@@ -29,11 +27,22 @@ namespace BioLab.Controllers
             {
                 ViewBag.Shofers = shofers.Where(s => s.Emri!.Contains(searchString));
             }
-          
-
             return View();
         }
-
+        public IActionResult AddShofer()
+        {
+            var AllCurrency = _context.Currencys.ToList();
+            if (AllCurrency != null)
+            {
+                List<SelectListItem> currencys = new List<SelectListItem>();
+                foreach (var currency in AllCurrency)
+                {
+                    currencys.Add(new SelectListItem { Text = currency.CurrencyUnit, Value = currency.CurrencyId.ToString() });
+                }
+                ViewBag.currencys = currencys;
+            }
+            return View();
+        }
         [HttpPost]
         public IActionResult CreateShofer(Shofer marrngaadd)
         {

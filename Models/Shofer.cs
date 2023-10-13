@@ -14,6 +14,12 @@ public class Shofer
     List<Rruga> Rrugas { get; set; }= new List<Rruga>();
 
     public bool Model { get; set; }
+    //[NotMapped]
+    //public int CurrencyId { get; set; }
+    public DateTime CreatedDate { get; set; } = DateTime.Now;
+    public DateTime UpdatedDate { get; set; } = DateTime.Now;
+    public List<ShoferRruga> shoferRrugas { get; set; } = new List<ShoferRruga>();
+    public List<PagesaShoferit> PagesaShoferits { get; set; } = new List<PagesaShoferit>();
 
-    public DateTime CreatedDate { get; set; }= DateTime.Now;
+
 }

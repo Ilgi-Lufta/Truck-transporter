@@ -11,10 +11,20 @@ public class MyContext : DbContext
 {
     public MyContext(DbContextOptions options) : base(options) { }
     // the "Monsters" table name will come from the DbSet property name
+    public DbSet<ZbritShtoGjendja> ZbritShtoGjendjas { get; set; }
+    public DbSet<ShoferRruga> ShoferRrugas { get; set; }
     public DbSet<Shofer> Shofers { get; set; }
-    public DbSet<Nafta> Naftas { get; set; }
+    public DbSet<RrugaShpenzimeEkstra> RrugaShpenzimeEkstras { get; set; }
+    public DbSet<RrugaFitimeEkstra> RrugaFitimeEkstras { get; set; }
+    public DbSet<RrugaFitime> RrugaFitimes { get; set; }
     public DbSet<Rruga> Rrugas { get; set; }
     public DbSet<PikaShkarkimi> PikaShkarkimis { get; set; }
+    public DbSet<PikaRruga> PikaRrugas { get; set; }
+    public DbSet<PagesaShoferit> PagesaShoferits { get; set; }
+    public DbSet<PagesaPikaShkarkimit> PagesaPikaShkarkimits { get; set; }
+    public DbSet<PagesaDogana> PagesaDoganas { get; set; }
+    public DbSet<Nafta> Naftas { get; set; }
+    public DbSet<NaftaRruga> NaftaRrugas { get; set; }
     public DbSet<Currency> Currencys { get; set; }
 
 }

@@ -42,5 +42,18 @@ public class Rruga
     public int PikaShkarkimiId { get; set; }
     public PikaShkarkimi? PikaShkarkimi { get; set; }
     public DateTime CreatedDate { get; set; } = DateTime.Now;
+    public List<ShoferRruga> ShoferRrugas { get; set; } = new List<ShoferRruga>();
+    public List<RrugaShpenzimeEkstra> RrugaShpenzimeEkstras { get; set; } = new List<RrugaShpenzimeEkstra>();
+    public List<RrugaFitimeEkstra> RrugaFitimeEkstras { get; set; } = new List<RrugaFitimeEkstra>();
+    public List<RrugaFitime> RrugaFitimes { get; set; } = new List<RrugaFitime>();
+    public List<PikaRruga> PikaRrugas { get; set; } = new List<PikaRruga>();
+    public List<PagesaShoferit> PagesaShoferits { get; set; } = new List<PagesaShoferit>();
+    public List<PagesaPikaShkarkimit> PagesaPikaShkarkimits { get; set; } = new List<PagesaPikaShkarkimit>();
+    public List<PagesaDogana> PagesaDoganas { get; set; } = new List<PagesaDogana>();
+    public List<NaftaRruga> NaftaRrugas { get; set; } = new List<NaftaRruga>();
+
+    [NotMapped]
+    public int PagesaShoferitCurrencyId { get; set; }
+
 
 }

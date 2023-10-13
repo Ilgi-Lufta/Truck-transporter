@@ -3,19 +3,16 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BioLab.Models;
-public class PikaShkarkimi
+public class PikaRruga
 {
     [Key]
+    public int PikaRrugaId { get; set; }
     public int PikaShkarkimiId { get; set; }
-    [Required]
-    public string Emri { get; set; }
-    [Required]
-    public Decimal Pagesa { get; set; }
-    List<Rruga> Rrugas { get; set; }= new List<Rruga>();
-    public bool Model { get; set; }
+    public PikaShkarkimi? PikaShkarkimi { get; set; }
+    public int RrugaId { get; set; }
+    public Rruga? Rruga { get; set; }
+    public int CurrencyId { get; set; }
+    public Currency? Currency { get; set; }
     public DateTime CreatedDate { get; set; } = DateTime.Now;
     public DateTime UpdatedDate { get; set; } = DateTime.Now;
-    public List<PikaRruga> PikaRrugas { get; set; } = new List<PikaRruga>();
-
-
 }
