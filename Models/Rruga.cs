@@ -1,4 +1,5 @@
 #pragma warning disable CS8618
+using BioLab.ViewModels;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -26,12 +27,7 @@ public class Rruga
     public Nafta? Nafta { get; set; }
     [Required]
     public decimal NaftaShpenzuarLitra { get; set; } // vendoset vetem ne fillim
-
-
-
     public decimal NaftaPerTuShiturLitra { get; set; } 
-
-
     public decimal Shpenzime { get; set; } 
     public decimal Xhiro { get; set; } 
     public decimal Fitime { get; set; } 
@@ -54,6 +50,9 @@ public class Rruga
 
     [NotMapped]
     public int PagesaShoferitCurrencyId { get; set; }
+    [NotMapped]
+    public ICollection<PagesaShoferitVM> PagesaShoferitVM { get; set; }
+
 
 
 }

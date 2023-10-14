@@ -1,16 +1,14 @@
 @model Rruga
-<partial name="NavPartial"/>
+<partial name="NavPartial" />
 <div class="mt-5 container">
-        <h1 class="text-center mb-5">Krijo nje Rruge</h1>
-<div class="row">
+    <h1 class="text-center mb-5">Krijo nje Rruge</h1>
+    <div class="row">
         <form asp-controller="Rruga" asp-action="CreateRruga" method="post">
-    <div class="col-sm-6">
-      
-
-              <div class="form-group">
-                  <span asp-validation-for="Emri"></span>
-                  <label asp-for="Emri"></label>
-                  <input asp-for="Emri" class="form-control" >
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <span asp-validation-for="Emri"></span>
+                    <label asp-for="Emri"></label>
+                    <input asp-for="Emri" class="form-control">
                 </div>
                 <div class="form-group">
                     <span asp-validation-for="Dogana"></span>
@@ -32,31 +30,94 @@
                     <label asp-for="ShoferId"></label>
                     <select asp-for="ShoferId" asp-items="@ViewBag.shofers" class="form-control"></select>
                 </div>
-                <div class="form-group">
-                    <span asp-validation-for="PagesaShoferitCurrencyId"></span>
-                    <label asp-for="PagesaShoferitCurrencyId"></label>
-                    <select asp-for="PagesaShoferitCurrencyId" asp-items="@ViewBag.currencys" class="form-control"></select>
+             
+
+                <table id="StudentsTable" class="table">
+                    <thead>
+                        <tr>
+                            <th>Pagesa shoferit</th>
+                            <th>Kursi Kembimit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="detailRow">
+                            <td>
+                                <input type="text" name="PagesaShoferitVM[0].Pagesa" class="form-control" required />
+                            </td>
+                            <td>
+                                <input type="number" name="PagesaShoferitVM[0].CurrencyId" class="form-control" required />
+                            </td>
+                           @*  <td>
+                                <input type="number" name="PagesaShoferitVM[0].CurrencyId" class="form-control" required />
+                            </td>*@
+
+
+                            <td>
+                                <button type="button" class="btn btn-danger removeRow">Remove</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="2">
+                                <button type="button" class="btn btn-primary" id="addRow">Add Row</button>
+                            </td>
+                        </tr>
+                    </tfoot>
+                    </table>
+
+
+
+
+
+
+
+
+
+                @*               <div class="form-group">
+                <span asp-validation-for="ShoferId"></span>
+                <label asp-for="ShoferId"></label>
+                <select asp-for="ShoferId" asp-items="@ViewBag.shofers" class="form-control"></select>
                 </div>
- @*               <div class="form-group">
-                    <span asp-validation-for="ShoferId"></span>
-                    <label asp-for="ShoferId"></label>
-                    <select asp-for="ShoferId" asp-items="@ViewBag.shofers" class="form-control"></select>
-                </div>
                 <div class="form-group">
-                    <span asp-validation-for="PikaShkarkimiId"></span>
-                    <label asp-for="PikaShkarkimiId"></label>
-                    <select asp-for="PikaShkarkimiId" asp-items="@ViewBag.Pikat" class="form-control"></select>
+                <span asp-validation-for="PikaShkarkimiId"></span>
+                <label asp-for="PikaShkarkimiId"></label>
+                <select asp-for="PikaShkarkimiId" asp-items="@ViewBag.Pikat" class="form-control"></select>
                 </div>*@
-        
-    <div class="col-sm-6">
-      <button type="submit" class="btn btn-primary mt-3">Krijo Rruge</button>
-                    <a asp-controller="Rruga" asp-action="AllRruga" class="btn btn-primary mt-3 mr-3"> Kthehu pas</a>
-      </div>
-</form>
+            </div>
+
+            <div class="col-sm-6">
+                <button type="submit" class="btn btn-primary mt-3">Krijo Rruge</button>
+                <a asp-controller="Rruga" asp-action="AllRruga" class="btn btn-primary mt-3 mr-3"> Kthehu pas</a>
+            </div>
+        </form>
+    </div>
 </div>
 
 
+@section Scripts {
+        debugger
+    <script>
+        $(document).ready(function () {
+            // Add row
+            debugger
+            $('#addRow').click(function () {
+                debugger
+                var rowCount = $('#StudentsTable tbody tr').length;
+                var newRow = $('.detailRow').first().clone();
+                newRow.find('input[type=text]').val('');
+                newRow.find('input[type=text]').attr('name', 'PagesaShoferitVM[' + rowCount + '].Pagesa');
+                newRow.find('input[type=number]').val('');
+                newRow.find('input[type=number]').attr('name', 'PagesaShoferitVM[' + rowCount + '].CurrencyId');
+                newRow.appendTo($('#StudentsTable tbody'));
+            });
+            $(document).on('click', '.removeRow', function () {
+                if ($('#StudentsTable tbody tr').length > 1) {
+                    $(this).closest('tr').remove();
+                }
+            });
+        });
+    </script>
+}
 
 
-
-    

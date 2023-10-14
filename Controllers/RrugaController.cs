@@ -99,17 +99,21 @@ namespace BioLab.Controllers
 
                 _context.Add(marrngaadd);
                 _context.SaveChanges();
-
-                PagesaShoferit PagesaShoferit = new PagesaShoferit()
+                foreach (var PagesaShoferitVM in marrngaadd.PagesaShoferitVM)
                 {
-                    CurrencyId = marrngaadd.PagesaShoferitCurrencyId,
-                    Pagesa = marrngaadd.PagesaShoferit,
-                    ShoferId = marrngaadd.ShoferId,
-                    RrugaId = marrngaadd.RrugaId,
-                    ShpenzimXhiro = true
-                };
-                _context.Add(PagesaShoferit);
-                _context.SaveChanges();
+                    PagesaShoferit PagesaShoferit = new PagesaShoferit()
+                    {
+                        CurrencyId = marrngaadd.PagesaShoferitCurrencyId,
+                        Pagesa = marrngaadd.PagesaShoferit,
+                        ShoferId = marrngaadd.ShoferId,
+                        RrugaId = marrngaadd.RrugaId,
+                        ShpenzimXhiro = true
+                    };
+                    _context.Add(PagesaShoferit);
+                    _context.SaveChanges();
+                }
+
+
                 return RedirectToAction("AllRruga");
             }
             return View("AddRruga");
@@ -327,9 +331,29 @@ namespace BioLab.Controllers
 
             return paga;
         }
+        [HttpPost]
+        public List<SelectListItem> Get()
+        {
+            var AllCurrency = _context.Currencys.ToList();
+            List<SelectListItem> currencys = new List<SelectListItem>();
+
+            if (AllCurrency != null)
+            {
+                foreach (var currency in AllCurrency)
+                {
+                    currencys.Add(new SelectListItem
+                    {
+                        Text = currency.CurrencyUnit,
+                        Value = currency.CurrencyId.ToString()
+                    });
+                }
+              //  ViewBag.currencys = currencys;
+            }
+            return currencys;
+        }
 
 
-            public IActionResult EditRrugaJoModel(int id)
+        public IActionResult EditRrugaJoModel(int id)
         {
             var rruga = _context.Rrugas.FirstOrDefault(e => e.RrugaId == id);
             ViewBag.id = id;
