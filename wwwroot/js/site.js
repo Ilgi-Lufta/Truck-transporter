@@ -42,12 +42,13 @@ function myFunction() {
     clone.childNodes[5].childNodes[1].id = length.toString();
 
     // remove child row
-    clone.childNodes[3].childNodes[1].childNodes[3].childNodes[1].childNodes[5].childNodes[1].id = countVM.toString();
+    clone.childNodes[3].childNodes[1].childNodes[3].childNodes[1].childNodes[7].childNodes[1].id = countVM.toString();
     //add  child row
     clone.childNodes[3].childNodes[1].childNodes[5].childNodes[1].childNodes[1].childNodes[1].id = length.toString();
 
     clone.childNodes[3].childNodes[1].childNodes[3].childNodes[1].childNodes[1].childNodes[1].attributes.name.nodeValue = "ShoferitRrugaVM[" + length + "].PagesaShoferitVM[" + countVM + "].Pagesa";
     clone.childNodes[3].childNodes[1].childNodes[3].childNodes[1].childNodes[3].childNodes[1].attributes.name.nodeValue = "ShoferitRrugaVM[" + length + "].PagesaShoferitVM[" + countVM + "].CurrencyId";
+    clone.childNodes[3].childNodes[1].childNodes[3].childNodes[1].childNodes[5].childNodes[1].attributes.name.nodeValue = "ShoferitRrugaVM[" + length + "].PagesaShoferitVM[" + countVM + "].PagesaKryer";
     clone.childNodes[3].childNodes[1].id = "StudentsTable" + length.toString();
     clone.childNodes[3].childNodes[1].childNodes[3].id = "StudentsTablebody" + length.toString();
     clone.id = "ShoferRrugadetailRow" + length.toString(); // change id or other attributes/contents
@@ -92,7 +93,8 @@ function myFunctionChild(e) {
     clone.childNodes[1].childNodes[1].attributes.name.nodeValue = "ShoferitRrugaVM[" + e + "].PagesaShoferitVM[" + (countVM) + "].Pagesa";
 
     clone.childNodes[3].childNodes[1].attributes.name.nodeValue = "ShoferitRrugaVM[" + e + "].PagesaShoferitVM[" + (countVM ) + "].CurrencyId";
-    clone.childNodes[5].childNodes[1].id = (countVM ).toString();
+    clone.childNodes[5].childNodes[1].attributes.name.nodeValue = "ShoferitRrugaVM[" + e + "].PagesaShoferitVM[" + (countVM) + "].PagesaKryer";
+    clone.childNodes[7].childNodes[1].id = (countVM ).toString();
     
     clone.id = "detailRow" + countVM.toString(); // change id or other attributes/contents
     body.appendChild(clone); // add new row to end of table

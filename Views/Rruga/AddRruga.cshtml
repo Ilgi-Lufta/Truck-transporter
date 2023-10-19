@@ -81,6 +81,7 @@
                                         <tr>
                                             <th>Pagesa shoferit</th>
                                             <th>Kursi Kembimit</th>
+                                            <th>Paguar</th>
                                         </tr>
                                     </thead>
                                     <tbody id="StudentsTablebody0">
@@ -97,6 +98,9 @@
                                                 {
                                                     <option value="@item.Key">@item.Value</option>
                                                 }
+                                            </td>
+                                            <td> 
+                                                <input type="checkbox" name="ShoferitRrugaVM[0].PagesaShoferitVM[0].PagesaKryer"  style="width: 30px;height: 30px;" onchange="this.value=this.checked"  />
                                             </td>
                                             <td>
                                                 <button type="button" onclick="RemoveChildRow(this)" id="0" class="btn btn-danger removeRow">Remove</button>
