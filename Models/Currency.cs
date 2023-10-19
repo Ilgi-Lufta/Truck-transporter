@@ -10,16 +10,19 @@ public class Currency
     public string CurrencyUnit { get; set; }
     public DateTime CreatedDate { get; set; } = DateTime.Now;
     public DateTime UpdatedDate { get; set; } = DateTime.Now;
-    public List<ShoferRruga> shoferRrugas { get; set; } = new List<ShoferRruga>();
     public List<RrugaShpenzimeEkstra> RrugaShpenzimeEkstras { get; set; } = new List<RrugaShpenzimeEkstra>();
     public List<RrugaFitimeEkstra> RrugaFitimeEkstras { get; set; } = new List<RrugaFitimeEkstra>();
     public List<RrugaFitime> RrugaFitimes { get; set; } = new List<RrugaFitime>();
-    public List<PikaRruga> PikaRrugas { get; set; } = new List<PikaRruga>();
     public List<PagesaShoferit> PagesaShoferits { get; set; } = new List<PagesaShoferit>();
     public List<PagesaPikaShkarkimit> PagesaPikaShkarkimits { get; set; } = new List<PagesaPikaShkarkimit>();
     public List<PagesaDogana> PagesaDoganas { get; set; } = new List<PagesaDogana>();
-    public List<NaftaRruga> NaftaRrugas { get; set; } = new List<NaftaRruga>();
-    
+    public List<PagesaNafta> PagesaNaftas { get; set; } = new List<PagesaNafta>();
+
+   // public List<PikaRruga> PikaRrugas { get; set; } = new List<PikaRruga>();
+   // public List<ShoferRruga> shoferRrugas { get; set; } = new List<ShoferRruga>();
+   // public List<NaftaRruga> NaftaRrugas { get; set; } = new List<NaftaRruga>();
+
+
 
 
 

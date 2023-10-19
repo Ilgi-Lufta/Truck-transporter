@@ -11,11 +11,12 @@ public class PikaShkarkimi
     public string Emri { get; set; }
     [Required]
     public Decimal Pagesa { get; set; }
-    List<Rruga> Rrugas { get; set; }= new List<Rruga>();
     public bool Model { get; set; }
     public DateTime CreatedDate { get; set; } = DateTime.Now;
     public DateTime UpdatedDate { get; set; } = DateTime.Now;
+   // List<Rruga> Rrugas { get; set; }= new List<Rruga>();
     public List<PikaRruga> PikaRrugas { get; set; } = new List<PikaRruga>();
+    public List<PagesaPikaShkarkimit> PagesaPikaShkarkimits { get; set; } = new List<PagesaPikaShkarkimit>();
 
 
 }

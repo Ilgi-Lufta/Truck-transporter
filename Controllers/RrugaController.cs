@@ -50,6 +50,30 @@ namespace BioLab.Controllers
                 }
                 ViewBag.currencys = currencys;
             }
+
+            var AllCurrency2 = _context.Currencys.ToList();
+            if (AllCurrency2 != null)
+            {
+                IDictionary<int, string> numberNames = new Dictionary<int, string>();
+                foreach (var currency in AllCurrency)
+                {
+                    numberNames.Add(currency.CurrencyId, currency.CurrencyUnit);
+                }
+                ViewBag.numberNames = numberNames;
+            }
+            var AllShofer2 = _context.Shofers.ToList();
+            if (AllShofer2 != null)
+            {
+                IDictionary<int, string> ShoferIdNames = new Dictionary<int, string>();
+                foreach (var Shofer2 in AllShofer2)
+                {
+                    ShoferIdNames.Add(Shofer2.ShoferId, Shofer2.Emri);
+                }
+                ViewBag.ShoferIdNames = ShoferIdNames;
+            }
+
+
+
             var AllShofer =_context.Shofers.ToList();
             if (AllShofer != null)
             {
@@ -101,17 +125,31 @@ namespace BioLab.Controllers
                 _context.SaveChanges();
                 foreach (var PagesaShoferitVM in marrngaadd.PagesaShoferitVM)
                 {
-                    PagesaShoferit PagesaShoferit = new PagesaShoferit()
+                    ShoferRruga shoferRruga = new ShoferRruga()
                     {
-                        CurrencyId = marrngaadd.PagesaShoferitCurrencyId,
-                        Pagesa = marrngaadd.PagesaShoferit,
+                        //CurrencyId = PagesaShoferitVM.CurrencyId,
+                        //Pagesa = PagesaShoferitVM.Pagesa,
                         ShoferId = marrngaadd.ShoferId,
+                        RrugaId = marrngaadd.RrugaId,
+                        //ShpenzimXhiro = true
+                    };
+                    _context.Add(shoferRruga);
+                    _context.SaveChanges();
+                    
+                }
+                foreach (var PagesaDoganaVM in marrngaadd.PagesaDoganaVM)
+                {
+                    PagesaDogana PagesaShoferit = new PagesaDogana()
+                    {
+                        CurrencyId = PagesaDoganaVM.CurrencyId,
+                        Pagesa = PagesaDoganaVM.Pagesa,
                         RrugaId = marrngaadd.RrugaId,
                         ShpenzimXhiro = true
                     };
                     _context.Add(PagesaShoferit);
                     _context.SaveChanges();
                 }
+
 
 
                 return RedirectToAction("AllRruga");

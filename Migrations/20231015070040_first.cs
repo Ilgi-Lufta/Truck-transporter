@@ -200,12 +200,12 @@ namespace BioLab.Migrations
                     PagesaPikaShkarkimitId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     CurrencyId = table.Column<int>(type: "int", nullable: false),
-                    RrugaId = table.Column<int>(type: "int", nullable: false),
-                    Pagesa = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
                     PikaShkarkimiId = table.Column<int>(type: "int", nullable: false),
+                    Pagesa = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
                     ShpenzimXhiro = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                    UpdatedDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    RrugaId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -226,82 +226,7 @@ namespace BioLab.Migrations
                         name: "FK_PagesaPikaShkarkimits_Rrugas_RrugaId",
                         column: x => x.RrugaId,
                         principalTable: "Rrugas",
-                        principalColumn: "RrugaId",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "PagesaShoferits",
-                columns: table => new
-                {
-                    PagesaShoferitId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    CurrencyId = table.Column<int>(type: "int", nullable: false),
-                    RrugaId = table.Column<int>(type: "int", nullable: false),
-                    ShoferId = table.Column<int>(type: "int", nullable: false),
-                    Pagesa = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
-                    ShpenzimXhiro = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "datetime(6)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PagesaShoferits", x => x.PagesaShoferitId);
-                    table.ForeignKey(
-                        name: "FK_PagesaShoferits_Currencys_CurrencyId",
-                        column: x => x.CurrencyId,
-                        principalTable: "Currencys",
-                        principalColumn: "CurrencyId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_PagesaShoferits_Rrugas_RrugaId",
-                        column: x => x.RrugaId,
-                        principalTable: "Rrugas",
-                        principalColumn: "RrugaId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_PagesaShoferits_Shofers_ShoferId",
-                        column: x => x.ShoferId,
-                        principalTable: "Shofers",
-                        principalColumn: "ShoferId",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "PikaRrugas",
-                columns: table => new
-                {
-                    PikaRrugaId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    PikaShkarkimiId = table.Column<int>(type: "int", nullable: false),
-                    RrugaId = table.Column<int>(type: "int", nullable: false),
-                    CurrencyId = table.Column<int>(type: "int", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "datetime(6)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PikaRrugas", x => x.PikaRrugaId);
-                    table.ForeignKey(
-                        name: "FK_PikaRrugas_Currencys_CurrencyId",
-                        column: x => x.CurrencyId,
-                        principalTable: "Currencys",
-                        principalColumn: "CurrencyId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_PikaRrugas_PikaShkarkimis_PikaShkarkimiId",
-                        column: x => x.PikaShkarkimiId,
-                        principalTable: "PikaShkarkimis",
-                        principalColumn: "PikaShkarkimiId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_PikaRrugas_Rrugas_RrugaId",
-                        column: x => x.RrugaId,
-                        principalTable: "Rrugas",
-                        principalColumn: "RrugaId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "RrugaId");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -404,28 +329,14 @@ namespace BioLab.Migrations
                 {
                     ShoferRrugaId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    PikaShkarkimiId = table.Column<int>(type: "int", nullable: false),
+                    ShoferId = table.Column<int>(type: "int", nullable: false),
                     RrugaId = table.Column<int>(type: "int", nullable: false),
-                    CurrencyId = table.Column<int>(type: "int", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    ShoferId = table.Column<int>(type: "int", nullable: true)
+                    UpdatedDate = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ShoferRrugas", x => x.ShoferRrugaId);
-                    table.ForeignKey(
-                        name: "FK_ShoferRrugas_Currencys_CurrencyId",
-                        column: x => x.CurrencyId,
-                        principalTable: "Currencys",
-                        principalColumn: "CurrencyId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ShoferRrugas_PikaShkarkimis_PikaShkarkimiId",
-                        column: x => x.PikaShkarkimiId,
-                        principalTable: "PikaShkarkimis",
-                        principalColumn: "PikaShkarkimiId",
-                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_ShoferRrugas_Rrugas_RrugaId",
                         column: x => x.RrugaId,
@@ -436,7 +347,8 @@ namespace BioLab.Migrations
                         name: "FK_ShoferRrugas_Shofers_ShoferId",
                         column: x => x.ShoferId,
                         principalTable: "Shofers",
-                        principalColumn: "ShoferId");
+                        principalColumn: "ShoferId",
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -448,19 +360,12 @@ namespace BioLab.Migrations
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     RrugaId = table.Column<int>(type: "int", nullable: false),
                     NaftaId = table.Column<int>(type: "int", nullable: false),
-                    CurrencyId = table.Column<int>(type: "int", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     UpdatedDate = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_NaftaRrugas", x => x.NaftaRrugaId);
-                    table.ForeignKey(
-                        name: "FK_NaftaRrugas_Currencys_CurrencyId",
-                        column: x => x.CurrencyId,
-                        principalTable: "Currencys",
-                        principalColumn: "CurrencyId",
-                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_NaftaRrugas_Naftas_NaftaId",
                         column: x => x.NaftaId,
@@ -476,10 +381,103 @@ namespace BioLab.Migrations
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
-            migrationBuilder.CreateIndex(
-                name: "IX_NaftaRrugas_CurrencyId",
-                table: "NaftaRrugas",
-                column: "CurrencyId");
+            migrationBuilder.CreateTable(
+                name: "PikaRrugas",
+                columns: table => new
+                {
+                    PikaRrugaId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    PikaShkarkimiId = table.Column<int>(type: "int", nullable: false),
+                    RrugaId = table.Column<int>(type: "int", nullable: false),
+                    PagesaPikaShkarkimitId = table.Column<int>(type: "int", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PikaRrugas", x => x.PikaRrugaId);
+                    table.ForeignKey(
+                        name: "FK_PikaRrugas_PagesaPikaShkarkimits_PagesaPikaShkarkimitId",
+                        column: x => x.PagesaPikaShkarkimitId,
+                        principalTable: "PagesaPikaShkarkimits",
+                        principalColumn: "PagesaPikaShkarkimitId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PikaRrugas_PikaShkarkimis_PikaShkarkimiId",
+                        column: x => x.PikaShkarkimiId,
+                        principalTable: "PikaShkarkimis",
+                        principalColumn: "PikaShkarkimiId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PikaRrugas_Rrugas_RrugaId",
+                        column: x => x.RrugaId,
+                        principalTable: "Rrugas",
+                        principalColumn: "RrugaId",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "PagesaShoferits",
+                columns: table => new
+                {
+                    PagesaShoferitId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    CurrencyId = table.Column<int>(type: "int", nullable: false),
+                    ShoferRrugaId = table.Column<int>(type: "int", nullable: false),
+                    Pagesa = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
+                    ShpenzimXhiro = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PagesaShoferits", x => x.PagesaShoferitId);
+                    table.ForeignKey(
+                        name: "FK_PagesaShoferits_Currencys_CurrencyId",
+                        column: x => x.CurrencyId,
+                        principalTable: "Currencys",
+                        principalColumn: "CurrencyId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PagesaShoferits_ShoferRrugas_ShoferRrugaId",
+                        column: x => x.ShoferRrugaId,
+                        principalTable: "ShoferRrugas",
+                        principalColumn: "ShoferRrugaId",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "PagesaNafta",
+                columns: table => new
+                {
+                    PagesaNaftaId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    CurrencyId = table.Column<int>(type: "int", nullable: false),
+                    NaftaRrugaId = table.Column<int>(type: "int", nullable: false),
+                    Pagesa = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
+                    ShpenzimXhiro = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PagesaNafta", x => x.PagesaNaftaId);
+                    table.ForeignKey(
+                        name: "FK_PagesaNafta_Currencys_CurrencyId",
+                        column: x => x.CurrencyId,
+                        principalTable: "Currencys",
+                        principalColumn: "CurrencyId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PagesaNafta_NaftaRrugas_NaftaRrugaId",
+                        column: x => x.NaftaRrugaId,
+                        principalTable: "NaftaRrugas",
+                        principalColumn: "NaftaRrugaId",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateIndex(
                 name: "IX_NaftaRrugas_NaftaId",
@@ -508,6 +506,16 @@ namespace BioLab.Migrations
                 column: "RrugaId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PagesaNafta_CurrencyId",
+                table: "PagesaNafta",
+                column: "CurrencyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PagesaNafta_NaftaRrugaId",
+                table: "PagesaNafta",
+                column: "NaftaRrugaId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PagesaPikaShkarkimits_CurrencyId",
                 table: "PagesaPikaShkarkimits",
                 column: "CurrencyId");
@@ -528,19 +536,15 @@ namespace BioLab.Migrations
                 column: "CurrencyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PagesaShoferits_RrugaId",
+                name: "IX_PagesaShoferits_ShoferRrugaId",
                 table: "PagesaShoferits",
-                column: "RrugaId");
+                column: "ShoferRrugaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PagesaShoferits_ShoferId",
-                table: "PagesaShoferits",
-                column: "ShoferId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PikaRrugas_CurrencyId",
+                name: "IX_PikaRrugas_PagesaPikaShkarkimitId",
                 table: "PikaRrugas",
-                column: "CurrencyId");
+                column: "PagesaPikaShkarkimitId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_PikaRrugas_PikaShkarkimiId",
@@ -593,16 +597,6 @@ namespace BioLab.Migrations
                 column: "RrugaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ShoferRrugas_CurrencyId",
-                table: "ShoferRrugas",
-                column: "CurrencyId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ShoferRrugas_PikaShkarkimiId",
-                table: "ShoferRrugas",
-                column: "PikaShkarkimiId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_ShoferRrugas_RrugaId",
                 table: "ShoferRrugas",
                 column: "RrugaId");
@@ -621,13 +615,10 @@ namespace BioLab.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "NaftaRrugas");
-
-            migrationBuilder.DropTable(
                 name: "PagesaDoganas");
 
             migrationBuilder.DropTable(
-                name: "PagesaPikaShkarkimits");
+                name: "PagesaNafta");
 
             migrationBuilder.DropTable(
                 name: "PagesaShoferits");
@@ -645,10 +636,16 @@ namespace BioLab.Migrations
                 name: "RrugaShpenzimeEkstras");
 
             migrationBuilder.DropTable(
+                name: "ZbritShtoGjendjas");
+
+            migrationBuilder.DropTable(
+                name: "NaftaRrugas");
+
+            migrationBuilder.DropTable(
                 name: "ShoferRrugas");
 
             migrationBuilder.DropTable(
-                name: "ZbritShtoGjendjas");
+                name: "PagesaPikaShkarkimits");
 
             migrationBuilder.DropTable(
                 name: "Naftas");
