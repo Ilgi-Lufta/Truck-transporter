@@ -15,47 +15,46 @@
                     <label asp-for="NaftaShpenzuarLitra"></label>
                     <input asp-for="NaftaShpenzuarLitra" class="form-control">
                 </div>
-                <div class="form-group">
-                    <span asp-validation-for="ShoferId"></span>
-                    <label asp-for="ShoferId"></label>
-                    <select asp-for="ShoferId" asp-items="@ViewBag.shofers" class="form-control"></select>
-                    <table id="DoganaTable" class="table">
-                        <thead>
-                            <tr>
-                                <th>Pagesa Doganes</th>
-                                <th>Kursi Kembimit</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="DoganadetailRow">
-                                <td>
-                                    <input type="text" name="PagesaDoganaVM[0].Pagesa" class="form-control" required />
-                                </td>
-                                @*   <td>
-                                <input type="number" name="PagesaShoferitVM[0].CurrencyId" class="form-control" required />
-                                </td>*@
-                                <td>
-                                    <select name="PagesaDoganaVM[0].CurrencyId" class="form-control" required />
-                                    @foreach (var item in @ViewBag.numberNames)
-                                    {
-                                        <option value="@item.Key">@item.Value</option>
-                                    }
-                                </td>
-                                <td>
-                                    <button type="button" id="0" class="btn btn-danger DoganaremoveRow">Remove</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <td colspan="2">
-                                    <button type="button" class="btn btn-primary" id="DoganaaddRow">Add Row</button>
-                                </td>
-                            </tr>
-                        </tfoot>
-                    </table>
+                <table id="DoganaTable" class="table">
+                    <thead>
+                        <tr>
+                            <th>Pagesa Doganes</th>
+                            <th>Kursi Kembimit</th>
+                            <th>Paguar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="DoganadetailRow">
+                            <td>
+                                <input type="text" name="PagesaDoganaVM[0].Pagesa" class="form-control" required />
+                            </td>
+                            @*   <td>
+                            <input type="number" name="PagesaShoferitVM[0].CurrencyId" class="form-control" required />
+                            </td>*@
+                            <td>
+                                <select name="PagesaDoganaVM[0].CurrencyId" class="form-control" required />
+                                @foreach (var item in @ViewBag.numberNames)
+                                {
+                                    <option value="@item.Key">@item.Value</option>
+                                }
+                            </td>
+                            <td>
+                                <input type="checkbox" name="PagesaDoganaVM[0].PagesaKryer" style="width: 30px;height: 30px;" value="false" onchange="this.value=this.checked" />
+                            </td>
+                            <td>
+                                <button type="button" id="0" class="btn btn-danger DoganaremoveRow">Remove</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="2">
+                                <button type="button" class="btn btn-primary" id="DoganaaddRow">Add Row</button>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
 
-                </div>
                 <table id="ShoferRrugaTable" border="1" class="table">
                     <thead>
                         <tr>
@@ -206,6 +205,8 @@
                 newRow.find('input[type=text]').attr('name', 'PagesaDoganaVM[' + rowCount + '].Pagesa');
                 newRow.find('select').val('');
                 newRow.find('select').attr('name', 'PagesaDoganaVM[' + rowCount + '].CurrencyId');
+                newRow.find('checkbox').val('');
+                newRow.find('checkbox').attr('name', 'PagesaDoganaVM[' + rowCount + '].PagesaKryer');
                 newRow.find('button').val('');
                 newRow.find('button').attr('id', rowCount.toString());
                 newRow.appendTo($('#DoganaTable tbody'));

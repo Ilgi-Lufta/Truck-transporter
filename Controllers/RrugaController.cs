@@ -1,5 +1,6 @@
 ﻿using BioLab.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
@@ -118,24 +119,33 @@ namespace BioLab.Controllers
                 marrngaadd.PikaShkarkimiId = _context.PikaShkarkimis.FirstOrDefault().PikaShkarkimiId;
                 marrngaadd.Model = true;
                // marrngaadd.PagesaShoferit
-                   
-
 
                 _context.Add(marrngaadd);
                 _context.SaveChanges();
+
+                ShoferRruga shoferRruga = new ShoferRruga()
+                {
+                    //CurrencyId = PagesaShoferitVM.CurrencyId,
+                    //Pagesa = PagesaShoferitVM.Pagesa,
+                    ShoferId = marrngaadd.ShoferId,
+                    RrugaId = marrngaadd.RrugaId,
+                    //ShpenzimXhiro = true
+                };
+                _context.Add(shoferRruga);
+                _context.SaveChanges();
                 foreach (var PagesaShoferitVM in marrngaadd.PagesaShoferitVM)
                 {
-                    ShoferRruga shoferRruga = new ShoferRruga()
+                    PagesaShoferit pagesaShoferit  = new PagesaShoferit()
                     {
-                        //CurrencyId = PagesaShoferitVM.CurrencyId,
-                        //Pagesa = PagesaShoferitVM.Pagesa,
-                        ShoferId = marrngaadd.ShoferId,
-                        RrugaId = marrngaadd.RrugaId,
-                        //ShpenzimXhiro = true
+                        CurrencyId = PagesaShoferitVM.CurrencyId,
+                        ShoferRrugaId = shoferRruga.ShoferRrugaId,
+                        Pagesa = PagesaShoferitVM.Pagesa,
+                        PagesaKryer = PagesaShoferitVM.PagesaKryer,
+                        ShpenzimXhiro = true,
                     };
-                    _context.Add(shoferRruga);
+                    _context.Add(pagesaShoferit);
                     _context.SaveChanges();
-                    
+
                 }
                 foreach (var PagesaDoganaVM in marrngaadd.PagesaDoganaVM)
                 {
@@ -144,13 +154,12 @@ namespace BioLab.Controllers
                         CurrencyId = PagesaDoganaVM.CurrencyId,
                         Pagesa = PagesaDoganaVM.Pagesa,
                         RrugaId = marrngaadd.RrugaId,
+                        PagesaKryer = PagesaDoganaVM.PagesaKryer,
                         ShpenzimXhiro = true
                     };
                     _context.Add(PagesaShoferit);
                     _context.SaveChanges();
                 }
-
-
 
                 return RedirectToAction("AllRruga");
             }
