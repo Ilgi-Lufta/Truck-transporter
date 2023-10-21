@@ -205,8 +205,9 @@
                 newRow.find('input[type=text]').attr('name', 'PagesaDoganaVM[' + rowCount + '].Pagesa');
                 newRow.find('select').val('');
                 newRow.find('select').attr('name', 'PagesaDoganaVM[' + rowCount + '].CurrencyId');
-                newRow.find('checkbox').val('');
-                newRow.find('checkbox').attr('name', 'PagesaDoganaVM[' + rowCount + '].PagesaKryer');
+                //newRow.find('checkbox').val('');
+                //newRow.find('checkbox').attr('name', 'PagesaDoganaVM[' + rowCount + '].PagesaKryer');
+                newRow[0].childNodes[5].childNodes[1].attributes.name.nodeValue = "PagesaDoganaVM[" + rowCount + "].PagesaKryer";
                 newRow.find('button').val('');
                 newRow.find('button').attr('id', rowCount.toString());
                 newRow.appendTo($('#DoganaTable tbody'));
