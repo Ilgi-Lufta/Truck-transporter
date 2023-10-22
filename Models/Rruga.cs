@@ -33,10 +33,10 @@ public class Rruga
     public decimal Fitime { get; set; } 
 
     public decimal PagesaShoferit { get; set; } // vendoset vetem ne fillim
-    public int ShoferId { get; set; }
-    public Shofer? Shofer { get; set; }
-    public int PikaShkarkimiId { get; set; }
-    public PikaShkarkimi? PikaShkarkimi { get; set; }
+    //public int ShoferId { get; set; }
+    //public Shofer? Shofer { get; set; }
+    //public int PikaShkarkimiId { get; set; }
+    //public PikaShkarkimi? PikaShkarkimi { get; set; }
     public DateTime CreatedDate { get; set; } = DateTime.Now;
     public List<ShoferRruga> ShoferRrugas { get; set; } = new List<ShoferRruga>();
     public List<RrugaShpenzimeEkstra> RrugaShpenzimeEkstras { get; set; } = new List<RrugaShpenzimeEkstra>();
@@ -53,7 +53,7 @@ public class Rruga
     [NotMapped]
     public ICollection<PagesaShoferitVM> PagesaShoferitVM { get; set; }
     [NotMapped]
-    public ICollection<PagesaDoganaVM> PagesaDoganaVM { get; set; }
+    public List<PagesaDoganaVM> PagesaDoganaVM { get; set; }
     [NotMapped]
     public ICollection<ShoferitRrugaVM> ShoferitRrugaVM { get; set; }
     

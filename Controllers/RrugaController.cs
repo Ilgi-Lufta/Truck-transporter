@@ -1,4 +1,5 @@
 ﻿using BioLab.Models;
+using BioLab.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -20,8 +21,8 @@ namespace BioLab.Controllers
         public IActionResult AllRruga(string searchString)
         {
             var shofers = _context.Rrugas
-                .Include(e=>e.Shofer)
-                .Include(e => e.PikaShkarkimi)
+                //.Include(e=>e.Shofer)
+                //.Include(e => e.PikaShkarkimi)
                 .Where(e=>e.Model==true)
 
                 .ToList();
@@ -102,8 +103,7 @@ namespace BioLab.Controllers
         [HttpPost]
         public IActionResult CreateRruga(Rruga marrngaadd)
         {
-            if (ModelState.IsValid)
-            {
+            
                 //bejm kontrollin nese ekziston nje analize me kte emer e krijuar nga admini i loguar
                 if (_context.Rrugas.Where(e => e.Model == true).Any(u => u.Emri == marrngaadd.Emri))
                 {
@@ -116,37 +116,41 @@ namespace BioLab.Controllers
                 //vendosim lidhjen one to many per analizat e adminit te loguar
                 // dhe e ruajm analizesn ne db
                // marrngaadd.ShoferId = _context.Shofers.FirstOrDefault().ShoferId;
-                marrngaadd.PikaShkarkimiId = _context.PikaShkarkimis.FirstOrDefault().PikaShkarkimiId;
+                //marrngaadd.PikaShkarkimiId = _context.PikaShkarkimis.FirstOrDefault().PikaShkarkimiId;
                 marrngaadd.Model = true;
                // marrngaadd.PagesaShoferit
 
                 _context.Add(marrngaadd);
                 _context.SaveChanges();
 
-                ShoferRruga shoferRruga = new ShoferRruga()
+                //Shofer RRUGA
+                foreach (var ShoferitRrugaVM in marrngaadd.ShoferitRrugaVM)
                 {
-                    //CurrencyId = PagesaShoferitVM.CurrencyId,
-                    //Pagesa = PagesaShoferitVM.Pagesa,
-                    ShoferId = marrngaadd.ShoferId,
-                    RrugaId = marrngaadd.RrugaId,
-                    //ShpenzimXhiro = true
-                };
-                _context.Add(shoferRruga);
-                _context.SaveChanges();
-                foreach (var PagesaShoferitVM in marrngaadd.PagesaShoferitVM)
-                {
-                    PagesaShoferit pagesaShoferit  = new PagesaShoferit()
-                    {
-                        CurrencyId = PagesaShoferitVM.CurrencyId,
-                        ShoferRrugaId = shoferRruga.ShoferRrugaId,
-                        Pagesa = PagesaShoferitVM.Pagesa,
-                        PagesaKryer = PagesaShoferitVM.PagesaKryer,
-                        ShpenzimXhiro = true,
-                    };
-                    _context.Add(pagesaShoferit);
-                    _context.SaveChanges();
 
+                    ShoferRruga shoferRruga = new ShoferRruga()
+                    {
+                        ShoferId = ShoferitRrugaVM.ShoferId,
+                        RrugaId = marrngaadd.RrugaId,
+                    };
+
+                    _context.Add(shoferRruga);
+                    _context.SaveChanges();
+                    foreach (var PagesaShoferitVM in ShoferitRrugaVM.pagesaShoferitVM)
+                    {
+                        PagesaShoferit pagesaShoferit = new PagesaShoferit()
+                        {
+                            CurrencyId = PagesaShoferitVM.CurrencyId,
+                            ShoferRrugaId = shoferRruga.ShoferRrugaId,
+                            Pagesa = PagesaShoferitVM.Pagesa,
+                            PagesaKryer = PagesaShoferitVM.PagesaKryer,
+                            ShpenzimXhiro = true,
+                        };
+                        _context.Add(pagesaShoferit);
+                        _context.SaveChanges();
+                    }
                 }
+
+                //Pagesa dogana RRUGA
                 foreach (var PagesaDoganaVM in marrngaadd.PagesaDoganaVM)
                 {
                     PagesaDogana PagesaShoferit = new PagesaDogana()
@@ -160,10 +164,7 @@ namespace BioLab.Controllers
                     _context.Add(PagesaShoferit);
                     _context.SaveChanges();
                 }
-
                 return RedirectToAction("AllRruga");
-            }
-            return View("AddRruga");
         }
 
 
@@ -218,8 +219,9 @@ namespace BioLab.Controllers
         public IActionResult AllRrugaJoModel(string searchString, DateTime searchFirstTime, DateTime searchSecondTime)
         {
             var shofers = _context.Rrugas
-                .Include(e => e.Shofer)
-                .Include(e => e.PikaShkarkimi).Include(e=>e.Nafta)
+                //.Include(e => e.Shofer)
+                //.Include(e => e.PikaShkarkimi)
+                .Include(e=>e.Nafta)
                 .Where(e => e.Model == false)
                                     .Where(m => searchFirstTime != DateTime.MinValue ? m.CreatedDate > searchFirstTime : true)
                     .Where(m => searchSecondTime != DateTime.MinValue ? m.CreatedDate > searchSecondTime : true)
@@ -245,8 +247,68 @@ namespace BioLab.Controllers
         }
         public IActionResult AddRrugaJoModel(int id)
         {
-            var rruga = _context.Rrugas.Include(e=>e.Shofer).FirstOrDefault(e => e.RrugaId == id);
+            var rruga = _context.Rrugas.Include(e=>e.PagesaDoganas).Include(e => e.ShoferRrugas).ThenInclude(e => e.PagesaShoferits).FirstOrDefault(e => e.RrugaId == id);
             ViewBag.id = id;
+            rruga.PagesaDoganaVM = new List<PagesaDoganaVM>();
+            foreach (var PagesaDoganas in rruga.PagesaDoganas)
+            {
+                PagesaDoganaVM pagesaDoganaVM = new PagesaDoganaVM()
+                {
+                    CurrencyId= PagesaDoganas.CurrencyId,
+                    Pagesa= PagesaDoganas.Pagesa,
+                    PagesaKryer = PagesaDoganas.PagesaKryer
+                };
+                rruga.PagesaDoganaVM.Add(pagesaDoganaVM);
+            }
+            //var AllShofer = _context.Shofers.ToList();
+            //if (AllShofer != null)
+            //{
+            //    List<SelectListItem> shofers = new List<SelectListItem>();
+            //    foreach (var shofer in AllShofer)
+            //    {
+
+            //        shofers.Add(new SelectListItem
+            //        {
+            //            Text = shofer.Emri,
+            //            Value = shofer.ShoferId.ToString(),
+            //            //Selected = AllShofer.Count() == 1 ? true : false,
+            //            Selected = rruga.Shofer.Emri == shofer.Emri? true : false
+            //        });
+            //    }
+            //    ViewBag.shofers = shofers;
+            //}
+            var AllCurrency = _context.Currencys.ToList();
+            if (AllCurrency != null)
+            {
+                List<SelectListItem> currencys = new List<SelectListItem>();
+                foreach (var currency in AllCurrency)
+                {
+                    currencys.Add(new SelectListItem { Text = currency.CurrencyUnit, Value = currency.CurrencyId.ToString() });
+                }
+                ViewBag.currencys = currencys;
+            }
+
+            var AllCurrency2 = _context.Currencys.ToList();
+            if (AllCurrency2 != null)
+            {
+                IDictionary<int, string> numberNames = new Dictionary<int, string>();
+                foreach (var currency in AllCurrency)
+                {
+                    numberNames.Add(currency.CurrencyId, currency.CurrencyUnit);
+                }
+                ViewBag.numberNames = numberNames;
+            }
+            var AllShofer2 = _context.Shofers.ToList();
+            if (AllShofer2 != null)
+            {
+                IDictionary<int, string> ShoferIdNames = new Dictionary<int, string>();
+                foreach (var Shofer2 in AllShofer2)
+                {
+                    ShoferIdNames.Add(Shofer2.ShoferId, Shofer2.Emri);
+                }
+                ViewBag.ShoferIdNames = ShoferIdNames;
+            }
+
 
 
             var AllShofer = _context.Shofers.ToList();
@@ -255,44 +317,53 @@ namespace BioLab.Controllers
                 List<SelectListItem> shofers = new List<SelectListItem>();
                 foreach (var shofer in AllShofer)
                 {
-
-                    shofers.Add(new SelectListItem
-                    {
-                        Text = shofer.Emri,
-                        Value = shofer.ShoferId.ToString(),
-                        //Selected = AllShofer.Count() == 1 ? true : false,
-                        Selected = rruga.Shofer.Emri == shofer.Emri? true : false
-                    });
+                    shofers.Add(new SelectListItem { Text = shofer.Emri, Value = shofer.ShoferId.ToString() });
                 }
                 ViewBag.shofers = shofers;
             }
-            var AllPika = _context.PikaShkarkimis.ToList();
-            if (AllPika != null)
-            {
-                List<SelectListItem> pikas = new List<SelectListItem>();
-                foreach (var pika in AllPika)
-                {
+            //var AllPika = _context.PikaShkarkimis.ToList();
+            //if (AllPika != null)
+            //{
+            //    List<SelectListItem> pikas = new List<SelectListItem>();
+            //    foreach (var pika in AllPika)
+            //    {
 
-                    pikas.Add(new SelectListItem
-                    {
-                        Text = pika.Emri,
-                        Value = pika.PikaShkarkimiId.ToString(),
-                        Selected = AllPika.Count() == 1 ? true : false
-                    });
+            //        pikas.Add(new SelectListItem { Text = pika.Emri, Value = pika.PikaShkarkimiId.ToString() });
 
-                }
-                if(pikas.Count >1) {
-                    pikas.Add(new SelectListItem
-                    {
-                        Text = "Zgjidh Piken e Shkarkimit",
-                        Value = "-1",
-                        Selected = true
-                    });
+            //    }
+            //    ViewBag.Pikat = pikas;
+            //}
 
-                }
-                ViewBag.Pikat = pikas;
-            }
-            ViewBag.pagesa= AllPika.Count() == 1 ? AllPika[0].Pagesa : 0;
+
+
+
+            //var AllPika = _context.PikaShkarkimis.ToList();
+            //if (AllPika != null)
+            //{
+            //    List<SelectListItem> pikas = new List<SelectListItem>();
+            //    foreach (var pika in AllPika)
+            //    {
+
+            //        pikas.Add(new SelectListItem
+            //        {
+            //            Text = pika.Emri,
+            //            Value = pika.PikaShkarkimiId.ToString(),
+            //            Selected = AllPika.Count() == 1 ? true : false
+            //        });
+
+            //    }
+            //    if(pikas.Count >1) {
+            //        pikas.Add(new SelectListItem
+            //        {
+            //            Text = "Zgjidh Piken e Shkarkimit",
+            //            Value = "-1",
+            //            Selected = true
+            //        });
+
+            //    }
+            //    ViewBag.Pikat = pikas;
+            //}
+            //ViewBag.pagesa= AllPika.Count() == 1 ? AllPika[0].Pagesa : 0;
 
 
             return View(rruga);
@@ -301,73 +372,73 @@ namespace BioLab.Controllers
         public IActionResult CreateRrugaJoModel(Rruga marrngaadd)
         {
 
-            if (ModelState.IsValid)
-            {
-                marrngaadd.Model = false;
-                var shofer = _context.Shofers.FirstOrDefault(sh => sh.ShoferId == marrngaadd.ShoferId);
-                var pikaShkarkimi = _context.PikaShkarkimis.FirstOrDefault(sh => sh.PikaShkarkimiId == marrngaadd.PikaShkarkimiId);
+            //if (ModelState.IsValid)
+            //{
+            //    marrngaadd.Model = false;
+            //    var shofer = _context.Shofers.FirstOrDefault(sh => sh.ShoferId == marrngaadd.ShoferId);
+            //    var pikaShkarkimi = _context.PikaShkarkimis.FirstOrDefault(sh => sh.PikaShkarkimiId == marrngaadd.PikaShkarkimiId);
 
-                decimal shpenzime = 0;
-                if (marrngaadd.NaftaBlereLitra != 0)
-                {
+            //    decimal shpenzime = 0;
+            //    if (marrngaadd.NaftaBlereLitra != 0)
+            //    {
 
-                    if (marrngaadd.NaftaBlereCmim == 0)
-                    {
-                        var cmimRef = _context.Naftas
-                   //.Where(e => e.Litra > 0 && e.Leke > 0)
-                   .GroupBy(e => e.BlereShiturSelect == "Blere")
-                   .Select(e =>
-                   (e.Sum(b => b.Leke) / e.Sum(b => b.Litra))
-                           )
-                   .FirstOrDefault();
-                        marrngaadd.NaftaBlereCmim = cmimRef;
-                    }
-                shpenzime = marrngaadd.PagesaShoferit + marrngaadd.Dogana + marrngaadd.shpenzimeEkstra + (marrngaadd.NaftaShpenzuarLitra * marrngaadd.NaftaBlereCmim);
-                }
+            //        if (marrngaadd.NaftaBlereCmim == 0)
+            //        {
+            //            var cmimRef = _context.Naftas
+            //       //.Where(e => e.Litra > 0 && e.Leke > 0)
+            //       .GroupBy(e => e.BlereShiturSelect == "Blere")
+            //       .Select(e =>
+            //       (e.Sum(b => b.Leke) / e.Sum(b => b.Litra))
+            //               )
+            //       .FirstOrDefault();
+            //            marrngaadd.NaftaBlereCmim = cmimRef;
+            //        }
+            //    shpenzime = marrngaadd.PagesaShoferit + marrngaadd.Dogana + marrngaadd.shpenzimeEkstra + (marrngaadd.NaftaShpenzuarLitra * marrngaadd.NaftaBlereCmim);
+            //    }
 
-                var xhiro = pikaShkarkimi.Pagesa + marrngaadd.FitimeEkstra;
+            //    var xhiro = pikaShkarkimi.Pagesa + marrngaadd.FitimeEkstra;
 
-                marrngaadd.Fitime = xhiro - shpenzime;
-                marrngaadd.Shpenzime = shpenzime;
-                marrngaadd.Xhiro = xhiro;
+            //    marrngaadd.Fitime = xhiro - shpenzime;
+            //    marrngaadd.Shpenzime = shpenzime;
+            //    marrngaadd.Xhiro = xhiro;
 
-                if (marrngaadd.NaftaBlereLitra != 0)
-                {
-                    if(marrngaadd.NaftaBlereLitra > marrngaadd.NaftaPerTuShiturLitra)
-                    {
+            //    if (marrngaadd.NaftaBlereLitra != 0)
+            //    {
+            //        if(marrngaadd.NaftaBlereLitra > marrngaadd.NaftaPerTuShiturLitra)
+            //        {
 
-                    marrngaadd.NaftaPerTuShiturLitra = marrngaadd.NaftaBlereLitra - marrngaadd.NaftaShpenzuarLitra;
+            //        marrngaadd.NaftaPerTuShiturLitra = marrngaadd.NaftaBlereLitra - marrngaadd.NaftaShpenzuarLitra;
 
-                    _context.Add(marrngaadd);
-                    _context.SaveChanges();
+            //        _context.Add(marrngaadd);
+            //        _context.SaveChanges();
 
-                    Nafta nafta = new Nafta
-                    {
-                        BlereShiturSelect = "Blere",
-                        Cmimi = marrngaadd.NaftaBlereCmim,
-                        Leke = (marrngaadd.NaftaPerTuShiturLitra * marrngaadd.NaftaBlereCmim),
-                        Litra = marrngaadd.NaftaPerTuShiturLitra,
-                        RrugaId = marrngaadd.RrugaId
-                    };
-                    _context.Add(nafta);
-                    _context.SaveChanges();
-                    }
-                    else
-                    {
-                   // marrngaadd.NaftaPerTuShiturLitra = marrngaadd.NaftaBlereLitra - marrngaadd.NaftaShpenzuarLitra;
+            //        Nafta nafta = new Nafta
+            //        {
+            //            BlereShiturSelect = "Blere",
+            //            Cmimi = marrngaadd.NaftaBlereCmim,
+            //            Leke = (marrngaadd.NaftaPerTuShiturLitra * marrngaadd.NaftaBlereCmim),
+            //            Litra = marrngaadd.NaftaPerTuShiturLitra,
+            //            RrugaId = marrngaadd.RrugaId
+            //        };
+            //        _context.Add(nafta);
+            //        _context.SaveChanges();
+            //        }
+            //        else
+            //        {
+            //       // marrngaadd.NaftaPerTuShiturLitra = marrngaadd.NaftaBlereLitra - marrngaadd.NaftaShpenzuarLitra;
 
-                    }
+            //        }
 
-                }
-                else
-                {
-                    marrngaadd.NaftaPerTuShiturLitra = 0;
-                    _context.Add(marrngaadd);
-                    _context.SaveChanges();
-                }
+            //    }
+            //    else
+            //    {
+            //        marrngaadd.NaftaPerTuShiturLitra = 0;
+            //        _context.Add(marrngaadd);
+            //        _context.SaveChanges();
+            //    }
 
-                return RedirectToAction("AllRrugaJoModel");
-            }
+            //    return RedirectToAction("AllRrugaJoModel");
+            //}
             return View("AddRrugaJoModel");
         }
         [HttpPost]
@@ -403,41 +474,41 @@ namespace BioLab.Controllers
         public IActionResult EditRrugaJoModel(int id)
         {
             var rruga = _context.Rrugas.FirstOrDefault(e => e.RrugaId == id);
-            ViewBag.id = id;
-            var AllShofer = _context.Shofers.ToList();
-            if (AllShofer != null)
-            {
-                List<SelectListItem> shofers = new List<SelectListItem>();
-                foreach (var shofer in AllShofer)
-                {
+            //ViewBag.id = id;
+            //var AllShofer = _context.Shofers.ToList();
+            //if (AllShofer != null)
+            //{
+            //    List<SelectListItem> shofers = new List<SelectListItem>();
+            //    foreach (var shofer in AllShofer)
+            //    {
 
-                    shofers.Add(new SelectListItem
-                    {
-                        Text = shofer.Emri,
-                        Value = shofer.ShoferId.ToString(),
-                        Selected = shofer.ShoferId == rruga.ShoferId ? true : false
-                    });
+            //        shofers.Add(new SelectListItem
+            //        {
+            //            Text = shofer.Emri,
+            //            Value = shofer.ShoferId.ToString(),
+            //            Selected = shofer.ShoferId == rruga.ShoferId ? true : false
+            //        });
 
-                }
-                ViewBag.shofers = shofers;
-            }
-            var AllPika = _context.PikaShkarkimis.ToList();
-            if (AllPika != null)
-            {
-                List<SelectListItem> pikas = new List<SelectListItem>();
-                foreach (var pika in AllPika)
-                {
+            //    }
+            //    ViewBag.shofers = shofers;
+            //}
+            //var AllPika = _context.PikaShkarkimis.ToList();
+            //if (AllPika != null)
+            //{
+            //    List<SelectListItem> pikas = new List<SelectListItem>();
+            //    foreach (var pika in AllPika)
+            //    {
 
-                    pikas.Add(new SelectListItem
-                    {
-                        Text = pika.Emri,
-                        Value = pika.PikaShkarkimiId.ToString(),
-                        Selected = pika.PikaShkarkimiId == rruga.PikaShkarkimiId ? true : false
-                    });
+            //        pikas.Add(new SelectListItem
+            //        {
+            //            Text = pika.Emri,
+            //            Value = pika.PikaShkarkimiId.ToString(),
+            //            Selected = pika.PikaShkarkimiId == rruga.PikaShkarkimiId ? true : false
+            //        });
 
-                }
-                ViewBag.Pikat = pikas;
-            }
+            //    }
+            //    ViewBag.Pikat = pikas;
+            //}
             return View(rruga);
         }
 
@@ -463,35 +534,35 @@ namespace BioLab.Controllers
             //    editing.NaftaPerTuShiturLitra = marrngaadd.NaftaPerTuShiturLitra;
                 editing.NaftaBlereCmim = marrngaadd.NaftaBlereCmim;
                 editing.NaftaBlereLitra = marrngaadd.NaftaBlereLitra;
-                editing.PikaShkarkimiId = marrngaadd.PikaShkarkimiId;
-                editing.ShoferId = marrngaadd.ShoferId;
+                //editing.PikaShkarkimiId = marrngaadd.PikaShkarkimiId;
+                //editing.ShoferId = marrngaadd.ShoferId;
                 editing.shenime = marrngaadd.shenime;
                 editing.shpenzimeEkstra = marrngaadd.shpenzimeEkstra;
                 editing.FitimeEkstra = marrngaadd.FitimeEkstra;
 
 
-                var shofer = _context.Shofers.FirstOrDefault(sh => sh.ShoferId == marrngaadd.ShoferId);
-                var pikaShkarkimi = _context.PikaShkarkimis.FirstOrDefault(sh => sh.PikaShkarkimiId == marrngaadd.PikaShkarkimiId);
+                //var shofer = _context.Shofers.FirstOrDefault(sh => sh.ShoferId == marrngaadd.ShoferId);
+                //var pikaShkarkimi = _context.PikaShkarkimis.FirstOrDefault(sh => sh.PikaShkarkimiId == marrngaadd.PikaShkarkimiId);
 
-                var shpenzime = shofer.Pagesa + marrngaadd.Dogana + marrngaadd.shpenzimeEkstra + marrngaadd.NaftaShpenzuarLitra * marrngaadd.NaftaBlereCmim;
-                var xhiro = pikaShkarkimi.Pagesa + marrngaadd.FitimeEkstra;
+                //var shpenzime = shofer.Pagesa + marrngaadd.Dogana + marrngaadd.shpenzimeEkstra + marrngaadd.NaftaShpenzuarLitra * marrngaadd.NaftaBlereCmim;
+                //var xhiro = pikaShkarkimi.Pagesa + marrngaadd.FitimeEkstra;
 
-                editing.Fitime = xhiro - shpenzime;
-                editing.Shpenzime = shpenzime;
-                editing.Xhiro = xhiro;
+                //editing.Fitime = xhiro - shpenzime;
+                //editing.Shpenzime = shpenzime;
+                //editing.Xhiro = xhiro;
 
-                if (marrngaadd.NaftaBlereLitra != 0)
-                {
-                    editing.NaftaPerTuShiturLitra = marrngaadd.NaftaBlereLitra - marrngaadd.NaftaShpenzuarLitra;
+                //if (marrngaadd.NaftaBlereLitra != 0)
+                //{
+                //    editing.NaftaPerTuShiturLitra = marrngaadd.NaftaBlereLitra - marrngaadd.NaftaShpenzuarLitra;
 
-                    var nafta = _context.Naftas.Find(marrngaadd.RrugaId);
-                    if (nafta != null)
-                    {
-                        nafta.Cmimi = marrngaadd.NaftaBlereCmim;
-                        nafta.Leke = (marrngaadd.NaftaPerTuShiturLitra * marrngaadd.NaftaBlereCmim);
-                        nafta.Litra = marrngaadd.NaftaPerTuShiturLitra;
-                    }
-                }
+                //    var nafta = _context.Naftas.Find(marrngaadd.RrugaId);
+                //    if (nafta != null)
+                //    {
+                //        nafta.Cmimi = marrngaadd.NaftaBlereCmim;
+                //        nafta.Leke = (marrngaadd.NaftaPerTuShiturLitra * marrngaadd.NaftaBlereCmim);
+                //        nafta.Litra = marrngaadd.NaftaPerTuShiturLitra;
+                //    }
+                //}
 
                 _context.SaveChanges();
                 return RedirectToAction("AllRrugaJoModel");

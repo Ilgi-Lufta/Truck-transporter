@@ -1,3 +1,4 @@
+
 @model Rruga
 <partial name="NavPartial" />
 <div class="mt-5 container">
@@ -12,21 +13,144 @@
                     <input asp-for="Emri" class="form-control">
                 </div>
                 <div class="form-group">
-                    <span asp-validation-for="Dogana"></span>
-                    <label asp-for="Dogana"></label>
-                    <input asp-for="Dogana" class="form-control">
-                </div>
-                <div class="form-group">
                     <span asp-validation-for="NaftaShpenzuarLitra"></span>
                     <label asp-for="NaftaShpenzuarLitra"></label>
                     <input asp-for="NaftaShpenzuarLitra" class="form-control">
                 </div>
-                <div class="form-group">
-                    <span asp-validation-for="PagesaShoferit"></span>
-                    <label asp-for="PagesaShoferit"></label>
-                    <input asp-for="PagesaShoferit" class="form-control">
-                </div>
-           
+                <table id="DoganaTable" class="table">
+                    <thead>
+                        <tr>
+                            <th>Pagesa Doganes</th>
+                            <th>Kursi Kembimit</th>
+                            <th>Paguar</th>
+                        </tr>
+                    </thead>
+                    <tbody> 
+                        
+                        @for (var i = 0;  i<=(Model.PagesaDoganaVM.Count()-1);i++)
+                        {
+                        <tr class="DoganadetailRow">
+
+                            <td>
+                                    <input asp-for="PagesaDoganaVM[i].Pagesa" type="text" name="PagesaDoganaVM[@i].Pagesa" class="form-control" required />
+                            </td>
+                          
+                            <td>
+                                    <select asp-for="PagesaDoganaVM[i].CurrencyId" name="PagesaDoganaVM[@i].CurrencyId" class="form-control" required />
+                                @foreach (var item in @ViewBag.numberNames)
+
+                                    { @if (Model.PagesaDoganaVM[@i].CurrencyId == @item.Key ? true : false){
+
+                                   <option selected="selected" value="@item.Key">@item.Value</option>
+                                    }else{
+
+                                   <option  value="@item.Key">@item.Value</option>
+                                    }
+                                }
+                            </td>
+                            <td>
+                                    <input type="checkbox" asp-for="PagesaDoganaVM[i].PagesaKryer" name="PagesaDoganaVM[@i].PagesaKryer" style="width: 30px;height: 30px;" value="false" onchange="this.value=this.checked" />
+                            </td>
+                            <td>
+                                    <button type="button" id="@i" class="btn btn-danger DoganaremoveRow">Remove</button>
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="2">
+                                <button type="button" class="btn btn-primary" id="DoganaaddRow">Add Row</button>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+               @* <table id="ShoferRrugaTable" border="1" class="table">
+                    <thead>
+                        <tr>
+                            <th>shoferi</th>
+                            <th>Lloji pageses</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ShoferRrugadetailBody">
+                        <tr id="ShoferRrugadetailRow0" class="ShoferRrugadetailRow">
+                            <td>
+                                <select type="text" name="ShoferitRrugaVM[0].ShoferId" class="form-control" required />
+                                @foreach (var item in @ViewBag.ShoferIdNames)
+                                {
+                                    <option value="@item.Key">@item.Value</option>
+                                }
+                            </td>
+                            
+                            <td>
+                                <table id="StudentsTable" border="1" class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Pagesa shoferit</th>
+                                            <th>Kursi Kembimit</th>
+                                            <th>Paguar</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="StudentsTablebody0">
+                                        <tr id="detailRow" class="detailRow">
+                                            <td>
+                                                <input type="text" name="ShoferitRrugaVM[0].PagesaShoferitVM[0].Pagesa" class="form-control" required />
+                                            </td>
+                                          
+                                            <td>
+                                                <select name="ShoferitRrugaVM[0].PagesaShoferitVM[0].CurrencyId" class="form-control" required />
+                                                @foreach (var item in @ViewBag.numberNames)
+                                                {
+                                                    <option value="@item.Key">@item.Value</option>
+                                                }
+                                            </td>
+                                            <td>
+                                                <input type="checkbox" name="ShoferitRrugaVM[0].PagesaShoferitVM[0].PagesaKryer" style="width: 30px;height: 30px;" onchange="this.value=this.checked" />
+                                            </td>
+                                            <td>
+                                                <button type="button" onclick="RemoveChildRow(this)" id="0" class="btn btn-danger removeRow">Remove</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="2">
+                                                <button type="button" onclick="myFunctionChild(this.id)" class="btn btn-primary" id="0">Add Row</button>
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </td>
+                            <td>
+                                <button type="button" onclick="RemoveRow(this)" id="ShoferRrugadetailRowRemove0" class="btn btn-danger ShoferRrugaremoveRow">Remove</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="2">
+                                <button type="button" onclick="myFunction()" class="btn btn-primary" id="ShoferRrugaaddRow">Add Row</button>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>*@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                 <div class="form-group">
                     <span asp-validation-for="NaftaBlereLitra"></span>
                     <label asp-for="NaftaBlereLitra"></label>
@@ -40,7 +164,7 @@
 
             </div>
             <div class="col-sm-5">
-                <div class="form-group">
+@*                <div class="form-group">
                     <span asp-validation-for="FitimeEkstra"></span>
                     <label asp-for="FitimeEkstra"></label>
                     <input asp-for="FitimeEkstra" class="form-control">
@@ -49,38 +173,28 @@
                     <span asp-validation-for="shpenzimeEkstra"></span>
                     <label asp-for="shpenzimeEkstra"></label>
                     <input asp-for="shpenzimeEkstra" class="form-control">
-                </div>
+                </div>*@
                 <div class="form-group">
                     <span asp-validation-for="shenime"></span>
                     <label asp-for="shenime"></label>
                     <input asp-for="shenime" class="form-control">
                 </div>
 
-                <div class="form-group">
-                    <span asp-validation-for="ShoferId"></span>
-                    <label asp-for="ShoferId"></label>
-                    <select asp-for="ShoferId" asp-items="@ViewBag.shofers" class="form-control"></select>
-                </div>
 
-                @*<form asp-controller="Rruga" asp-action="CreateRrugaJoModel2" method="post">*@
-
+             
+@*
                 <div class="form-group">
                     <span asp-validation-for="PikaShkarkimiId"></span>
                     <label asp-for="PikaShkarkimiId"></label>
                     <select id="myDropdown" onchange="sendData(@ViewBag.id);" asp-for="PikaShkarkimiId" asp-items="@ViewBag.Pikat" class="form-control"></select>
                 </div>
-          @*          <button id="ilgi" hidden  type="submit" class="btn btn-primary mt-3">Krijo Rruge</button>
-                </form>*@
+
                 <div class="form-group">
                     <span asp-validation-for="PikaPagesa"></span>
                     <label asp-for="PikaPagesa"></label>
                     <input id="paragraph" asp-for="PikaPagesa" class="form-control" value="@ViewBag.pagesa">
-                </div>
-        @*        <div class="form-group">
-                    <span asp-validation-for="PikaPagesa"></span>
-                    <label asp-for="PikaPagesa"></label>
-                    <input id="paragraph" asp-for="PikaPagesa" class="form-control">
                 </div>*@
+
             </div>
             <div>
                 <button type="submit" class="btn btn-primary mt-3">Krijo Rruge</button>
@@ -134,9 +248,42 @@
                 }
             })
         }
+
+
+        $(document).ready(function () {
+
+            $('#DoganaaddRow').click(function () {
+                debugger
+                var rowCount = $('#DoganaTable tbody tr').length;
+                var newRow = $('.DoganadetailRow').first().clone();
+                newRow.find('input[type=text]').val('');
+                newRow.find('input[type=text]').attr('name', 'PagesaDoganaVM[' + rowCount + '].Pagesa');
+                newRow.find('select').val('');
+                newRow.find('select').attr('name', 'PagesaDoganaVM[' + rowCount + '].CurrencyId');
+                //newRow.find('checkbox').val('');
+                //newRow.find('checkbox').attr('name', 'PagesaDoganaVM[' + rowCount + '].PagesaKryer');
+                newRow[0].childNodes[5].childNodes[1].attributes.name.nodeValue = "PagesaDoganaVM[" + rowCount + "].PagesaKryer";
+                newRow.find('button').val('');
+                newRow.find('button').attr('id', rowCount.toString());
+                newRow.appendTo($('#DoganaTable tbody'));
+            });
+            $(document).on('click', '.DoganaremoveRow', function () {
+                debugger
+                var rowCount = $('#DoganaTable tbody tr').length;
+                if ((rowCount ) > 1) {
+                    var id = parseInt((this).id);
+                    if (id != (rowCount - 1))
+                        return
+                    $(this).closest('tr').remove();
+
+                }
+            });
+        });
+
     </script>
 }
 
+    
 
 
 
