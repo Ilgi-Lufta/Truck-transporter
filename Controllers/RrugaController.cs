@@ -260,6 +260,34 @@ namespace BioLab.Controllers
                 };
                 rruga.PagesaDoganaVM.Add(pagesaDoganaVM);
             }
+
+            rruga.ShoferitRrugaVM = new List<ShoferitRrugaVM>();
+            List<PagesaShoferitVM> pagesaShoferitVMs = new List<PagesaShoferitVM>();
+
+            foreach (var ShoferRrugas in rruga.ShoferRrugas)
+            {
+                foreach (var pagesaShoferits in ShoferRrugas.PagesaShoferits)
+                {
+                    PagesaShoferitVM pagesaShoferitVM = new PagesaShoferitVM()
+                    {
+                        CurrencyId = pagesaShoferits.CurrencyId,
+                        Pagesa = pagesaShoferits.Pagesa,
+                        PagesaKryer = pagesaShoferits.PagesaKryer
+                    };
+                    pagesaShoferitVMs.Add(pagesaShoferitVM);
+                }
+                ShoferitRrugaVM shoferitRrugaVM = new ShoferitRrugaVM()
+                {
+                    ShoferId = ShoferRrugas.ShoferId,
+                    pagesaShoferitVM = pagesaShoferitVMs
+                };
+                rruga.ShoferitRrugaVM.Add(shoferitRrugaVM);
+                pagesaShoferitVMs = new List<PagesaShoferitVM>();
+            }
+
+
+
+
             //var AllShofer = _context.Shofers.ToList();
             //if (AllShofer != null)
             //{

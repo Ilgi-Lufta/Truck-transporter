@@ -29,6 +29,7 @@
 //}
 
 function myFunction() {
+    debugger
     var row = document.getElementById("ShoferRrugadetailRow0"); // find row to copy
     var table = document.getElementById("ShoferRrugaTable");
     var body = document.getElementById("ShoferRrugadetailBody"); // find table to append to
@@ -63,22 +64,29 @@ function myFunction() {
     body.appendChild(clone); // add new row to end of table
 }
 function RemoveRow(e) {
+    debugger
+
     var trNumber = e.offsetParent.offsetParent.childNodes[3].children.length - 1;
     if (e.id == 0 || e.id != trNumber) 
         return
-    
-    var tr = document.getElementById("ShoferRrugadetailRow" + e.id.toString())
+   // var tr = e.offsetParent;
+   // var tr = document.getElementById("ShoferRrugadetailRow" + e.id.toString())
+    var trlength = e.offsetParent.offsetParent.childNodes[3].children.length - 1;
+    var tr = e.offsetParent.offsetParent.childNodes[3].children[trlength];
        tr.remove();
 }
 function RemoveChildRow(e) {
+    debugger
     var trNumber = e.offsetParent.offsetParent.childNodes[3].children.length - 1;
     if (e.id == 0 || e.id != trNumber) 
         return
-       
-    var tr = document.getElementById("detailRow" + e.id.toString())
+    var trlength = e.offsetParent.offsetParent.childNodes[3].children.length - 1;
+    var tr = e.offsetParent.offsetParent.childNodes[3].children[trlength];
+   // var tr = document.getElementById("detailRow" + e.id.toString())
     tr.remove();
 }
 function myFunctionChild(e) {
+    debugger
 
     var row = document.getElementById("detailRow"); // find row to copy
     var table = document.getElementById("ShoferRrugaTable");

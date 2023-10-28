@@ -50,12 +50,12 @@ public class Rruga
 
     [NotMapped]
     public int PagesaShoferitCurrencyId { get; set; }
-    [NotMapped]
-    public ICollection<PagesaShoferitVM> PagesaShoferitVM { get; set; }
+    //[NotMapped]
+    //public ICollection<PagesaShoferitVM> PagesaShoferitVM { get; set; }
     [NotMapped]
     public List<PagesaDoganaVM> PagesaDoganaVM { get; set; }
     [NotMapped]
-    public ICollection<ShoferitRrugaVM> ShoferitRrugaVM { get; set; }
+    public List<ShoferitRrugaVM> ShoferitRrugaVM { get; set; }
     
 
 
