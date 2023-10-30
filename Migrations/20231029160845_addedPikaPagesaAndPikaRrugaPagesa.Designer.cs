@@ -3,6 +3,7 @@ using System;
 using BioLab.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BioLab.Migrations
 {
     [DbContext(typeof(MyContext))]
-    partial class MyContextModelSnapshot : ModelSnapshot
+    [Migration("20231029160845_addedPikaPagesaAndPikaRrugaPagesa")]
+    partial class addedPikaPagesaAndPikaRrugaPagesa
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -315,7 +317,7 @@ namespace BioLab.Migrations
 
                     b.HasIndex("PikaRrugaId");
 
-                    b.ToTable("PikaRrugaPagesas");
+                    b.ToTable("PikaRrugaPagesa");
                 });
 
             modelBuilder.Entity("BioLab.Models.PikaShkarkimi", b =>

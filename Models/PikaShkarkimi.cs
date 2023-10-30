@@ -1,4 +1,5 @@
 #pragma warning disable CS8618
+using BioLab.ViewModels;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -17,6 +18,7 @@ public class PikaShkarkimi
    // List<Rruga> Rrugas { get; set; }= new List<Rruga>();
     public List<PikaRruga> PikaRrugas { get; set; } = new List<PikaRruga>();
     public List<PagesaPikaShkarkimit> PagesaPikaShkarkimits { get; set; } = new List<PagesaPikaShkarkimit>();
-
+    [NotMapped]
+    public List<PagesaPikaShkarkimitVM> PagesaPikaShkarkimitsVM { get; set; } = new List<PagesaPikaShkarkimitVM>();
 
 }

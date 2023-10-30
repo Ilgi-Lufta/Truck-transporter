@@ -362,38 +362,50 @@ namespace BioLab.Controllers
             //    ViewBag.Pikat = pikas;
             //}
 
+            ViewBag.PikaPagesa = _context.PikaShkarkimis.Include(e => e.PagesaPikaShkarkimits).ThenInclude(e => e.Currency).ToList();
 
 
+            var AllPika = _context.PikaShkarkimis.ToList();
+            if (AllPika != null)
+            {
+                List<SelectListItem> pikas = new List<SelectListItem>();
+                foreach (var pika in AllPika)
+                {
 
-            //var AllPika = _context.PikaShkarkimis.ToList();
-            //if (AllPika != null)
-            //{
-            //    List<SelectListItem> pikas = new List<SelectListItem>();
-            //    foreach (var pika in AllPika)
-            //    {
+                    pikas.Add(new SelectListItem
+                    {
+                        Text = pika.Emri,
+                        Value = pika.PikaShkarkimiId.ToString(),
+                        Selected = AllPika.Count() == 1 ? true : false
+                    });
 
-            //        pikas.Add(new SelectListItem
-            //        {
-            //            Text = pika.Emri,
-            //            Value = pika.PikaShkarkimiId.ToString(),
-            //            Selected = AllPika.Count() == 1 ? true : false
-            //        });
+                }
+                if (pikas.Count > 1)
+                {
+                    pikas.Add(new SelectListItem
+                    {
+                        Text = "Zgjidh Piken e Shkarkimit",
+                        Value = "-1",
+                        Selected = true
+                    });
 
-            //    }
-            //    if(pikas.Count >1) {
-            //        pikas.Add(new SelectListItem
-            //        {
-            //            Text = "Zgjidh Piken e Shkarkimit",
-            //            Value = "-1",
-            //            Selected = true
-            //        });
+                }
+                ViewBag.Pikat = pikas;
+            }
+            ViewBag.pagesa = AllPika.Count() == 1 ? AllPika[0].Pagesa : 0;
 
-            //    }
-            //    ViewBag.Pikat = pikas;
-            //}
-            //ViewBag.pagesa= AllPika.Count() == 1 ? AllPika[0].Pagesa : 0;
-
-
+            List<PikaRrugaPagesaVM> PikaRrugaPagesaVMs = new List<PikaRrugaPagesaVM>();
+            PikaRrugaPagesaVM  PikaRrugaPagesaVM = new  PikaRrugaPagesaVM(){
+                CurrencyId= 1 ,
+                Pagesa=2,
+                PagesaKryer=true
+            };
+            PikaRrugaPagesaVMs.Add(PikaRrugaPagesaVM);
+            PikaRrugasVM PikaRrugasVM  = new PikaRrugasVM();
+            PikaRrugasVM.PikaRrugaPagesaVMs = PikaRrugaPagesaVMs;
+            PikaRrugasVM.PikaShkarkimiId = 4;
+            rruga.PikaRrugasVM.Add(PikaRrugasVM);     
+            //  ViewBag.PikaRrugasVM
             return View(rruga);
         }
         [HttpPost]
@@ -611,5 +623,17 @@ namespace BioLab.Controllers
             return RedirectToAction("AllRrugaJoModel");
 
         }
+
+    //    public JsonResult GetPikaRrugaPagesa(int pikaShkarkimiId)
+    //    {
+    //        var pikaRrugaPagesaItems = // Retrieve PikaRrugaPagesa items based on the selected PikaShkarkimiId
+
+    //return Json(pikaRrugaPagesaItems);
+    //    }
+
+
+
+
+
     }
 }

@@ -53,10 +53,13 @@ public class Rruga
     //[NotMapped]
     //public ICollection<PagesaShoferitVM> PagesaShoferitVM { get; set; }
     [NotMapped]
-    public List<PagesaDoganaVM> PagesaDoganaVM { get; set; }
+    public List<PagesaDoganaVM> PagesaDoganaVM { get; set; } = new List<PagesaDoganaVM>();
     [NotMapped]
-    public List<ShoferitRrugaVM> ShoferitRrugaVM { get; set; }
-    
+    public List<ShoferitRrugaVM> ShoferitRrugaVM { get; set; } = new List<ShoferitRrugaVM>();
+
+    [NotMapped]
+    public List<PikaRrugasVM> PikaRrugasVM { get; set; } = new List<PikaRrugasVM>();
+
 
 
 

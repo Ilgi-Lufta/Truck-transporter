@@ -422,19 +422,99 @@
 
 
              
-@*
-                <div class="form-group">
+
+                @*<div class="form-group">
                     <span asp-validation-for="PikaShkarkimiId"></span>
                     <label asp-for="PikaShkarkimiId"></label>
-                    <select id="myDropdown" onchange="sendData(@ViewBag.id);" asp-for="PikaShkarkimiId" asp-items="@ViewBag.Pikat" class="form-control"></select>
-                </div>
-
+                    <select id="myDropdown" onchange="sendData(@ViewBag.id);"  asp-items="@ViewBag.Pikat" class="form-control"></select>
+                </div>*@
+                <div class="form-group">
+    <label >Select PikaShkarkimi</label>
+    <select asp-items="@ViewBag.Pikat" class="form-control" id="pikaShkarkimiSelect"></select>
+</div>
+                @*<select name="PagesaPikaShkarkimitsVM[0].CurrencyId" class="form-control" required />
+                                @foreach (var item in @ViewBag.numberNames)
+                                {
+                                    <option value="@item.Key">@item.Value</option>
+                                }*@
+@*
                 <div class="form-group">
                     <span asp-validation-for="PikaPagesa"></span>
                     <label asp-for="PikaPagesa"></label>
                     <input id="paragraph" asp-for="PikaPagesa" class="form-control" value="@ViewBag.pagesa">
                 </div>*@
+                ////////////////////////////
+                @for (var i = 0; i <= (Model.PikaRrugasVM.Count() - 1); i++)
+                {
+                   @* <div class="form-group">
+                        <span asp-validation-for="Emri"></span>
+                        <label asp-for="Emri"></label>
+                        <input asp-for="Emri" class="form-control">
 
+                    </div>*@
+                    @for (var j = 0; j <= (Model.PikaRrugasVM[i].PikaRrugaPagesaVMs.Count() - 1); j++)
+                    {
+                        <table id="PikaTable" class="table">
+                            <thead>
+                                <tr>
+                                    <th>Pagesa Pika</th>
+                                    <th>Kursi Kembimit</th>
+                                    <th>Paguar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <tr class="PikadetailRow">
+                                    <td>
+                                        <input type="text" asp-for="PikaRrugasVM[i].PikaRrugaPagesaVMs[j].Pagesa" name="PikaRrugasVM[@i].PikaRrugaPagesaVMs[@j].Pagesa" class="form-control" required />
+                                    </td>
+                                    <td>
+                                        @* <select name="PikaRrugasVM[@i].PikaRrugaPagesaVMs[@j].CurrencyId" class="form-control" required />
+                                @foreach (var item in @ViewBag.numberNames)
+                                {
+                                <option value="@item.Key">@item.Value</option>
+                                }*@
+                                        <select asp-for="PikaRrugasVM[i].PikaRrugaPagesaVMs[j].CurrencyId" name="PikaRrugasVM[@i].PikaRrugaPagesaVMs[@j].CurrencyId" class="form-control" required />
+                                        @foreach (var item in @ViewBag.numberNames)
+
+                                        { @if (Model.PikaRrugasVM[@i].PikaRrugaPagesaVMs[@j].CurrencyId == @item.Key ? true : false)
+                                            {
+
+                                                <option selected="selected" value="@item.Key">@item.Value</option>
+                                            }
+                                            else
+                                            {
+
+                                                <option value="@item.Key">@item.Value</option>
+                                            }
+                                        }
+
+
+
+
+
+                                    </td>
+                                    <td>
+
+                                        <input type="checkbox" asp-for="PikaRrugasVM[i].PikaRrugaPagesaVMs[j].PagesaKryer" name="PikaRrugasVM[@i].PikaRrugaPagesaVMs[@j].PagesaKryer" style="width: 30px;height: 30px;" onchange="this.value=this.checked" />
+                                    </td>
+                                    <td>
+                                        <button type="button" id="0" class="btn btn-danger PikaremoveRow">Remove</button>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="2">
+                                        <button type="button" class="btn btn-primary" id="PikaaddRow">Add Row</button>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    }
+                }
+                //////////////////////////////
             </div>
             <div>
                 <button type="submit" class="btn btn-primary mt-3">Krijo Rruge</button>
@@ -519,6 +599,125 @@
                 }
             });
         });
+
+
+
+        $(document).ready(function () {
+
+            $('#PikaaddRow').click(function () {
+                var rowCount = $('#PikaTable tbody tr').length;
+                var newRow = $('.PikadetailRow').first().clone();
+                newRow.find('input[type=text]').val('');
+                newRow.find('input[type=text]').attr('name', 'PagesaPikaShkarkimitsVM[' + rowCount + '].Pagesa');
+                newRow.find('select').val('');
+                newRow.find('select').attr('name', 'PagesaPikaShkarkimitsVM[' + rowCount + '].CurrencyId');
+                //newRow.find('checkbox').val('');
+                //newRow.find('checkbox').attr('name', 'PagesaDoganaVM[' + rowCount + '].PagesaKryer');
+                newRow[0].childNodes[5].childNodes[1].attributes.name.nodeValue = "PagesaPikaShkarkimitsVM[" + rowCount + "].PagesaKryer";
+                newRow.find('button').val('');
+                newRow.find('button').attr('id', rowCount.toString());
+                newRow.appendTo($('#PikaTable tbody'));
+            });
+            $(document).on('click', '.PikaremoveRow', function () {
+                var rowCount = $('#PikaTable tbody tr').length;
+                if ((rowCount - 1) > 1) {
+                    var id = parseInt((this).id);
+                    if (id != (rowCount - 1))
+                        return
+                    $(this).closest('tr').remove();
+
+                }
+            });
+        });
+
+
+
+
+        //$(document).ready(function () {
+
+        //    $('#DoganaaddRow').click(function () {
+        //        var rowCount = $('#DoganaTable tbody tr').length;
+        //        var newRow = $('.DoganadetailRow').first().clone();
+        //        newRow.find('input[type=text]').val('');
+        //        newRow.find('input[type=text]').attr('name', 'PagesaPikaShkarkimitsVM[' + rowCount + '].Pagesa');
+        //        newRow.find('select').val('');
+        //        newRow.find('select').attr('name', 'PagesaPikaShkarkimitsVM[' + rowCount + '].CurrencyId');
+        //        //newRow.find('checkbox').val('');
+        //        //newRow.find('checkbox').attr('name', 'PagesaDoganaVM[' + rowCount + '].PagesaKryer');
+        //        newRow[0].childNodes[5].childNodes[1].attributes.name.nodeValue = "PagesaPikaShkarkimitsVM[" + rowCount + "].PagesaKryer";
+        //        newRow.find('button').val('');
+        //        newRow.find('button').attr('id', rowCount.toString());
+        //        newRow.appendTo($('#DoganaTable tbody'));
+        //    });
+        //    $(document).on('click', '.DoganaremoveRow', function () {
+        //        var rowCount = $('#DoganaTable tbody tr').length;
+        //        if ((rowCount - 1) > 1) {
+        //            var id = parseInt((this).id);
+        //            if (id != (rowCount - 1))
+        //                return
+        //            $(this).closest('tr').remove();
+
+        //        }
+        //    });
+        //});
+
+
+
+
+
+
+
+
+
+
+
+
+        //$(function () {
+        //    // Initialize the dynamic form counter
+        //    var formCounter = 0;
+
+        //    // Handle change event of the DropDownList
+        //    $('#pikaShkarkimiSelect').on('change', function () {
+        //        // Get the selected PikaShkarkimiId
+        //        var selectedPikaShkarkimiId = $(this).val();
+
+        //        // Clear the existing form fields
+        //        $('#PikaTable tbody').empty();
+
+        //        // Make an AJAX request to get PagesaPikaShkarkimitsVM items based on selectedPikaShkarkimiId
+        //        $.get("/YourController/GetPagesaPikaShkarkimitsVM", { pikaShkarkimiId: selectedPikaShkarkimiId }, function (data) {
+        //            // Loop through the data and create form fields
+        //            $.each(data, function (index, item) {
+        //                var newRow = '<tr class="PikadetailRow">';
+        //                newRow += '<td><input type="text" name="PagesaPikaShkarkimitsVM[' + formCounter + '].Pagesa" class="form-control" required /></td>';
+        //                newRow += '<td><select name="PagesaPikaShkarkimitsVM[' + formCounter + '].CurrencyId" class="form-control" required />';
+        //                // Add options for currency select
+        //                $.each(@ViewBag.numberNames, function (key, value) {
+        //                    newRow += '<option value="' + key + '">' + value + '</option>';
+        //                });
+        //                newRow += '</select></td>';
+        //                newRow += '<td><input type="checkbox" name="PagesaPikaShkarkimitsVM[' + formCounter + '].PagesaKryer" style="width: 30px;height: 30px;" value="false" onchange="this.value=this.checked" /></td>';
+        //                newRow += '<td><button type="button" id="' + formCounter + '" class="btn btn-danger PikaremoveRow">Remove</button></td>';
+        //                newRow += '</tr>';
+
+        //                $('#PikaTable tbody').append(newRow);
+
+        //                formCounter++;
+        //            });
+        //        });
+        //    });
+        //});
+
+
+
+
+
+
+
+
+
+
+
 
     </script>
 }

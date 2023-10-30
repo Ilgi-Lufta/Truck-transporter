@@ -1,5 +1,7 @@
 ﻿using BioLab.Models;
+using BioLab.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace BioLab.Controllers
 {
@@ -13,13 +15,9 @@ namespace BioLab.Controllers
             _logger = logger;
             _context = context;
         }
-        public IActionResult AddPika()
-        {
-            return View();
-        }
         public IActionResult AllPika(string searchString ,DateTime searchFirstTime, DateTime searchSecondTime)
         {
-            var shofers = _context.PikaShkarkimis
+            var shofers = _context.PikaShkarkimis.Include(e=>e.PagesaPikaShkarkimits).ThenInclude(e=>e.Currency)
                     .Where(m => searchFirstTime != DateTime.MinValue ? m.CreatedDate > searchFirstTime : true)
                     .Where(m => searchSecondTime != DateTime.MinValue ? m.CreatedDate > searchSecondTime : true)
                 .ToList();
@@ -36,6 +34,20 @@ namespace BioLab.Controllers
             }
           
 
+            return View();
+        }
+        public IActionResult AddPika()
+        {
+            var AllCurrency = _context.Currencys.ToList();
+            if (AllCurrency != null)
+            {
+                IDictionary<int, string> numberNames = new Dictionary<int, string>();
+                foreach (var currency in AllCurrency)
+                {
+                    numberNames.Add(currency.CurrencyId, currency.CurrencyUnit);
+                }
+                ViewBag.numberNames = numberNames;
+            }
             return View();
         }
 
@@ -56,9 +68,26 @@ namespace BioLab.Controllers
                 }
                 //vendosim lidhjen one to many per analizat e adminit te loguar
                 // dhe e ruajm analizesn ne db
-                
+
                 _context.Add(marrngaadd);
                 _context.SaveChanges();
+
+                marrngaadd.PagesaPikaShkarkimits = new List<PagesaPikaShkarkimit>();
+                foreach (var PagesaPikaShkarkimitsVM in marrngaadd.PagesaPikaShkarkimitsVM)
+                {
+                    PagesaPikaShkarkimit PagesaPikaShkarkimit = new PagesaPikaShkarkimit()
+                    {
+                        CurrencyId = PagesaPikaShkarkimitsVM.CurrencyId,
+                        Pagesa = PagesaPikaShkarkimitsVM.Pagesa,
+                        PagesaKryer = PagesaPikaShkarkimitsVM.PagesaKryer,
+                        PikaShkarkimiId = marrngaadd.PikaShkarkimiId
+                    };
+                   // marrngaadd.PagesaPikaShkarkimits.Add(PagesaPikaShkarkimit);
+                _context.Add(PagesaPikaShkarkimit);
+                _context.SaveChanges();
+                }
+
+
                 return RedirectToAction("AllPika");
             }
             return View("AddPika");

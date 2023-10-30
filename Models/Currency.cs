@@ -17,10 +17,11 @@ public class Currency
     public List<PagesaPikaShkarkimit> PagesaPikaShkarkimits { get; set; } = new List<PagesaPikaShkarkimit>();
     public List<PagesaDogana> PagesaDoganas { get; set; } = new List<PagesaDogana>();
     public List<PagesaNafta> PagesaNaftas { get; set; } = new List<PagesaNafta>();
+    public List<PikaRrugaPagesa> PikaRrugaPagesa { get; set; } = new List<PikaRrugaPagesa>();
 
-   // public List<PikaRruga> PikaRrugas { get; set; } = new List<PikaRruga>();
-   // public List<ShoferRruga> shoferRrugas { get; set; } = new List<ShoferRruga>();
-   // public List<NaftaRruga> NaftaRrugas { get; set; } = new List<NaftaRruga>();
+    // public List<PikaRruga> PikaRrugas { get; set; } = new List<PikaRruga>();
+    // public List<ShoferRruga> shoferRrugas { get; set; } = new List<ShoferRruga>();
+    // public List<NaftaRruga> NaftaRrugas { get; set; } = new List<NaftaRruga>();
 
 
 
