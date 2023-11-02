@@ -444,31 +444,34 @@
                     <input id="paragraph" asp-for="PikaPagesa" class="form-control" value="@ViewBag.pagesa">
                 </div>*@
                 ////////////////////////////
+                <div class="form-group">
+                    <label>Select PikaShkarkimi</label>
+                    <select asp-items="@ViewBag.Pikat" onchange="sendData(this,@ViewBag.id)" class="form-control" id="pikaShkarkimiSelect"></select>
+                </div>
                 <table id="PikaRrugaTable" border="1" class="table">
                     <thead>
                         <tr>
-                            <th>Pika</th>
+                            
+                            <th>Pika </th>
                             <th>Lloji pageses</th>
                         </tr>
                     </thead>
-                    <td>
-                        <div class="form-group">
-                            <label>Select PikaShkarkimi</label>
-                            <select asp-items="@ViewBag.Pikat" onchange="sendData(this,@ViewBag.id)" class="form-control" id="pikaShkarkimiSelect"></select>
-                        </div>
-                    </td>
+                  
                     <tbody id="PikadetailBody">
                         @for (var i = 0; i <= (Model.PikaRrugas.Count() - 1); i++)
                         {
                             <tr id="PikadetailRow0" class="PikadetailRow">
                                 <td>
+                                    <p style="border:1px solid black" >@Model.PikaRrugas[i].PikaShkarkimi?.Emri</p>
+                                </td>
+                               @* <td>
                                     <div class="form-group">
                                         <label>Select PikaShkarkimi</label>
                                         <select asp-items="@ViewBag.Pikat" onchange="sendData(this,@ViewBag.id)" class="form-control" id="pikaShkarkimiSelect"></select>
                                     </div>
-                                </td>
+                                </td>*@
                                 <td>
-                                    <table id="PikaTable" class="table">
+                                    <table id="PikaTable" border="1" class="table">
                                         <thead>
                                             <tr>
                                                 <th>Pagesa Pika</th>
@@ -518,6 +521,7 @@
                                                     </td>
                                                 </tr>
                                             }
+
                                         </tbody>
                                         <tfoot>
                                             <tr>
@@ -527,6 +531,9 @@
                                             </tr>
                                         </tfoot>
                                     </table>
+                                </td>
+                                <td>
+                                    <button type="button" onclick="RemoveRow(this)" id="@i" class="btn btn-danger PikaremoveRow">Remove</button>
                                 </td>
                             </tr>
                         }
@@ -578,6 +585,7 @@
                 data: { id2: event.value, rrugaId : id },
 
                 success: function (result) {
+
         //            debugger
                     //@Model.PikaPagesa= result;
                     //ilgi = result

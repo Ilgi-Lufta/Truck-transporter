@@ -526,19 +526,19 @@ namespace BioLab.Controllers
             PikaRruga pika1 = new PikaRruga();
             pika1.RrugaId = rrugaIdd;
             pika1.PikaShkarkimiId = test;
-            _context.Add(pika1);
-            _context.SaveChanges();
+            //_context.Add(pika1);
+            //_context.SaveChanges();
 
             foreach (var item in pikaShkarkimi.PagesaPikaShkarkimits)
             {
                 PikaRrugaPagesa pikaRrugaPagesa = new PikaRrugaPagesa();
-                pikaRrugaPagesa.PikaRrugaId = pika1.PikaRrugaId;
+              //  pikaRrugaPagesa.PikaRrugaId = pika1.PikaRrugaId;
                 pikaRrugaPagesa.CurrencyId = item.CurrencyId;
                 pikaRrugaPagesa.Pagesa = item.Pagesa;
                 pikaRrugaPagesa.PagesaKryer = item.PagesaKryer;
 
-                _context.Add(pikaRrugaPagesa);
-                _context.SaveChanges();
+                //_context.Add(pikaRrugaPagesa);
+                //_context.SaveChanges();
             }
 
            
