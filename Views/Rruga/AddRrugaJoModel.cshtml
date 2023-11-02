@@ -457,10 +457,10 @@
                         </tr>
                     </thead>
                   
-                    <tbody id="PikadetailBody">
+                    <tbody id="PikaRrugadetailBody">
                         @for (var i = 0; i <= (Model.PikaRrugas.Count() - 1); i++)
                         {
-                            <tr id="PikadetailRow0" class="PikadetailRow">
+                            <tr id="PikaRrugadetailRow0" class="PikadetailRow">
                                 <td>
                                     <p style="border:1px solid black" >@Model.PikaRrugas[i].PikaShkarkimi?.Emri</p>
                                 </td>
@@ -471,7 +471,7 @@
                                     </div>
                                 </td>*@
                                 <td>
-                                    <table id="PikaTable" border="1" class="table">
+                                    <table id="PikaRrugaPagesaTable" border="1" class="table">
                                         <thead>
                                             <tr>
                                                 <th>Pagesa Pika</th>
@@ -479,7 +479,7 @@
                                                 <th>Paguar</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody id="PikaRrugaPagesaBody">
                                             @for (var j = 0; j <= (Model.PikaRrugas[i].PikaRrugaPagesa.Count() - 1); j++)
                                             {
                                                 <tr class="PikadetailRow">
@@ -517,7 +517,7 @@
                                                         <input type="checkbox" asp-for="PikaRrugas[i].PikaRrugaPagesa[j].PagesaKryer" name="PikaRrugas[@i].PikaRrugaPagesa[@j].PagesaKryer" style="width: 30px;height: 30px;" onchange="this.value=this.checked" />
                                                     </td>
                                                     <td>
-                                                        <button type="button" id="0" class="btn btn-danger PikaremoveRow">Remove</button>
+                                                        <button type="button" id="0" class="btn btn-danger PikaRrugaPagesaremoveRow">Remove</button>
                                                     </td>
                                                 </tr>
                                             }
@@ -526,14 +526,14 @@
                                         <tfoot>
                                             <tr>
                                                 <td colspan="2">
-                                                    <button type="button" class="btn btn-primary" id="PikaaddRow">Add Row</button>
+                                                    <button type="button" class="btn btn-primary" id="PikaRrugaPagesaaddRow">Add Row</button>
                                                 </td>
                                             </tr>
                                         </tfoot>
                                     </table>
                                 </td>
                                 <td>
-                                    <button type="button" onclick="RemoveRow(this)" id="@i" class="btn btn-danger PikaremoveRow">Remove</button>
+                                    <button type="button" onclick="RemoveRow(this)" id="@i" class="btn btn-danger PikaRrugaremoveRow">Remove</button>
                                 </td>
                             </tr>
                         }
@@ -541,7 +541,7 @@
                     <tfoot>
                         <tr>
                             <td colspan="2">
-                                <button type="button" onclick="myFunction()" class="btn btn-primary" id="ShoferRrugaaddRow">Add Row</button>
+                                <button type="button" onclick="myFunction()" class="btn btn-primary" id="PikaRrugaaddRow">Add Row</button>
                             </td>
                         </tr>
                     </tfoot>
