@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace BioLab.Controllers
@@ -247,7 +248,7 @@ namespace BioLab.Controllers
         }
         public IActionResult AddRrugaJoModel(int id)
         {
-            var rruga = _context.Rrugas.Include(e=>e.PagesaDoganas).Include(e => e.ShoferRrugas).ThenInclude(e => e.PagesaShoferits).FirstOrDefault(e => e.RrugaId == id);
+            var rruga = _context.Rrugas.Include(e=>e.PikaRrugas).ThenInclude(e=>e.PikaRrugaPagesa).Include(e=>e.PagesaDoganas).Include(e => e.ShoferRrugas).ThenInclude(e => e.PagesaShoferits).FirstOrDefault(e => e.RrugaId == id);
             ViewBag.id = id;
             rruga.PagesaDoganaVM = new List<PagesaDoganaVM>();
             foreach (var PagesaDoganas in rruga.PagesaDoganas)
@@ -404,7 +405,32 @@ namespace BioLab.Controllers
             PikaRrugasVM PikaRrugasVM  = new PikaRrugasVM();
             PikaRrugasVM.PikaRrugaPagesaVMs = PikaRrugaPagesaVMs;
             PikaRrugasVM.PikaShkarkimiId = 4;
-            rruga.PikaRrugasVM.Add(PikaRrugasVM);     
+            rruga.PikaRrugasVM.Add(PikaRrugasVM);
+
+
+
+
+            //List < PikaRruga >pikaRruga = new List<PikaRruga>();
+            //List <PikaRrugaPagesa> pikaRrugaPagesas = new List<PikaRrugaPagesa>();
+            //PikaRrugaPagesa pikaRrugaPagesa = new PikaRrugaPagesa()
+            //{
+            //    CurrencyId= _context.Currencys.FirstOrDefault().CurrencyId,
+            //    PagesaKryer = true,
+            //    Pagesa = 0
+            //};
+            //pikaRrugaPagesas.Add(pikaRrugaPagesa);
+            //PikaRruga PikaRruga = new PikaRruga()
+            //{
+            //    RrugaId = rruga.RrugaId,
+            //    PikaShkarkimiId = _context.PikaShkarkimis.FirstOrDefault().PikaShkarkimiId,
+            //    PikaRrugaPagesa = pikaRrugaPagesas
+            //};
+
+            //pikaRruga.Add(PikaRruga);
+            //rruga.PikaRrugas = pikaRruga;
+
+
+
             //  ViewBag.PikaRrugasVM
             return View(rruga);
         }
@@ -489,6 +515,42 @@ namespace BioLab.Controllers
 
             return paga;
         }
+         [HttpPost]
+        public IActionResult CreateRrugaJoModel3(string id2, string rrugaId)
+        {
+            var test = int.Parse(id2);
+            var rrugaIdd = int.Parse(rrugaId);
+            var pikaShkarkimi = _context.PikaShkarkimis.Include(e => e.PagesaPikaShkarkimits).FirstOrDefault(e => e.PikaShkarkimiId == test);
+           // var rruga = _context.Rrugas.FirstOrDefault(e => e.RrugaId == rrugaIdd);
+
+            PikaRruga pika1 = new PikaRruga();
+            pika1.RrugaId = rrugaIdd;
+            pika1.PikaShkarkimiId = test;
+            _context.Add(pika1);
+            _context.SaveChanges();
+
+            foreach (var item in pikaShkarkimi.PagesaPikaShkarkimits)
+            {
+                PikaRrugaPagesa pikaRrugaPagesa = new PikaRrugaPagesa();
+                pikaRrugaPagesa.PikaRrugaId = pika1.PikaRrugaId;
+                pikaRrugaPagesa.CurrencyId = item.CurrencyId;
+                pikaRrugaPagesa.Pagesa = item.Pagesa;
+                pikaRrugaPagesa.PagesaKryer = item.PagesaKryer;
+
+                _context.Add(pikaRrugaPagesa);
+                _context.SaveChanges();
+            }
+
+           
+            return View(pika1);
+
+
+
+
+
+
+        }
+
         [HttpPost]
         public List<SelectListItem> Get()
         {
