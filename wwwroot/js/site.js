@@ -117,7 +117,38 @@ function AddPika() {
    // var countVM = $('#PikaRrugaPagesaTable tr').length;
     var ShoferRrugadetailBody = $('#PikaRrugadetailBody');
     var length = ShoferRrugadetailBody[0].children.length;
-    clone.childNodes[1].childNodes[1].innerText = "test ";    //ajax  PikaRrugas[i].PikaShkarkimi?.Emri
+    if (clone.childNodes[1].childNodes[1].innerText == "Zgjidh") {
+
+        row.childNodes[1].childNodes[1].innerText = "test"; //ajax  PikaRrugas[i].PikaShkarkimi?.Emri
+        //check if ajx has more than one pages
+        if (PikaRruga.PikaRrugaPagesa.count() > 1) {
+            
+             //   var tblenghtchildren = clone.childNodes[3].childNodes[1].childNodes[3].children.length;
+             //   var tblenghtchildNodes = clone.childNodes[3].childNodes[1].childNodes[3].childNodes.length;
+
+            // get body of pagesa table
+            var PikaRrugaPagesaBody0 = document.getElementById("PikaRrugaPagesaBody0");
+            //clone tr of pagesa
+                var tr = row.childNodes[3].childNodes[1].childNodes[3].childNodes[0].cloneNode(true);
+            for (var i = 0; i <= PikaRruga.PikaRrugaPagesa.count() - 1; i++) {
+                //add tr for each pika rruga pagesa
+                PikaRrugaPagesaBody0.appendChild(tr)
+
+            }
+        }
+        for (var Pagesacount = 0; Pagesacount < PikaRruga.PikaRrugaPagesa.count()-1; Pagesacount++) {
+
+        row.childNodes[3].childNodes[1].childNodes[3].childNodes[1].childNodes[1].childNodes[1].value = "PikaRrugas[0].PikaRrugaPagesa[" + Pagesacount +"].Pagesa"; //ajax
+        row.childNodes[3].childNodes[1].childNodes[3].childNodes[1].childNodes[3].childNodes[1].value = "PikaRrugas[0].PikaRrugaPagesa[" + Pagesacount + "].CurrencyId"; //ajax
+        row.childNodes[3].childNodes[1].childNodes[3].childNodes[1].childNodes[5].childNodes[1].value = "PikaRrugas[0].PikaRrugaPagesa[" + Pagesacount + "].PagesaKryer"; //ajax
+        }
+        
+
+    } else { 
+        // add ajax vlaues to a clone row and ad pika rruga pagesa rows to
+
+
+ clone.childNodes[1].childNodes[1].innerText = "test";    //ajax  PikaRrugas[i].PikaShkarkimi?.Emri
     // Remove Row
     clone.childNodes[5].childNodes[1].id = length.toString();
 
@@ -144,5 +175,10 @@ function AddPika() {
         i++;
     }
     // clone.childNodes[3].childNodes[1].childNodes[3].
-    body.appendChild(clone); // add new row to end of table
+        body.appendChild(clone);
+
+
+
+    }
+    // add new row to end of table
 }

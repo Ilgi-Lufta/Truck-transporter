@@ -406,28 +406,30 @@ namespace BioLab.Controllers
             PikaRrugasVM.PikaRrugaPagesaVMs = PikaRrugaPagesaVMs;
             PikaRrugasVM.PikaShkarkimiId = 4;
             rruga.PikaRrugasVM.Add(PikaRrugasVM);
+            if (rruga.PikaRrugas.Count() == 0)
+            {
+                PikaShkarkimi pika = new PikaShkarkimi() { Emri = "Zgjidh" };
+                List<PikaRruga> pikaRruga = new List<PikaRruga>();
+                List<PikaRrugaPagesa> pikaRrugaPagesas = new List<PikaRrugaPagesa>();
+                PikaRrugaPagesa pikaRrugaPagesa = new PikaRrugaPagesa()
+                {
+                    CurrencyId = _context.Currencys.FirstOrDefault().CurrencyId,
+                    PagesaKryer = true,
+                    Pagesa = 0
+                };
+                pikaRrugaPagesas.Add(pikaRrugaPagesa);
+                PikaRruga PikaRruga = new PikaRruga()
+                {
+                    RrugaId = rruga.RrugaId,
+                    PikaShkarkimi = pika,
+                    PikaShkarkimiId = _context.PikaShkarkimis.FirstOrDefault().PikaShkarkimiId,
+                    PikaRrugaPagesa = pikaRrugaPagesas
+                };
 
+                pikaRruga.Add(PikaRruga);
+                rruga.PikaRrugas = pikaRruga;
+            }
 
-
-
-            //List < PikaRruga >pikaRruga = new List<PikaRruga>();
-            //List <PikaRrugaPagesa> pikaRrugaPagesas = new List<PikaRrugaPagesa>();
-            //PikaRrugaPagesa pikaRrugaPagesa = new PikaRrugaPagesa()
-            //{
-            //    CurrencyId= _context.Currencys.FirstOrDefault().CurrencyId,
-            //    PagesaKryer = true,
-            //    Pagesa = 0
-            //};
-            //pikaRrugaPagesas.Add(pikaRrugaPagesa);
-            //PikaRruga PikaRruga = new PikaRruga()
-            //{
-            //    RrugaId = rruga.RrugaId,
-            //    PikaShkarkimiId = _context.PikaShkarkimis.FirstOrDefault().PikaShkarkimiId,
-            //    PikaRrugaPagesa = pikaRrugaPagesas
-            //};
-
-            //pikaRruga.Add(PikaRruga);
-            //rruga.PikaRrugas = pikaRruga;
 
 
 
