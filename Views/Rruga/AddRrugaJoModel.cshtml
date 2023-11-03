@@ -479,7 +479,7 @@
                                                 <th>Paguar</th>
                                             </tr>
                                         </thead>
-                                        <tbody id="PikaRrugaPagesaBody">
+                                        <tbody id="PikaRrugaPagesaBody0">
                                             @for (var j = 0; j <= (Model.PikaRrugas[i].PikaRrugaPagesa.Count() - 1); j++)
                                             {
                                                 <tr class="PikadetailRow">
@@ -517,7 +517,7 @@
                                                         <input type="checkbox" asp-for="PikaRrugas[i].PikaRrugaPagesa[j].PagesaKryer" name="PikaRrugas[@i].PikaRrugaPagesa[@j].PagesaKryer" style="width: 30px;height: 30px;" onchange="this.value=this.checked" />
                                                     </td>
                                                     <td>
-                                                        <button type="button" id="0" class="btn btn-danger PikaRrugaPagesaremoveRow">Remove</button>
+                                                        <button type="button" id="0" onclick="RemoveChildRow(this)" class="btn btn-danger PikaRrugaPagesaremoveRow">Remove</button>
                                                     </td>
                                                 </tr>
                                             }
@@ -526,7 +526,7 @@
                                         <tfoot>
                                             <tr>
                                                 <td colspan="2">
-                                                    <button type="button" class="btn btn-primary" id="PikaRrugaPagesaaddRow">Add Row</button>
+                                                    <button type="button" onclick="myFunctionChild(this.id)" class="btn btn-primary" id="PikaRrugaPagesaaddRow">Add Row</button>
                                                 </td>
                                             </tr>
                                         </tfoot>
@@ -541,7 +541,7 @@
                     <tfoot>
                         <tr>
                             <td colspan="2">
-                                <button type="button" onclick="myFunction()" class="btn btn-primary" id="PikaRrugaaddRow">Add Row</button>
+                                <button type="button" onclick="AddPika()" class="btn btn-primary" id="PikaRrugaaddRow">Add Row</button>
                             </td>
                         </tr>
                     </tfoot>

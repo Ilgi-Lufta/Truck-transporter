@@ -114,12 +114,14 @@ function AddPika() {
     var body = document.getElementById("PikaRrugadetailBody"); // find table to append to
     var clone = row.cloneNode(true); // copy children too
     var count = $('#ShoferRrugadetailBody tr').length;
-    var countVM = $('#PikaRrugaPagesaTable tr').length;
-    var ShoferRrugadetailBody = $('#PikaRrugaPagesaBody');
+   // var countVM = $('#PikaRrugaPagesaTable tr').length;
+    var ShoferRrugadetailBody = $('#PikaRrugadetailBody');
     var length = ShoferRrugadetailBody[0].children.length;
-    clone.childNodes[1].childNodes[1].Value = "test ";    //ajax  PikaRrugas[i].PikaShkarkimi?.Emri
+    clone.childNodes[1].childNodes[1].innerText = "test ";    //ajax  PikaRrugas[i].PikaShkarkimi?.Emri
     // Remove Row
     clone.childNodes[5].childNodes[1].id = length.toString();
+
+    var countVM = 0; //pikarrugapagesa foreach nga ajax
 
     // remove child row
     clone.childNodes[3].childNodes[1].childNodes[3].childNodes[1].childNodes[7].childNodes[1].id = countVM.toString();
@@ -127,14 +129,14 @@ function AddPika() {
     clone.childNodes[3].childNodes[1].childNodes[5].childNodes[1].childNodes[1].childNodes[1].id = length.toString();
 
     clone.childNodes[3].childNodes[1].childNodes[3].childNodes[1].childNodes[1].childNodes[1].attributes.name.nodeValue = "PikaRrugas[" + length + "].PikaRrugaPagesa[" + countVM + "].Pagesa";
-   // clone.childNodes[3].childNodes[1].childNodes[3].childNodes[1].childNodes[1].childNodes[1].Value = "PikaRrugas[" + length + "].PikaRrugaPagesa[" + countVM + "].Pagesa"; //ajax
+   // clone.childNodes[3].childNodes[1].childNodes[3].childNodes[1].childNodes[1].childNodes[1].value = "PikaRrugas[" + length + "].PikaRrugaPagesa[" + countVM + "].Pagesa"; //ajax
     clone.childNodes[3].childNodes[1].childNodes[3].childNodes[1].childNodes[3].childNodes[1].attributes.name.nodeValue = "PikaRrugas[" + length + "].PikaRrugaPagesa[" + countVM + "].CurrencyId";
-   // clone.childNodes[3].childNodes[1].childNodes[3].childNodes[1].childNodes[3].childNodes[1].Value = "PikaRrugas[" + length + "].PikaRrugaPagesa[" + countVM + "].CurrencyId"; //ajax
+   // clone.childNodes[3].childNodes[1].childNodes[3].childNodes[1].childNodes[3].childNodes[1].value = "PikaRrugas[" + length + "].PikaRrugaPagesa[" + countVM + "].CurrencyId"; //ajax
     clone.childNodes[3].childNodes[1].childNodes[3].childNodes[1].childNodes[5].childNodes[1].attributes.name.nodeValue = "PikaRrugas[" + length + "].PikaRrugaPagesa[" + countVM + "].PagesaKryer";
-   // clone.childNodes[3].childNodes[1].childNodes[3].childNodes[1].childNodes[5].childNodes[1].Value = "PikaRrugas[" + length + "].PikaRrugaPagesa[" + countVM + "].PagesaKryer"; //ajax
-    clone.childNodes[3].childNodes[1].id = "StudentsTable" + length.toString();
-    clone.childNodes[3].childNodes[1].childNodes[3].id = "StudentsTablebody" + length.toString();
-    clone.id = "ShoferRrugadetailRow" + length.toString(); // change id or other attributes/contents
+   // clone.childNodes[3].childNodes[1].childNodes[3].childNodes[1].childNodes[5].childNodes[1].value = "PikaRrugas[" + length + "].PikaRrugaPagesa[" + countVM + "].PagesaKryer"; //ajax
+    clone.childNodes[3].childNodes[1].id = "PikaRrugaPagesaTable" + length.toString();
+    clone.childNodes[3].childNodes[1].childNodes[3].id = "PikaRrugaPagesaBody" + length.toString();
+    clone.id = "PikaRrugadetailRow" + length.toString(); // change id or other attributes/contents
     var tblenght = clone.childNodes[3].childNodes[1].childNodes[3].children.length;
     for (var i = 3; i <= (tblenght * 2) - 1; i++) {
         var tr = clone.childNodes[3].childNodes[1].childNodes[3].childNodes[i];
