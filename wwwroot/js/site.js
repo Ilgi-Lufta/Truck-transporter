@@ -53,12 +53,12 @@ function myFunction() {
     clone.childNodes[3].childNodes[1].id = "StudentsTable" + length.toString();
     clone.childNodes[3].childNodes[1].childNodes[3].id = "StudentsTablebody" + length.toString();
     clone.id = "ShoferRrugadetailRow" + length.toString(); // change id or other attributes/contents
-    var tblenght = clone.childNodes[3].childNodes[1].childNodes[3].children.length;
-    for (var i = 3; i <= (tblenght*2) - 1; i++)
+    var tblenght = clone.childNodes[3].childNodes[1].childNodes[3].children.length-1;
+    for (var i = tblenght; i > 0; i--)
     {
-        var tr = clone.childNodes[3].childNodes[1].childNodes[3].childNodes[i];
+        var tr = clone.childNodes[3].childNodes[1].childNodes[3].children[i];
         tr.remove();
-        i++;
+      
     }
    // clone.childNodes[3].childNodes[1].childNodes[3].
     body.appendChild(clone); // add new row to end of table
