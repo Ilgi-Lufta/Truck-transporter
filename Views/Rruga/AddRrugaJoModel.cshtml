@@ -428,10 +428,10 @@
                     <label asp-for="PikaShkarkimiId"></label>
                     <select id="myDropdown" onchange="sendData(@ViewBag.id);"  asp-items="@ViewBag.Pikat" class="form-control"></select>
                 </div>*@
-                <div class="form-group">
+ @*               <div class="form-group">
     <label >Select PikaShkarkimi</label>
     <select asp-items="@ViewBag.Pikat" class="form-control" id="pikaShkarkimiSelect"></select>
-</div>
+</div>*@
                 @*<select name="PagesaPikaShkarkimitsVM[0].CurrencyId" class="form-control" required />
                                 @foreach (var item in @ViewBag.numberNames)
                                 {
@@ -444,76 +444,120 @@
                     <input id="paragraph" asp-for="PikaPagesa" class="form-control" value="@ViewBag.pagesa">
                 </div>*@
                 ////////////////////////////
-                @for (var i = 0; i <= (Model.PikaRrugasVM.Count() - 1); i++)
-                {
+                <div class="form-group">
+                    <label>Select PikaShkarkimi</label>
+                    <select asp-items="@ViewBag.Pikat" onchange="sendData(this,@ViewBag.id)" class="form-control" id="pikaShkarkimiSelect"></select>
+                </div>
+                <table id="PikaRrugaTable" border="1" class="table">
+                    <thead>
+                        <tr>
+                            
+                            <th>Pika </th>
+                            <th>Lloji pageses</th>
+                        </tr>
+                    </thead>
+                  
+                    <tbody id="PikaRrugadetailBody">
+                        @for (var i = 0; i <= (Model.PikaRrugas.Count() - 1); i++)
+                        {
+                            <tr id="PikaRrugadetailRow0" class="PikadetailRow">
+                                <td>
+                                   @*// <p style="border:1px solid black" >@Model.PikaRrugas[i].PikaShkarkimiName</p>*@
+                                    <input type="text" asp-for="PikaRrugas[i].PikaShkarkimiName" name="PikaRrugas[@i].PikaShkarkimiName" class="form-control" required />
+                                </td>
+                               @* <td>
+                                    <div class="form-group">
+                                        <label>Select PikaShkarkimi</label>
+                                        <select asp-items="@ViewBag.Pikat" onchange="sendData(this,@ViewBag.id)" class="form-control" id="pikaShkarkimiSelect"></select>
+                                    </div>
+                                </td>*@
+                                <td>
+                                    <table id="PikaRrugaPagesaTable" border="1" class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Pagesa Pika</th>
+                                                <th>Kursi Kembimit</th>
+                                                <th>Paguar</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="PikaRrugaPagesaBody0">
+                                            @for (var j = 0; j <= (Model.PikaRrugas[i].PikaRrugaPagesa.Count() - 1); j++)
+                                            {
+                                                <tr class="PikadetailRow">
+                                                    <td>
+                                                        <input type="text" asp-for="PikaRrugas[i].PikaRrugaPagesa[j].Pagesa" name="PikaRrugas[@i].PikaRrugaPagesa[@j].Pagesa" class="form-control" required />
+                                                    </td>
+                                                    <td>
+                                                        @* <select name="PikaRrugasVM[@i].PikaRrugaPagesaVMs[@j].CurrencyId" class="form-control" required />
+                                                @foreach (var item in @ViewBag.numberNames)
+                                                {
+                                                <option value="@item.Key">@item.Value</option>
+                                                }*@
+                                                        <select asp-for="PikaRrugas[i].PikaRrugaPagesa[j].CurrencyId" name="PikaRrugas[@i].PikaRrugaPagesa[@j].CurrencyId" class="form-control" required />
+                                                        @foreach (var item in @ViewBag.numberNames)
+
+                                                        { @if (Model.PikaRrugas[@i].PikaRrugaPagesa[@j].CurrencyId == @item.Key ? true : false)
+                                                            {
+
+                                                                <option selected="selected" value="@item.Key">@item.Value</option>
+                                                            }
+                                                            else
+                                                            {
+
+                                                                <option value="@item.Key">@item.Value</option>
+                                                            }
+                                                        }
+
+
+
+
+
+                                                    </td>
+                                                    <td>
+
+                                                        <input type="checkbox" asp-for="PikaRrugas[i].PikaRrugaPagesa[j].PagesaKryer" name="PikaRrugas[@i].PikaRrugaPagesa[@j].PagesaKryer" style="width: 30px;height: 30px;" onchange="this.value=this.checked" />
+                                                    </td>
+                                                    <td>
+                                                        <button type="button" id="0" onclick="RemoveChildRow(this)" class="btn btn-danger PikaRrugaPagesaremoveRow">Remove</button>
+                                                    </td>
+                                                </tr>
+                                            }
+
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <td colspan="2">
+                                                    <button type="button" onclick="AddrowChild(this)" class="btn btn-primary" id="PikaRrugaPagesaaddRow">Add Row</button>
+                                                </td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </td>
+                                <td>
+                                    <button type="button" onclick="RemovePikaRow(this)" id="@i" class="btn btn-danger PikaRrugaremoveRow">Remove</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="2">
+                                <button type="button" onclick="AddPika()" class="btn btn-primary" id="PikaRrugaaddRow">Add Row</button>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+             
+              
                    @* <div class="form-group">
                         <span asp-validation-for="Emri"></span>
                         <label asp-for="Emri"></label>
                         <input asp-for="Emri" class="form-control">
 
                     </div>*@
-                    @for (var j = 0; j <= (Model.PikaRrugasVM[i].PikaRrugaPagesaVMs.Count() - 1); j++)
-                    {
-                        <table id="PikaTable" class="table">
-                            <thead>
-                                <tr>
-                                    <th>Pagesa Pika</th>
-                                    <th>Kursi Kembimit</th>
-                                    <th>Paguar</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-
-                                <tr class="PikadetailRow">
-                                    <td>
-                                        <input type="text" asp-for="PikaRrugasVM[i].PikaRrugaPagesaVMs[j].Pagesa" name="PikaRrugasVM[@i].PikaRrugaPagesaVMs[@j].Pagesa" class="form-control" required />
-                                    </td>
-                                    <td>
-                                        @* <select name="PikaRrugasVM[@i].PikaRrugaPagesaVMs[@j].CurrencyId" class="form-control" required />
-                                @foreach (var item in @ViewBag.numberNames)
-                                {
-                                <option value="@item.Key">@item.Value</option>
-                                }*@
-                                        <select asp-for="PikaRrugasVM[i].PikaRrugaPagesaVMs[j].CurrencyId" name="PikaRrugasVM[@i].PikaRrugaPagesaVMs[@j].CurrencyId" class="form-control" required />
-                                        @foreach (var item in @ViewBag.numberNames)
-
-                                        { @if (Model.PikaRrugasVM[@i].PikaRrugaPagesaVMs[@j].CurrencyId == @item.Key ? true : false)
-                                            {
-
-                                                <option selected="selected" value="@item.Key">@item.Value</option>
-                                            }
-                                            else
-                                            {
-
-                                                <option value="@item.Key">@item.Value</option>
-                                            }
-                                        }
-
-
-
-
-
-                                    </td>
-                                    <td>
-
-                                        <input type="checkbox" asp-for="PikaRrugasVM[i].PikaRrugaPagesaVMs[j].PagesaKryer" name="PikaRrugasVM[@i].PikaRrugaPagesaVMs[@j].PagesaKryer" style="width: 30px;height: 30px;" onchange="this.value=this.checked" />
-                                    </td>
-                                    <td>
-                                        <button type="button" id="0" class="btn btn-danger PikaremoveRow">Remove</button>
-                                    </td>
-                                </tr>
-
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <td colspan="2">
-                                        <button type="button" class="btn btn-primary" id="PikaaddRow">Add Row</button>
-                                    </td>
-                                </tr>
-                            </tfoot>
-                        </table>
-                    }
-                }
+                  
+                       
                 //////////////////////////////
             </div>
             <div>
@@ -530,21 +574,55 @@
 @section Scripts{
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script>
-        function sendData(id) {
-            debugger
-            var selectedFilter = $("#myDropdown").val();
-            var selectedFilter2 = $("#paragraph");
-            
+        function sendData(event,id) {
+      //      debugger
+           //var test =  @Model.PikaPagesa;
+           //var ilgi = @ViewBag.id ;
+//           class PikaRruga {
+//    constructor() {
+//        this.PikaRrugaId = 0;
+//        this.PikaShkarkimiId = 0;
+//        this.PikaShkarkimi = null;
+//        this.RrugaId = 0;
+//        this.Rruga = null;
+//        this.PikaRrugaPagesa = [];
+//        this.CreatedDate = new Date();
+//        this.UpdatedDate = new Date();
+//        this.PikaShkarkimiName = "";
+//    }
+//}
+
+//class PikaRrugaPagesa {
+//    constructor() {
+//        this.PikaRrugaPagesaId = 0;
+//        this.CurrencyId = 0;
+//        this.Currency = null;
+//        this.PikaRrugaId = 0;
+//        this.Pika = null;
+//        this.Pagesa = 0;
+//        this.ShpenzimXhiro = false;
+//        this.PagesaKryer = false;
+//        this.CreatedDate = new Date();
+//        this.UpdatedDate = new Date();
+//    }
+//}
+
             $.ajax({
                 type: "POST",
-                url: "@Url.Action("CreateRrugaJoModel2","Rruga")",
+                url: "@Url.Action("CreateRrugaJoModel3","Rruga")",
                 //url: "/Rruga/CreateRrugaJoModel2",
-                data: {id:id , val: selectedFilter },
+                data: { id2: event.value, rrugaId : id },
 
                 success: function (result) {
-                    selectedFilter2[0].value = result;
+                    AddPika(result)
+        //            debugger
+                    //@Model.PikaPagesa= result;
+                    //ilgi = result
+                    //@ViewBag.id =1;
+                   // selectedFilter2[0].value = result;
                 },
                 error: function () {
+        //            debugger
                     alert("there was an error");
                 }
             })

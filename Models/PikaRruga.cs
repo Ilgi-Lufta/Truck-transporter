@@ -12,7 +12,9 @@ public class PikaRruga
     public int RrugaId { get; set; }
     public Rruga? Rruga { get; set; }
  //   public int PagesaPikaShkarkimitId { get; set; }
-    List<PikaRrugaPagesa> PikaRrugaPagesa { get; set; } = new List<PikaRrugaPagesa>();
+    public List<PikaRrugaPagesa> PikaRrugaPagesa { get; set; } = new List<PikaRrugaPagesa>();
     public DateTime CreatedDate { get; set; } = DateTime.Now;
     public DateTime UpdatedDate { get; set; } = DateTime.Now;
+    [NotMapped]
+    public string PikaShkarkimiName { get; set; }
 }
