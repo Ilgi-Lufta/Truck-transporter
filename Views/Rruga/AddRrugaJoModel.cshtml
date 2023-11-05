@@ -462,7 +462,8 @@
                         {
                             <tr id="PikaRrugadetailRow0" class="PikadetailRow">
                                 <td>
-                                    <p style="border:1px solid black" >@Model.PikaRrugas[i].PikaShkarkimi?.Emri</p>
+                                   @*// <p style="border:1px solid black" >@Model.PikaRrugas[i].PikaShkarkimiName</p>*@
+                                    <input type="text" asp-for="PikaRrugas[i].PikaShkarkimiName" name="PikaRrugas[@i].PikaShkarkimiName" class="form-control" required />
                                 </td>
                                @* <td>
                                     <div class="form-group">
@@ -526,14 +527,14 @@
                                         <tfoot>
                                             <tr>
                                                 <td colspan="2">
-                                                    <button type="button" onclick="myFunctionChild(this.id)" class="btn btn-primary" id="PikaRrugaPagesaaddRow">Add Row</button>
+                                                    <button type="button" onclick="AddrowChild(this)" class="btn btn-primary" id="PikaRrugaPagesaaddRow">Add Row</button>
                                                 </td>
                                             </tr>
                                         </tfoot>
                                     </table>
                                 </td>
                                 <td>
-                                    <button type="button" onclick="RemoveRow(this)" id="@i" class="btn btn-danger PikaRrugaremoveRow">Remove</button>
+                                    <button type="button" onclick="RemovePikaRow(this)" id="@i" class="btn btn-danger PikaRrugaremoveRow">Remove</button>
                                 </td>
                             </tr>
                         }
@@ -577,6 +578,34 @@
       //      debugger
            //var test =  @Model.PikaPagesa;
            //var ilgi = @ViewBag.id ;
+//           class PikaRruga {
+//    constructor() {
+//        this.PikaRrugaId = 0;
+//        this.PikaShkarkimiId = 0;
+//        this.PikaShkarkimi = null;
+//        this.RrugaId = 0;
+//        this.Rruga = null;
+//        this.PikaRrugaPagesa = [];
+//        this.CreatedDate = new Date();
+//        this.UpdatedDate = new Date();
+//        this.PikaShkarkimiName = "";
+//    }
+//}
+
+//class PikaRrugaPagesa {
+//    constructor() {
+//        this.PikaRrugaPagesaId = 0;
+//        this.CurrencyId = 0;
+//        this.Currency = null;
+//        this.PikaRrugaId = 0;
+//        this.Pika = null;
+//        this.Pagesa = 0;
+//        this.ShpenzimXhiro = false;
+//        this.PagesaKryer = false;
+//        this.CreatedDate = new Date();
+//        this.UpdatedDate = new Date();
+//    }
+//}
 
             $.ajax({
                 type: "POST",
@@ -585,7 +614,7 @@
                 data: { id2: event.value, rrugaId : id },
 
                 success: function (result) {
-
+                    AddPika(result)
         //            debugger
                     //@Model.PikaPagesa= result;
                     //ilgi = result

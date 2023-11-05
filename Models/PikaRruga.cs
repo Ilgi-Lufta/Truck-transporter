@@ -15,4 +15,6 @@ public class PikaRruga
     public List<PikaRrugaPagesa> PikaRrugaPagesa { get; set; } = new List<PikaRrugaPagesa>();
     public DateTime CreatedDate { get; set; } = DateTime.Now;
     public DateTime UpdatedDate { get; set; } = DateTime.Now;
+    [NotMapped]
+    public string PikaShkarkimiName { get; set; }
 }

@@ -414,7 +414,7 @@ namespace BioLab.Controllers
                 PikaRrugaPagesa pikaRrugaPagesa = new PikaRrugaPagesa()
                 {
                     CurrencyId = _context.Currencys.FirstOrDefault().CurrencyId,
-                    PagesaKryer = true,
+                    PagesaKryer = false,
                     Pagesa = 0
                 };
                 pikaRrugaPagesas.Add(pikaRrugaPagesa);
@@ -423,7 +423,8 @@ namespace BioLab.Controllers
                     RrugaId = rruga.RrugaId,
                     PikaShkarkimi = pika,
                     PikaShkarkimiId = _context.PikaShkarkimis.FirstOrDefault().PikaShkarkimiId,
-                    PikaRrugaPagesa = pikaRrugaPagesas
+                    PikaRrugaPagesa = pikaRrugaPagesas,
+                    PikaShkarkimiName = "Zgjidh"
                 };
 
                 pikaRruga.Add(PikaRruga);
@@ -518,7 +519,7 @@ namespace BioLab.Controllers
             return paga;
         }
          [HttpPost]
-        public IActionResult CreateRrugaJoModel3(string id2, string rrugaId)
+        public PikaRruga CreateRrugaJoModel3(string id2, string rrugaId)
         {
             var test = int.Parse(id2);
             var rrugaIdd = int.Parse(rrugaId);
@@ -528,6 +529,7 @@ namespace BioLab.Controllers
             PikaRruga pika1 = new PikaRruga();
             pika1.RrugaId = rrugaIdd;
             pika1.PikaShkarkimiId = test;
+            pika1.PikaShkarkimiName = pikaShkarkimi.Emri;
             //_context.Add(pika1);
             //_context.SaveChanges();
 
@@ -538,13 +540,13 @@ namespace BioLab.Controllers
                 pikaRrugaPagesa.CurrencyId = item.CurrencyId;
                 pikaRrugaPagesa.Pagesa = item.Pagesa;
                 pikaRrugaPagesa.PagesaKryer = item.PagesaKryer;
-
+                pika1.PikaRrugaPagesa.Add(pikaRrugaPagesa);
                 //_context.Add(pikaRrugaPagesa);
                 //_context.SaveChanges();
             }
 
            
-            return View(pika1);
+            return pika1;
 
 
 
