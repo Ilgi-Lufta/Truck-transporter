@@ -152,6 +152,11 @@ function AddPika(result) {
     if (clone.childNodes[1].childNodes[1].value == "Zgjidh") {
 
         row.childNodes[1].childNodes[1].value = result.pikaShkarkimiName; //ajax  PikaRrugas[i].PikaShkarkimi?.Emri
+        var tblenght = row.childNodes[3].childNodes[1].childNodes[3].children.length;
+        for (var i = tblenght - 1; i > 0; i--) {
+            var tr = row.childNodes[3].childNodes[1].childNodes[3].children[i];
+            tr.remove();
+        }
         //check if ajx has more than one pages
         if (result.pikaRrugaPagesa.length > 1) {
             //   var tblenghtchildren = clone.childNodes[3].childNodes[1].childNodes[3].children.length;
@@ -159,6 +164,11 @@ function AddPika(result) {
 
             // get body of pagesa table
             var PikaRrugaPagesaBody0 = document.getElementById("PikaRrugaPagesaBody0");
+
+           
+
+
+
             //clone tr of pagesa
            // var tr = row.childNodes[3].childNodes[1].childNodes[3].childNodes[1].cloneNode(true);
             for (var i = 0; i < result.pikaRrugaPagesa.length-1 ; i++) {
@@ -260,14 +270,14 @@ function AddPika(result) {
            clone.childNodes[3].childNodes[1].id = "PikaRrugaPagesaTable" + length.toString();
    clone.childNodes[3].childNodes[1].childNodes[3].id = "PikaRrugaPagesaBody" + length.toString();
    clone.id = "PikaRrugadetailRow" + length.toString(); // change id or other attributes/contents
+   // // Remove Row
+    clone.childNodes[5].childNodes[1].id = length.toString();
         body.appendChild(clone);
 
 
 
 
 
-   // // Remove Row
-    clone.childNodes[5].childNodes[1].id = length.toString();
 
    // var countVM = 0; //pikarrugapagesa foreach nga ajax
 

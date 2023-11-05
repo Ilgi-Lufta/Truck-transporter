@@ -6,7 +6,7 @@
     <form asp-controller="Rruga" asp-action="CreateRrugaJoModel" method="post">
         <div class="row">
 
-            <div class="col-sm-5">
+            <div class="col-sm-6">
                 <div class="form-group">
                     <span asp-validation-for="Emri"></span>
                     <label asp-for="Emri"></label>
@@ -403,7 +403,7 @@
                 </div>
 
             </div>
-            <div class="col-sm-5">
+            <div class="col-sm-6">
 @*                <div class="form-group">
                     <span asp-validation-for="FitimeEkstra"></span>
                     <label asp-for="FitimeEkstra"></label>
@@ -443,7 +443,7 @@
                     <label asp-for="PikaPagesa"></label>
                     <input id="paragraph" asp-for="PikaPagesa" class="form-control" value="@ViewBag.pagesa">
                 </div>*@
-                ////////////////////////////
+           
                 <div class="form-group">
                     <label>Select PikaShkarkimi</label>
                     <select asp-items="@ViewBag.Pikat" onchange="sendData(this,@ViewBag.id)" class="form-control" id="pikaShkarkimiSelect"></select>
@@ -542,7 +542,7 @@
                     <tfoot>
                         <tr>
                             <td colspan="2">
-                                <button type="button" onclick="AddPika()" class="btn btn-primary" id="PikaRrugaaddRow">Add Row</button>
+                                <button type="button" hidden onclick="AddPika()" class="btn btn-primary" id="PikaRrugaaddRow">Add Row</button>
                             </td>
                         </tr>
                     </tfoot>
@@ -558,7 +558,7 @@
                     </div>*@
                   
                        
-                //////////////////////////////
+              
             </div>
             <div>
                 <button type="submit" class="btn btn-primary mt-3">Krijo Rruge</button>
