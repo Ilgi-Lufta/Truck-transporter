@@ -556,7 +556,108 @@
                         <input asp-for="Emri" class="form-control">
 
                     </div>*@
-                  
+                <table id="ShpenzimeExTable" class="table">
+                    <thead>
+                        <tr>
+                            <th>Shpenzime ekstra</th>
+                            <th>Kursi Kembimit</th>
+                            <th>Paguar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @for (var i = 0; i <= (Model.RrugaShpenzimeEkstras.Count() - 1); i++)
+                        {
+                            <tr class="ShpenzimeExdetailRow">
+
+                                <td>
+                                    <input asp-for="RrugaShpenzimeEkstras[i].Pagesa" type="text" name="RrugaShpenzimeEkstras[@i].Pagesa" class="form-control" required />
+                                </td>
+
+                                <td>
+                                    <select asp-for="RrugaShpenzimeEkstras[i].CurrencyId" name="RrugaShpenzimeEkstras[@i].CurrencyId" class="form-control" required />
+                                    @foreach (var item in @ViewBag.numberNames)
+
+                                    { @if (Model.RrugaShpenzimeEkstras[@i].CurrencyId == @item.Key ? true : false)
+                                        {
+
+                                            <option selected="selected" value="@item.Key">@item.Value</option>
+                                        }
+                                        else
+                                        {
+
+                                            <option value="@item.Key">@item.Value</option>
+                                        }
+                                    }
+                                </td>
+                                <td>
+                                    <input type="checkbox" asp-for="RrugaShpenzimeEkstras[i].PagesaKryer" name="RrugaShpenzimeEkstras[@i].PagesaKryer" style="width: 30px;height: 30px;" onchange="this.value=this.checked" />
+                                </td>
+                                <td>
+                                    <button type="button" id="@i" class="btn btn-danger ShpenzimeExremoveRow">Remove</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="2">
+                                <button type="button" class="btn btn-primary" id="ShpenzimeExaddRow">Add Row</button>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+                <table id="FitimeExTable" class="table">
+                    <thead>
+                        <tr>
+                            <th>Fitime ekstra</th>
+                            <th>Kursi Kembimit</th>
+                            <th>Paguar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @for (var i = 0; i <= (Model.RrugaFitimeEkstras.Count() - 1); i++)
+                        {
+                            <tr class="FitimeExdetailRow">
+
+                                <td>
+                                    <input asp-for="RrugaFitimeEkstras[i].Pagesa" type="text" name="RrugaFitimeEkstras[@i].Pagesa" class="form-control" required />
+                                </td>
+
+                                <td>
+                                    <select asp-for="RrugaFitimeEkstras[i].CurrencyId" name="RrugaFitimeEkstras[@i].CurrencyId" class="form-control" required />
+                                    @foreach (var item in @ViewBag.numberNames)
+
+                                    { @if (Model.RrugaFitimeEkstras[@i].CurrencyId == @item.Key ? true : false)
+                                        {
+
+                                            <option selected="selected" value="@item.Key">@item.Value</option>
+                                        }
+                                        else
+                                        {
+
+                                            <option value="@item.Key">@item.Value</option>
+                                        }
+                                    }
+                                </td>
+                                <td>
+                                    <input type="checkbox" asp-for="RrugaFitimeEkstras[i].PagesaKryer" name="RrugaFitimeEkstras[@i].PagesaKryer" style="width: 30px;height: 30px;" onchange="this.value=this.checked" />
+                                </td>
+                                <td>
+                                    <button type="button" id="@i" class="btn btn-danger FitimeExremoveRow">Remove</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="2">
+                                <button type="button" class="btn btn-primary" id="FitimeExaddRow">Add Row</button>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
                        
               
             </div>
@@ -787,7 +888,64 @@
         //});
 
 
+        $(document).ready(function () {
 
+            $('#ShpenzimeExaddRow').click(function () {
+                debugger
+                var rowCount = $('#ShpenzimeExTable tbody tr').length;
+                var newRow = $('.ShpenzimeExdetailRow').first().clone();
+                newRow.find('input[type=text]').val('');
+                newRow.find('input[type=text]').attr('name', 'RrugaShpenzimeEkstras[' + rowCount + '].Pagesa');
+                newRow.find('select').val('');
+                newRow.find('select').attr('name', 'RrugaShpenzimeEkstras[' + rowCount + '].CurrencyId');
+                //newRow.find('checkbox').val('');
+                //newRow.find('checkbox').attr('name', 'PagesaDoganaVM[' + rowCount + '].PagesaKryer');
+                newRow[0].childNodes[5].childNodes[1].attributes.name.nodeValue = "RrugaShpenzimeEkstras[" + rowCount + "].PagesaKryer";
+                newRow.find('button').val('');
+                newRow.find('button').attr('id', rowCount.toString());
+                newRow.appendTo($('#ShpenzimeExTable tbody'));
+            });
+            $(document).on('click', '.ShpenzimeExremoveRow', function () {
+                debugger
+                var rowCount = $('#ShpenzimeExTable tbody tr').length;
+                if ((rowCount) > 1) {
+                    var id = parseInt((this).id);
+                    if (id != (rowCount - 1))
+                        return
+                    $(this).closest('tr').remove();
+
+                }
+            });
+        });
+        $(document).ready(function () {
+
+            $('#FitimeExaddRow').click(function () {
+                debugger
+                var rowCount = $('#FitimeExTable tbody tr').length;
+                var newRow = $('.FitimeExdetailRow').first().clone();
+                newRow.find('input[type=text]').val('');
+                newRow.find('input[type=text]').attr('name', 'RrugaFitimeEkstras[' + rowCount + '].Pagesa');
+                newRow.find('select').val('');
+                newRow.find('select').attr('name', 'RrugaFitimeEkstras[' + rowCount + '].CurrencyId');
+                //newRow.find('checkbox').val('');
+                //newRow.find('checkbox').attr('name', 'PagesaDoganaVM[' + rowCount + '].PagesaKryer');
+                newRow[0].childNodes[5].childNodes[1].attributes.name.nodeValue = "RrugaFitimeEkstras[" + rowCount + "].PagesaKryer";
+                newRow.find('button').val('');
+                newRow.find('button').attr('id', rowCount.toString());
+                newRow.appendTo($('#FitimeExTable tbody'));
+            });
+            $(document).on('click', '.FitimeExremoveRow', function () {
+                debugger
+                var rowCount = $('#FitimeExTable tbody tr').length;
+                if ((rowCount) > 1) {
+                    var id = parseInt((this).id);
+                    if (id != (rowCount - 1))
+                        return
+                    $(this).closest('tr').remove();
+
+                }
+            });
+        });
 
 
 

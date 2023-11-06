@@ -248,7 +248,7 @@ namespace BioLab.Controllers
         }
         public IActionResult AddRrugaJoModel(int id)
         {
-            var rruga = _context.Rrugas.Include(e=>e.PikaRrugas).ThenInclude(e=>e.PikaRrugaPagesa).Include(e=>e.PagesaDoganas).Include(e => e.ShoferRrugas).ThenInclude(e => e.PagesaShoferits).FirstOrDefault(e => e.RrugaId == id);
+            var rruga = _context.Rrugas.Include(e=>e.PikaRrugas).ThenInclude(e=>e.PikaRrugaPagesa).Include(e => e.PikaRrugas).ThenInclude(e => e.PikaShkarkimi).Include(e=>e.PagesaDoganas).Include(e => e.ShoferRrugas).ThenInclude(e => e.PagesaShoferits).FirstOrDefault(e => e.RrugaId == id);
             ViewBag.id = id;
             rruga.PagesaDoganaVM = new List<PagesaDoganaVM>();
             foreach (var PagesaDoganas in rruga.PagesaDoganas)
@@ -429,6 +429,63 @@ namespace BioLab.Controllers
 
                 pikaRruga.Add(PikaRruga);
                 rruga.PikaRrugas = pikaRruga;
+            }
+            else
+            {
+                foreach (var PikaRrugas in rruga.PikaRrugas)
+                {
+                    PikaRrugas.PikaShkarkimiName = PikaRrugas.PikaShkarkimi.Emri;
+                }
+                    
+            }
+
+            //shpenzime extra
+            if (rruga.RrugaShpenzimeEkstras.Count == 0)
+            {
+                RrugaShpenzimeEkstra rrugaShpenzimeEkstra = new RrugaShpenzimeEkstra()
+                {
+                    CurrencyId = _context.Currencys.FirstOrDefault().CurrencyId,
+                    PagesaKryer = false,
+                    Pagesa = 0
+                };
+                rruga.RrugaShpenzimeEkstras.Add(rrugaShpenzimeEkstra);
+            }
+            else
+            {
+                foreach (var PagesaDoganas in rruga.RrugaShpenzimeEkstras)
+                {
+                    RrugaShpenzimeEkstra rrugaShpenzimeEkstra = new RrugaShpenzimeEkstra()
+                    {
+                        CurrencyId = PagesaDoganas.CurrencyId,
+                        Pagesa = PagesaDoganas.Pagesa,
+                        PagesaKryer = PagesaDoganas.PagesaKryer
+                    };
+                    rruga.RrugaShpenzimeEkstras.Add(rrugaShpenzimeEkstra);
+                }
+            }
+            //fitime extra
+            if (rruga.RrugaFitimeEkstras.Count == 0)
+            {
+                RrugaFitimeEkstra rrugaFitimeEkstra = new RrugaFitimeEkstra()
+                {
+                    CurrencyId = _context.Currencys.FirstOrDefault().CurrencyId,
+                    PagesaKryer = false,
+                    Pagesa = 0
+                };
+                rruga.RrugaFitimeEkstras.Add(rrugaFitimeEkstra);
+            }
+            else
+            {
+                foreach (var PagesaDoganas in rruga.RrugaFitimeEkstras)
+                {
+                    RrugaFitimeEkstra rrugaShpenzimeEkstra = new RrugaFitimeEkstra()
+                    {
+                        CurrencyId = PagesaDoganas.CurrencyId,
+                        Pagesa = PagesaDoganas.Pagesa,
+                        PagesaKryer = PagesaDoganas.PagesaKryer
+                    };
+                    rruga.RrugaFitimeEkstras.Add(rrugaShpenzimeEkstra);
+                }
             }
 
 
