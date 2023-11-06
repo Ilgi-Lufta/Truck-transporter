@@ -37,13 +37,13 @@ namespace BioLab.Controllers
                     .Where(m => searchSecondTime != DateTime.MinValue ? m.CreatedDate > searchSecondTime : true)
 
                     .ToList();
-            ViewBag.RefPrice = _context.Naftas
-                 //.Where(e => e.Litra > 0 && e.Leke > 0)
-                 .GroupBy(e => e.BlereShiturSelect == "Blere")
-                 .Select(e =>
-                 (e.Sum(b => b.Leke) / e.Sum(b => b.Litra))
-                         )
-                 .FirstOrDefault();
+            //ViewBag.RefPrice = _context.Naftas
+            //     //.Where(e => e.Litra > 0 && e.Leke > 0)
+            //     .GroupBy(e => e.BlereShiturSelect == "Blere")
+            //     .Select(e =>
+            //     (e.Sum(b => b.Leke) / e.Sum(b => b.Litra))
+            //             )
+            //     .FirstOrDefault();
 
 
 
@@ -81,37 +81,37 @@ namespace BioLab.Controllers
         {
 
           
-            if(marrngaadd.BlereShiturSelect== "Shitur")
-            {
-                var cmimRef = _context.Naftas
-                //.Where(e => e.Litra > 0 && e.Leke > 0)
-                .GroupBy(e => e.BlereShiturSelect == "Blere")
-                .Select(e =>
-                (e.Sum(b => b.Leke) / e.Sum(b => b.Litra))
-                        )
-                .FirstOrDefault();
+            //if(marrngaadd.BlereShiturSelect== "Shitur")
+            //{
+            //    var cmimRef = _context.Naftas
+            //    //.Where(e => e.Litra > 0 && e.Leke > 0)
+            //    .GroupBy(e => e.BlereShiturSelect == "Blere")
+            //    .Select(e =>
+            //    (e.Sum(b => b.Leke) / e.Sum(b => b.Litra))
+            //            )
+            //    .FirstOrDefault();
 
-                Nafta nafta = new Nafta
-                {
-                    BlereShiturSelect = "Blere",
-                    Litra = (0-marrngaadd.Litra),
-                    Cmimi = cmimRef,
-                    Leke= 0-(cmimRef* marrngaadd.Litra)
-                };
+            //    Nafta nafta = new Nafta
+            //    {
+            //        BlereShiturSelect = "Blere",
+            //        Litra = (0-marrngaadd.Litra),
+            //        Cmimi = cmimRef,
+            //        Leke= 0-(cmimRef* marrngaadd.Litra)
+            //    };
 
-                _context.Add(nafta);
-                _context.SaveChanges();
-            }
+            //    _context.Add(nafta);
+            //    _context.SaveChanges();
+            //}
           
 
 
-            if (ModelState.IsValid)
-            {
-                marrngaadd.Leke = marrngaadd.Litra * marrngaadd.Cmimi;
-                _context.Add(marrngaadd);
-                _context.SaveChanges();
-                return RedirectToAction("AllNafta");
-            }
+            //if (ModelState.IsValid)
+            //{
+            //    marrngaadd.Leke = marrngaadd.Litra * marrngaadd.Cmimi;
+            //    _context.Add(marrngaadd);
+            //    _context.SaveChanges();
+            //    return RedirectToAction("AllNafta");
+            //}
             return View("AddNafta");
         }
         public IActionResult EditNafta(int id)
@@ -149,7 +149,7 @@ namespace BioLab.Controllers
 
                 //marrim nga db anzlizen qe duam te bejm edit dhe vendosim vlerat qe marim nga forma
                 Nafta editing = _context.Naftas.FirstOrDefault(p => p.NaftaId == id);
-                editing.Cmimi = marrngaadd.Cmimi;
+               // editing.Cmimi = marrngaadd.Cmimi;
                 editing.Litra = marrngaadd.Litra;
                 editing.BlereShiturSelect = marrngaadd.BlereShiturSelect;
 

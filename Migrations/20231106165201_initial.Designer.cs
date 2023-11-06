@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BioLab.Migrations
 {
     [DbContext(typeof(MyContext))]
-    [Migration("20231101234808_test")]
-    partial class test
+    [Migration("20231106165201_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -52,57 +52,37 @@ namespace BioLab.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<decimal>("Cmimi")
-                        .HasColumnType("decimal(65,30)");
-
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<decimal>("Leke")
-                        .HasColumnType("decimal(65,30)");
+                    b.Property<int>("CurrencyId")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("Litra")
                         .HasColumnType("decimal(65,30)");
 
+                    b.Property<decimal>("Pagesa")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<bool>("PagesaKryer")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<int?>("RrugaId")
                         .HasColumnType("int");
+
+                    b.Property<bool>("ShpenzimXhiro")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("NaftaId");
 
-                    b.HasIndex("RrugaId")
-                        .IsUnique();
-
-                    b.ToTable("Naftas");
-                });
-
-            modelBuilder.Entity("BioLab.Models.NaftaRruga", b =>
-                {
-                    b.Property<int>("NaftaRrugaId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<int>("NaftaId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RrugaId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("UpdatedDate")
-                        .HasColumnType("datetime(6)");
-
-                    b.HasKey("NaftaRrugaId");
-
-                    b.HasIndex("NaftaId");
+                    b.HasIndex("CurrencyId");
 
                     b.HasIndex("RrugaId");
 
-                    b.ToTable("NaftaRrugas");
+                    b.ToTable("Naftas");
                 });
 
             modelBuilder.Entity("BioLab.Models.PagesaDogana", b =>
@@ -139,42 +119,6 @@ namespace BioLab.Migrations
                     b.HasIndex("RrugaId");
 
                     b.ToTable("PagesaDoganas");
-                });
-
-            modelBuilder.Entity("BioLab.Models.PagesaNafta", b =>
-                {
-                    b.Property<int>("PagesaNaftaId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<int>("CurrencyId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("NaftaRrugaId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("Pagesa")
-                        .HasColumnType("decimal(65,30)");
-
-                    b.Property<bool>("PagesaKryer")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<bool>("ShpenzimXhiro")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<DateTime>("UpdatedDate")
-                        .HasColumnType("datetime(6)");
-
-                    b.HasKey("PagesaNaftaId");
-
-                    b.HasIndex("CurrencyId");
-
-                    b.HasIndex("NaftaRrugaId");
-
-                    b.ToTable("PagesaNafta");
                 });
 
             modelBuilder.Entity("BioLab.Models.PagesaPikaShkarkimit", b =>
@@ -360,9 +304,6 @@ namespace BioLab.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<decimal>("Fitime")
-                        .HasColumnType("decimal(65,30)");
-
                     b.Property<decimal>("FitimeEkstra")
                         .HasColumnType("decimal(65,30)");
 
@@ -376,12 +317,6 @@ namespace BioLab.Migrations
                         .HasColumnType("decimal(65,30)");
 
                     b.Property<decimal>("PagesaShoferit")
-                        .HasColumnType("decimal(65,30)");
-
-                    b.Property<decimal>("Shpenzime")
-                        .HasColumnType("decimal(65,30)");
-
-                    b.Property<decimal>("Xhiro")
                         .HasColumnType("decimal(65,30)");
 
                     b.Property<string>("shenime")
@@ -455,6 +390,10 @@ namespace BioLab.Migrations
                     b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<string>("shenime")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.HasKey("RrugaFitimeEkstraId");
 
                     b.HasIndex("CurrencyId");
@@ -490,6 +429,10 @@ namespace BioLab.Migrations
 
                     b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<string>("shenime")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.HasKey("RrugaShpenzimeEkstraId");
 
@@ -588,28 +531,17 @@ namespace BioLab.Migrations
 
             modelBuilder.Entity("BioLab.Models.Nafta", b =>
                 {
-                    b.HasOne("BioLab.Models.Rruga", "Rruga")
-                        .WithOne("Nafta")
-                        .HasForeignKey("BioLab.Models.Nafta", "RrugaId");
-
-                    b.Navigation("Rruga");
-                });
-
-            modelBuilder.Entity("BioLab.Models.NaftaRruga", b =>
-                {
-                    b.HasOne("BioLab.Models.Nafta", "Nafta")
-                        .WithMany("NaftaRrugas")
-                        .HasForeignKey("NaftaId")
+                    b.HasOne("BioLab.Models.Currency", "Currency")
+                        .WithMany("Naftas")
+                        .HasForeignKey("CurrencyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("BioLab.Models.Rruga", "Rruga")
-                        .WithMany("NaftaRrugas")
-                        .HasForeignKey("RrugaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("Nafta")
+                        .HasForeignKey("RrugaId");
 
-                    b.Navigation("Nafta");
+                    b.Navigation("Currency");
 
                     b.Navigation("Rruga");
                 });
@@ -631,25 +563,6 @@ namespace BioLab.Migrations
                     b.Navigation("Currency");
 
                     b.Navigation("Rruga");
-                });
-
-            modelBuilder.Entity("BioLab.Models.PagesaNafta", b =>
-                {
-                    b.HasOne("BioLab.Models.Currency", "Currency")
-                        .WithMany("PagesaNaftas")
-                        .HasForeignKey("CurrencyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BioLab.Models.NaftaRruga", "NaftaRruga")
-                        .WithMany()
-                        .HasForeignKey("NaftaRrugaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Currency");
-
-                    b.Navigation("NaftaRruga");
                 });
 
             modelBuilder.Entity("BioLab.Models.PagesaPikaShkarkimit", b =>
@@ -821,9 +734,9 @@ namespace BioLab.Migrations
 
             modelBuilder.Entity("BioLab.Models.Currency", b =>
                 {
-                    b.Navigation("PagesaDoganas");
+                    b.Navigation("Naftas");
 
-                    b.Navigation("PagesaNaftas");
+                    b.Navigation("PagesaDoganas");
 
                     b.Navigation("PagesaPikaShkarkimits");
 
@@ -836,11 +749,6 @@ namespace BioLab.Migrations
                     b.Navigation("RrugaFitimes");
 
                     b.Navigation("RrugaShpenzimeEkstras");
-                });
-
-            modelBuilder.Entity("BioLab.Models.Nafta", b =>
-                {
-                    b.Navigation("NaftaRrugas");
                 });
 
             modelBuilder.Entity("BioLab.Models.PikaRruga", b =>
@@ -858,8 +766,6 @@ namespace BioLab.Migrations
             modelBuilder.Entity("BioLab.Models.Rruga", b =>
                 {
                     b.Navigation("Nafta");
-
-                    b.Navigation("NaftaRrugas");
 
                     b.Navigation("PagesaDoganas");
 

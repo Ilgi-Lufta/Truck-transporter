@@ -487,6 +487,32 @@ namespace BioLab.Controllers
                     rruga.RrugaFitimeEkstras.Add(rrugaShpenzimeEkstra);
                 }
             }
+            //Nafta
+            if (rruga.Nafta.Count == 0)
+            {
+                Nafta nafta = new Nafta()
+                {
+                    CurrencyId = _context.Currencys.FirstOrDefault().CurrencyId,
+                    PagesaKryer = false,
+                    Pagesa = 0,
+                    Litra = 0,
+                };
+                rruga.Nafta.Add(nafta);
+            }
+            else
+            {
+                foreach (var PagesaDoganas in rruga.Nafta)
+                {
+                    Nafta nafta = new Nafta()
+                    {
+                        CurrencyId = PagesaDoganas.CurrencyId,
+                        Pagesa = PagesaDoganas.Pagesa,
+                        PagesaKryer = PagesaDoganas.PagesaKryer,
+                        Litra = PagesaDoganas.Litra
+                    };
+                    rruga.Nafta.Add(nafta);
+                }
+            }
 
 
 
