@@ -1,0 +1,57 @@
+@model ZbritShtoGjendja
+<partial name="NavPartial" />
+<div class="mt-5 container">
+    <h1 class="text-center mb-5">Shto nje shitje/blerje nafte</h1>
+    <div class="row">
+        <form asp-controller="Gjendja" asp-action="CreateGjendja" method="post">
+            <div class="col-sm-6">
+                <div class="form-group">
+
+                    <span asp-validation-for="Pagesa"></span>
+                    <label asp-for="Pagesa"></label>
+                    <input asp-for="Pagesa" type="text" class="form-control" required />
+
+                </div>
+
+                @*
+                <span asp-validation-for="CurrencyId"></span>
+                <label asp-for="CurrencyId"></label>
+                <select asp-for="CurrencyId" class="form-control" required />
+                @foreach (var item in @ViewBag.numberNames)
+                {
+                <option value="@item.Key">@item.Value</option>
+                }*@
+                <div class="form-group mb-2">
+
+                    <span asp-validation-for="CurrencyId"></span>
+                    <label asp-for="CurrencyId"></label>
+                    <select asp-for="CurrencyId" asp-items="@ViewBag.numberNames" class="form-control"></select>
+                </div>
+
+                <div class="form-group">
+
+                    <span asp-validation-for="Shenime"></span>
+                    <label asp-for="Shenime"></label>
+                    <input asp-for="Shenime" type="text" class="form-control" required />
+                </div>
+
+                <div class="form-group">
+
+                    <span asp-validation-for="ZbritShtoSelect"></span>
+                    <label asp-for="ZbritShtoSelect"></label>
+                    <select asp-for="ZbritShtoSelect" asp-items="@ViewBag.blereShitur" class="form-control"></select>
+                </div>
+
+            </div>
+            <div class="col-sm-6">
+                <button type="submit" class="btn btn-primary mt-3">Shto</button>
+                <a asp-controller="Gjendja" asp-action="AllGjendja" class="btn btn-primary mt-3 mr-3"> Kthehu pas</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+
+
