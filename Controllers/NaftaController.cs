@@ -73,6 +73,23 @@ namespace BioLab.Controllers
 
             ViewBag.blereShitur = blereShitur;
 
+            var AllCurrency2 = _context.Currencys.ToList();
+            if (AllCurrency2 != null)
+            {
+               // IDictionary<int, string> numberNames = new Dictionary<int, string>();
+                List<SelectListItem> numberNames = new List<SelectListItem>();
+                foreach (var currency in AllCurrency2)
+                {
+                    numberNames.Add(new SelectListItem
+                    {
+                        Text = currency.CurrencyUnit,
+                        Value = currency.CurrencyId.ToString()
+
+                    });
+                }
+                ViewBag.numberNames = numberNames;
+            }
+
             return View();
         }
 
@@ -80,7 +97,7 @@ namespace BioLab.Controllers
         public IActionResult CreateNafta(Nafta marrngaadd)
         {
 
-          
+
             //if(marrngaadd.BlereShiturSelect== "Shitur")
             //{
             //    var cmimRef = _context.Naftas
@@ -102,16 +119,15 @@ namespace BioLab.Controllers
             //    _context.Add(nafta);
             //    _context.SaveChanges();
             //}
-          
 
 
-            //if (ModelState.IsValid)
-            //{
-            //    marrngaadd.Leke = marrngaadd.Litra * marrngaadd.Cmimi;
-            //    _context.Add(marrngaadd);
-            //    _context.SaveChanges();
-            //    return RedirectToAction("AllNafta");
-            //}
+
+            if (ModelState.IsValid)
+            {
+                _context.Naftas.Add(marrngaadd);
+                _context.SaveChanges();
+                return RedirectToAction("AllNafta");
+            }
             return View("AddNafta");
         }
         public IActionResult EditNafta(int id)
