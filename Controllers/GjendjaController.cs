@@ -45,7 +45,7 @@ namespace BioLab.Controllers
             //             )
             //     .FirstOrDefault();
 
-            ViewBag.Shofers = _context.ZbritShtoGjendjas.ToList();
+            ViewBag.Shofers = _context.ZbritShtoGjendjas.Include(e=>e.Currency).OrderBy(e=>e.CreatedDate).ToList();
 
             return View();
         }
@@ -134,12 +134,13 @@ namespace BioLab.Controllers
         {
             List<SelectListItem> blereShitur = new List<SelectListItem>();
 
-
+            ZbritShtoGjendja Editing = _context.ZbritShtoGjendjas.FirstOrDefault(p => p.ZbritShtoGjendjaId == id);
+            
             blereShitur.Add(new SelectListItem
             {
                 Text = "Zbrit",
                 Value = "Zbrit",
-                Selected = true,
+                Selected = Editing.ZbritShtoSelect == "Zbrit" ? true:false
 
             });
 
@@ -147,9 +148,10 @@ namespace BioLab.Controllers
             {
                 Text = "Shto",
                 Value = "Shto",
-
+                Selected = Editing.ZbritShtoSelect == "Shto" ? true : false
             }
            );
+            ViewBag.blereShitur = blereShitur;
             ViewBag.id = id;
             var AllCurrency2 = _context.Currencys.ToList();
             if (AllCurrency2 != null)
@@ -169,7 +171,6 @@ namespace BioLab.Controllers
             }
 
 
-            ZbritShtoGjendja Editing = _context.ZbritShtoGjendjas.FirstOrDefault(p => p.ZbritShtoGjendjaId == id);
 
             return View(Editing);
         }
@@ -178,18 +179,20 @@ namespace BioLab.Controllers
         public IActionResult EditedGjendja(int id, ZbritShtoGjendja marrngaadd)
         {
 
-            //if (ModelState.IsValid)
-            //{
+            if (ModelState.IsValid)
+            {
 
-            //    //marrim nga db anzlizen qe duam te bejm edit dhe vendosim vlerat qe marim nga forma
-            //    Nafta editing = _context.ZbritShtoGjendjas.FirstOrDefault(p => p.NaftaId == id);
-            //   // editing.Cmimi = marrngaadd.Cmimi;
-            //    editing.Litra = marrngaadd.Litra;
-            //    editing.BlereShiturSelect = marrngaadd.BlereShiturSelect;
+                //marrim nga db anzlizen qe duam te bejm edit dhe vendosim vlerat qe marim nga forma
+                ZbritShtoGjendja editing = _context.ZbritShtoGjendjas.FirstOrDefault(p => p.ZbritShtoGjendjaId == id);
+                // editing.Cmimi = marrngaadd.Cmimi;
+                editing.Shenime = marrngaadd.Shenime;
+                editing.ZbritShtoSelect = marrngaadd.ZbritShtoSelect;
+                editing.CurrencyId = marrngaadd.CurrencyId;
+                editing.Pagesa = marrngaadd.Pagesa;
 
-            //    _context.SaveChanges();
-            //    return RedirectToAction("AllGjendja");
-            //}
+                _context.SaveChanges();
+                return RedirectToAction("AllGjendja");
+            }
             return RedirectToAction("EditGjendja", new { id = id });
         }
         public IActionResult FshiGjendja(int id)

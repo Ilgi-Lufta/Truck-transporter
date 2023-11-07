@@ -31,15 +31,16 @@
                     @foreach (var item in ViewBag.Shofers)
                     {
                         <tr>
-                       @*     <td scope="row"> @item.Litra</td>
-                          <td scope="row"> @item.Cmimi</td>
-                            <td scope="row"> @item.Leke</td>
-                            <td scope="row"> @item.BlereShiturSelect</td>*@
+                            <td scope="row"> @item.Pagesa</td>
+                            <td scope="row"> @item.Shenime</td>
+                            <td scope="row"> @item.ZbritShtoSelect</td>
+                            <td scope="row"> @item.Currency.CurrencyUnit</td>
                             
 
 
                             <td scope="row">
-                                <a class="btn btn-primary" asp-action="EditGjendja" asp-controller="Gjendja" asp-route-id="@item.ZbritShtoGjendjaId Edito</a>
+                                <a class="btn btn-primary" asp-action="EditGjendja" asp-controller="Gjendja" asp-route-id="@item.ZbritShtoGjendjaId "> Edito</a>
+
                             <a class="btn btn-danger" asp-action="FshiGjendja" asp-controller="Gjendja" asp-route-id="@item.ZbritShtoGjendjaId"> Fshi</a>
 
                             </td>
