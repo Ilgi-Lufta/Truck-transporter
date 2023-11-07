@@ -27,6 +27,7 @@ public class MyContext : DbContext
    // public DbSet<NaftaRruga> NaftaRrugas { get; set; }
     public DbSet<Currency> Currencys { get; set; }
     public DbSet<PikaRrugaPagesa> PikaRrugaPagesas { get; set; }
+    public DbSet<BlereShitur> BlereShiturs { get; set; }
 
 
 }

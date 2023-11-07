@@ -96,34 +96,51 @@ namespace BioLab.Controllers
         [HttpPost]
         public IActionResult CreateNafta(Nafta marrngaadd)
         {
+            BlereShitur blereShitur = new BlereShitur();
+            var litrablere = _context.Naftas.Where(e => e.BlereShiturSelect == "Blere")
+              //.Where(e => e.Litra > 0 && e.Leke > 0)
+              .GroupBy(e => e.CurrencyId == marrngaadd.CurrencyId)
+              .Select(e => e.Sum(b => b.Litra)).FirstOrDefault();
+            var litraShitur = _context.Naftas.Where(e => e.BlereShiturSelect == "Shitur")
+            //.Where(e => e.Litra > 0 && e.Leke > 0)
+            .GroupBy(e => e.CurrencyId == marrngaadd.CurrencyId)
+            .Select(e => e.Sum(b => b.Litra)).FirstOrDefault();
+            var litra = litrablere - litraShitur;
 
+            if (litra < marrngaadd.Litra)
+            {
+                return View("AddNafta");
+            }
 
-            //if(marrngaadd.BlereShiturSelect== "Shitur")
-            //{
-            //    var cmimRef = _context.Naftas
-            //    //.Where(e => e.Litra > 0 && e.Leke > 0)
-            //    .GroupBy(e => e.BlereShiturSelect == "Blere")
-            //    .Select(e =>
-            //    (e.Sum(b => b.Leke) / e.Sum(b => b.Litra))
-            //            )
-            //    .FirstOrDefault();
+            if (marrngaadd.BlereShiturSelect == "Shitur")
+            {
+                var cmimRef = _context.Naftas.Where(e=>e.BlereShiturSelect == "Blere")
+                //.Where(e => e.Litra > 0 && e.Leke > 0)
+                .GroupBy(e => e.CurrencyId == marrngaadd.CurrencyId)
+                .Select(e =>
+                (e.Sum(b => b.Pagesa) / e.Sum(b => b.Litra))
+                        )
+                .FirstOrDefault();
+               
+                _context.Add(blereShitur);
+                _context.SaveChanges();
 
-            //    Nafta nafta = new Nafta
-            //    {
-            //        BlereShiturSelect = "Blere",
-            //        Litra = (0-marrngaadd.Litra),
-            //        Cmimi = cmimRef,
-            //        Leke= 0-(cmimRef* marrngaadd.Litra)
-            //    };
+                Nafta nafta = new Nafta
+                {
+                    BlereShiturSelect = "Blere",
+                    Litra = (0 - marrngaadd.Litra),
+                    Pagesa = 0 - (cmimRef * marrngaadd.Litra),
+                    CurrencyId = marrngaadd.CurrencyId,
+                    BlereShiturId = blereShitur.BlereShiturId
+                };
 
-            //    _context.Add(nafta);
-            //    _context.SaveChanges();
-            //}
-
-
+                _context.Add(nafta);
+                _context.SaveChanges();
+            }
 
             if (ModelState.IsValid)
             {
+                marrngaadd.BlereShiturId = blereShitur.BlereShiturId;
                 _context.Naftas.Add(marrngaadd);
                 _context.SaveChanges();
                 return RedirectToAction("AllNafta");
@@ -149,8 +166,27 @@ namespace BioLab.Controllers
                 Text = "Blere",
                 Value = "Blere",
 
+            });
+
+            ViewBag.blereShitur = blereShitur;
+
+            var AllCurrency2 = _context.Currencys.ToList();
+            if (AllCurrency2 != null)
+            {
+                // IDictionary<int, string> numberNames = new Dictionary<int, string>();
+                List<SelectListItem> numberNames = new List<SelectListItem>();
+                foreach (var currency in AllCurrency2)
+                {
+                    numberNames.Add(new SelectListItem
+                    {
+                        Text = currency.CurrencyUnit,
+                        Value = currency.CurrencyId.ToString()
+
+                    });
+                }
+                ViewBag.numberNames = numberNames;
             }
-           );
+
             Nafta Editing = _context.Naftas.FirstOrDefault(p => p.NaftaId == id);
 
             return View(Editing);
@@ -160,12 +196,49 @@ namespace BioLab.Controllers
         public IActionResult EditedNafta(int id, Nafta marrngaadd)
         {
 
+            ////// to be discused
+                                        var litrablere = _context.Naftas.Where(e => e.BlereShiturSelect == "Blere")
+                              //.Where(e => e.Litra > 0 && e.Leke > 0)
+                              .GroupBy(e => e.CurrencyId == marrngaadd.CurrencyId)
+                              .Select(e => e.Sum(b => b.Litra)).FirstOrDefault();
+                                        var litraShitur = _context.Naftas.Where(e => e.BlereShiturSelect == "Shitur")
+                                        //.Where(e => e.Litra > 0 && e.Leke > 0)
+                                        .GroupBy(e => e.CurrencyId == marrngaadd.CurrencyId)
+                                        .Select(e => e.Sum(b => b.Litra)).FirstOrDefault();
+                                        var litra = litrablere - litraShitur;
+
+                                        if (litra < marrngaadd.Litra)
+                                        {
+                                            return RedirectToAction("EditNafta", new { id = id });
+                                        }
+            //////to be discused
+
+            //get cmim  ref
+            var cmimRef = _context.Naftas.Where(e => e.BlereShiturSelect == "Blere")
+               //.Where(e => e.Litra > 0 && e.Leke > 0)
+               .GroupBy(e => e.CurrencyId == marrngaadd.CurrencyId)
+               .Select(e =>
+               (e.Sum(b => b.Pagesa) / e.Sum(b => b.Litra))
+                       )
+               .FirstOrDefault();
+            //get editing negativ nafta end edit
+            var EditingBlereNegativ = _context.Naftas.FirstOrDefault(p => p.BlereShiturId == marrngaadd.BlereShiturId && p.BlereShiturSelect == "Blere");
+            EditingBlereNegativ = new Nafta
+            {
+                BlereShiturSelect = "Blere",
+                Litra = (0 - marrngaadd.Litra),
+                Pagesa = 0 - (cmimRef * marrngaadd.Litra),
+                CurrencyId = marrngaadd.CurrencyId,
+                BlereShiturId = marrngaadd.BlereShiturId
+            };
             if (ModelState.IsValid)
             {
+                //edit marr nga add
 
                 //marrim nga db anzlizen qe duam te bejm edit dhe vendosim vlerat qe marim nga forma
                 Nafta editing = _context.Naftas.FirstOrDefault(p => p.NaftaId == id);
-               // editing.Cmimi = marrngaadd.Cmimi;
+                editing.Pagesa = marrngaadd.Pagesa;
+                editing.CurrencyId = marrngaadd.CurrencyId;
                 editing.Litra = marrngaadd.Litra;
                 editing.BlereShiturSelect = marrngaadd.BlereShiturSelect;
 
@@ -178,8 +251,14 @@ namespace BioLab.Controllers
         {
 
             //fshijme analizen e marre nga db me analizId si parametri id
-            Nafta removingShofer = _context.Naftas.FirstOrDefault(p => p.NaftaId == id);
-            _context.Naftas.Remove(removingShofer);
+            Nafta nafta = _context.Naftas.FirstOrDefault(p => p.NaftaId == id);
+            if (nafta.BlereShiturId != null || nafta.BlereShiturId != 0)
+            {
+                var BlereNegativ = _context.Naftas.FirstOrDefault(p => p.BlereShiturId == nafta.BlereShiturId && p.BlereShiturSelect == "Blere");
+                _context.Naftas.Remove(BlereNegativ);
+            }
+
+            _context.Naftas.Remove(nafta);
             _context.SaveChanges();
             return RedirectToAction("AllNafta");
 

@@ -17,7 +17,9 @@ public class Nafta
     public bool ShpenzimXhiro { get; set; }
     public bool PagesaKryer { get; set; }
     public int? RrugaId { get; set; }
-    public Rruga? Rruga { get; set; } 
+    public Rruga? Rruga { get; set; }
+    public int? BlereShiturId { get; set; }
+    public BlereShitur? BlereShitur { get; set; }
     public DateTime CreatedDate { get; set; } = DateTime.Now;
     public DateTime UpdatedDate { get; set; } = DateTime.Now;
 
