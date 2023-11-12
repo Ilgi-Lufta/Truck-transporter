@@ -5,16 +5,63 @@
 <div class="row">
         <form asp-controller="PikaShkarkimit" asp-action="EditedPika" asp-route-id="@ViewBag.id" method="post">
     <div class="col-sm-6">
-              <div class="form-group">
-                  <span asp-validation-for="Emri"></span>
-                  <label asp-for="Emri"></label>
-                  <input asp-for="Emri" class="form-control" >
-                </div>
+
                 <div class="form-group">
-                    <span asp-validation-for="Pagesa"></span>
-                    <label asp-for="Pagesa"></label>
-                    <input asp-for="Pagesa" class="form-control">
+                    <span asp-validation-for="Emri"></span>
+                    <label asp-for="Emri"></label>
+                    <input asp-for="Emri" class="form-control">
+
                 </div>
+
+                <table id="DoganaTable" class="table">
+                    <thead>
+                        <tr>
+                            <th>Pagesa Pika</th>
+                            <th>Kursi Kembimit</th>
+                            <th>Paguar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (var i = 0; i <= (Model.PagesaPikaShkarkimits.Count() - 1); i++)
+                        {
+                        <tr class="DoganadetailRow">
+                            <td>
+                                    <input asp-for="PagesaPikaShkarkimits[i].Pagesa"  type="text" name="PagesaPikaShkarkimits[@i].Pagesa" class="form-control" required />
+                            </td>
+                            <td>
+                                <select name="PagesaPikaShkarkimits[@i].CurrencyId" class="form-control" required />
+                                @foreach (var item in @ViewBag.numberNames)
+                                {
+                                        @if (Model.PagesaPikaShkarkimits[@i].CurrencyId == @item.Key ? true : false)
+                                        {
+
+                                            <option selected="selected" value="@item.Key">@item.Value</option>
+                                        }
+                                        else
+                                        {
+
+                                            <option value="@item.Key">@item.Value</option>
+                                        }
+
+                                }
+                            </td>
+                            <td>
+                                    <input asp-for="PagesaPikaShkarkimits[i].PagesaKryer" type="checkbox" name="PagesaPikaShkarkimits[@i].PagesaKryer" style="width: 30px;height: 30px;"  onchange="this.value=this.checked" />
+                            </td>
+                            <td>
+                                <button type="button" id="@i" class="btn btn-danger DoganaremoveRow">Remove</button>
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="2">
+                                <button type="button" class="btn btn-primary" id="DoganaaddRow">Add Row</button>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
     </div>
     <div class="col-sm-6">
       <button type="submit" class="btn btn-primary mt-3">Ndrysho te dhenat</button>
@@ -24,3 +71,36 @@
 </div> 
 </div>
 
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+
+            $('#DoganaaddRow').click(function () {
+                var rowCount = $('#DoganaTable tbody tr').length;
+                var newRow = $('.DoganadetailRow').first().clone();
+                newRow.find('input[type=text]').val('');
+                newRow.find('input[type=text]').attr('name', 'PagesaPikaShkarkimits[' + rowCount + '].Pagesa');
+                newRow.find('select').val('');
+                newRow.find('select').attr('name', 'PagesaPikaShkarkimits[' + rowCount + '].CurrencyId');
+                //newRow.find('checkbox').val('');
+                //newRow.find('checkbox').attr('name', 'PagesaDoganaVM[' + rowCount + '].PagesaKryer');
+                newRow[0].childNodes[5].childNodes[1].attributes.name.nodeValue = "PagesaPikaShkarkimits[" + rowCount + "].PagesaKryer";
+                newRow.find('button').val('');
+                newRow.find('button').attr('id', rowCount.toString());
+                newRow.appendTo($('#DoganaTable tbody'));
+            });
+            $(document).on('click', '.DoganaremoveRow', function () {
+                debugger
+                var rowCount = $('#DoganaTable tbody tr').length;
+                if ((rowCount ) > 1) {
+                    var id = parseInt((this).id);
+                    if (id != (rowCount - 1))
+                        return
+                    $(this).closest('tr').remove();
+
+                }
+            });
+        });
+
+    </script>
+    }

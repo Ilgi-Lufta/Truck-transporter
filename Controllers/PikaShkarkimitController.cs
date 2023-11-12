@@ -96,8 +96,17 @@ namespace BioLab.Controllers
         public IActionResult EditPika(int id)
         {
             ViewBag.id = id;
-            PikaShkarkimi Editing = _context.PikaShkarkimis.FirstOrDefault(p => p.PikaShkarkimiId == id);
-
+            PikaShkarkimi Editing = _context.PikaShkarkimis.Include(p=>p.PagesaPikaShkarkimits).FirstOrDefault(p => p.PikaShkarkimiId == id);
+            var AllCurrency = _context.Currencys.ToList();
+            if (AllCurrency != null)
+            {
+                IDictionary<int, string> numberNames = new Dictionary<int, string>();
+                foreach (var currency in AllCurrency)
+                {
+                    numberNames.Add(currency.CurrencyId, currency.CurrencyUnit);
+                }
+                ViewBag.numberNames = numberNames;
+            }
             return View(Editing);
         }
 
@@ -116,10 +125,39 @@ namespace BioLab.Controllers
                     return RedirectToAction("EditPika", new { id = id });
                 }
                 //marrim nga db anzlizen qe duam te bejm edit dhe vendosim vlerat qe marim nga forma
-                PikaShkarkimi editing = _context.PikaShkarkimis.FirstOrDefault(p => p.PikaShkarkimiId == id);
+                PikaShkarkimi editing = _context.PikaShkarkimis.Include(p=>p.PagesaPikaShkarkimits).FirstOrDefault(p => p.PikaShkarkimiId == id);
+                List<int> pagpikashkarkId = new List<int>();
+
+                foreach (var item in editing.PagesaPikaShkarkimits)
+                {
+                   var pagpikashakrkimi = _context.PagesaPikaShkarkimits.FirstOrDefault(e => e.PagesaPikaShkarkimitId == item.PagesaPikaShkarkimitId).PagesaPikaShkarkimitId;
+                    pagpikashkarkId.Add(pagpikashakrkimi);
+                }
+                foreach (var item in pagpikashkarkId)
+                {
+                   var pagpikashakrkimi = _context.PagesaPikaShkarkimits.FirstOrDefault(e => e.PagesaPikaShkarkimitId == item);
+
+                _context.PagesaPikaShkarkimits.Remove(pagpikashakrkimi);
+                }
+                    _context.SaveChanges();
                 editing.Emri = marrngaadd.Emri;
-                editing.Pagesa = marrngaadd.Pagesa;
-               
+                //editing.Pagesa = marrngaadd.Pagesa;
+
+                foreach (var PagesaPikaShkarkimitsVM in marrngaadd.PagesaPikaShkarkimits)
+                {
+                    PagesaPikaShkarkimit PagesaPikaShkarkimit = new PagesaPikaShkarkimit()
+                    {
+                        CurrencyId = PagesaPikaShkarkimitsVM.CurrencyId,
+                        Pagesa = PagesaPikaShkarkimitsVM.Pagesa,
+                        PagesaKryer = PagesaPikaShkarkimitsVM.PagesaKryer,
+                        PikaShkarkimiId = id
+                    };
+                    // marrngaadd.PagesaPikaShkarkimits.Add(PagesaPikaShkarkimit);
+                    _context.Add(PagesaPikaShkarkimit);
+                    _context.SaveChanges();
+                }
+
+
                 _context.SaveChanges();
                 return RedirectToAction("AllPika");
             }

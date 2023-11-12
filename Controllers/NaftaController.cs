@@ -22,6 +22,10 @@ namespace BioLab.Controllers
                      .Where(m => searchFirstTime != DateTime.MinValue ? m.CreatedDate > searchFirstTime : true)
                     .Where(m => searchSecondTime != DateTime.MinValue ? m.CreatedDate < searchSecondTime : true)
                 .ToList();
+            foreach (var shofer in shofers)
+            {
+                shofer.Cmimi = shofer.Pagesa / shofer.Litra;
+            }
 
             if (shofers != null)
             {
