@@ -9,17 +9,313 @@
                     <span asp-validation-for="Emri"></span>
                     <label asp-for="Emri"></label>
                     <input asp-for="Emri" class="form-control">
-@*                </div>
-                <div class="form-group">
-                    <span asp-validation-for="Dogana"></span>
-                    <label asp-for="Dogana"></label>
-                    <input asp-for="Dogana" class="form-control">
-                </div>*@
+                </div>
                 <div class="form-group">
                     <span asp-validation-for="NaftaShpenzuarLitra"></span>
                     <label asp-for="NaftaShpenzuarLitra"></label>
                     <input asp-for="NaftaShpenzuarLitra" class="form-control">
                 </div>
+                <table id="DoganaTable" class="table">
+                    <thead>
+                        <tr>
+                            <th>Pagesa Doganes</th>
+                            <th>Kursi Kembimit</th>
+                            <th>Paguar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @for (var i = 0; i <= (Model.PagesaDoganaVM.Count() - 1); i++)
+                        {
+                            <tr class="DoganadetailRow">
+
+                                <td>
+                                    <input asp-for="PagesaDoganaVM[i].Pagesa" type="text" name="PagesaDoganaVM[@i].Pagesa" class="form-control" required />
+                                </td>
+
+                                <td>
+                                    <select asp-for="PagesaDoganaVM[i].CurrencyId" name="PagesaDoganaVM[@i].CurrencyId" class="form-control" required />
+                                    @foreach (var item in @ViewBag.numberNames)
+
+                                    { @if (Model.PagesaDoganaVM[@i].CurrencyId == @item.Key ? true : false)
+                                        {
+
+                                            <option selected="selected" value="@item.Key">@item.Value</option>
+                                        }
+                                        else
+                                        {
+
+                                            <option value="@item.Key">@item.Value</option>
+                                        }
+                                    }
+                                </td>
+                                <td>
+                                    <input type="checkbox" asp-for="PagesaDoganaVM[i].PagesaKryer" name="PagesaDoganaVM[@i].PagesaKryer" style="width: 30px;height: 30px;" onchange="this.value=this.checked" />
+                                </td>
+                                <td>
+                                    <button type="button" id="@i" class="btn btn-danger DoganaremoveRow">Remove</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="2">
+                                <button type="button" class="btn btn-primary" id="DoganaaddRow">Add Row</button>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+                <table id="ShoferRrugaTable" border="1" class="table">
+                    <thead>
+                        <tr>
+                            <th>shoferi</th>
+                            <th>Lloji pageses</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ShoferRrugadetailBody">
+                        @for (var i = 0; i <= (Model.ShoferitRrugaVM.Count() - 1); i++)
+                        {
+                            <tr id="ShoferRrugadetailRow0" class="ShoferRrugadetailRow">
+                                <td>
+                                
+                                    <select asp-for="ShoferitRrugaVM[i].ShoferId" name="ShoferitRrugaVM[@i].ShoferId" class="form-control" required />
+                                    @foreach (var item in @ViewBag.ShoferIdNames)
+
+                                    { @if (Model.ShoferitRrugaVM[@i].ShoferId == @item.Key ? true : false)
+                                        {
+
+                                            <option selected="selected" value="@item.Key">@item.Value</option>
+                                        }
+                                        else
+                                        {
+
+                                            <option value="@item.Key">@item.Value</option>
+                                        }
+                                    }
+                                </td>
+
+                                <td>
+                                    <table id="StudentsTable" border="1" class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Pagesa shoferit</th>
+                                                <th>Kursi Kembimit</th>
+                                                <th>Paguar</th>
+                                            </tr>
+                                        </thead>
+                                        @if (i == 0)
+                                        {
+                                            <tbody id="StudentsTablebody0">
+                                                @for (var j = 0; j <= (Model.ShoferitRrugaVM[i].pagesaShoferitVM.Count() - 1); j++)
+                                                {
+
+                                                    if (j == 0)
+                                                    {
+                                                        string DinamicdetailRow = "detailRow";
+                                                        <tr id="@DinamicdetailRow" class="detailRow">
+
+                                                            <td>
+                                                                @*<input type="text" name="ShoferitRrugaVM[0].pagesaShoferitVM[0].Pagesa" class="form-control" required />*@
+                                                                <input asp-for="ShoferitRrugaVM[i].pagesaShoferitVM[j].Pagesa" type="text" name="ShoferitRrugaVM[@i].pagesaShoferitVM[@j].Pagesa" class="form-control" required />
+
+                                                            </td>
+
+                                                            <td>
+                                                            
+                                                                <select asp-for="ShoferitRrugaVM[i].pagesaShoferitVM[j].CurrencyId" name="ShoferitRrugaVM[@i].pagesaShoferitVM[@j].CurrencyId" class="form-control" required />
+                                                                @foreach (var item in @ViewBag.numberNames)
+
+                                                                { @if (Model.ShoferitRrugaVM[@i].pagesaShoferitVM[@j].CurrencyId == @item.Key ? true : false)
+                                                                    {
+
+                                                                        <option selected="selected" value="@item.Key">@item.Value</option>
+                                                                    }
+                                                                    else
+                                                                    {
+
+                                                                        <option value="@item.Key">@item.Value</option>
+                                                                    }
+                                                                }
+
+
+                                                            </td>
+                                                            <td>
+                                                                <input type="checkbox" asp-for="ShoferitRrugaVM[i].pagesaShoferitVM[j].PagesaKryer" name="ShoferitRrugaVM[@i].pagesaShoferitVM[@j].PagesaKryer" style="width: 30px;height: 30px;" onchange="this.value=this.checked" />
+
+                                                                @* <input type="checkbox" name="ShoferitRrugaVM[0].PagesaShoferitVM[0].PagesaKryer" style="width: 30px;height: 30px;" onchange="this.value=this.checked" />*@
+                                                            </td>
+                                                            <td>
+                                                                <button type="button" onclick="RemoveChildRow(this)" id="0" class="btn btn-danger removeRow">Remove</button>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                    else
+                                                    {
+                                                        string DinamicdetailRow = "detailRow" + j;
+                                                        <tr id="@DinamicdetailRow" class="detailRow">
+
+                                                            <td>
+                                                                @*<input type="text" name="ShoferitRrugaVM[0].pagesaShoferitVM[0].Pagesa" class="form-control" required />*@
+                                                                <input asp-for="ShoferitRrugaVM[i].pagesaShoferitVM[j].Pagesa" type="text" name="ShoferitRrugaVM[@i].pagesaShoferitVM[@j].Pagesa" class="form-control" required />
+
+                                                            </td>
+
+                                                            <td>
+                                                          
+                                                                <select asp-for="ShoferitRrugaVM[i].pagesaShoferitVM[j].CurrencyId" name="ShoferitRrugaVM[@i].pagesaShoferitVM[@j].CurrencyId" class="form-control" required />
+                                                                @foreach (var item in @ViewBag.numberNames)
+
+                                                                { @if (Model.ShoferitRrugaVM[@i].pagesaShoferitVM[@j].CurrencyId == @item.Key ? true : false)
+                                                                    {
+
+                                                                        <option selected="selected" value="@item.Key">@item.Value</option>
+                                                                    }
+                                                                    else
+                                                                    {
+
+                                                                        <option value="@item.Key">@item.Value</option>
+                                                                    }
+                                                                }
+
+
+                                                            </td>
+                                                            <td>
+                                                                <input type="checkbox" asp-for="ShoferitRrugaVM[i].pagesaShoferitVM[j].PagesaKryer" name="ShoferitRrugaVM[@i].pagesaShoferitVM[@j].PagesaKryer" style="width: 30px;height: 30px;" onchange="this.value=this.checked" />
+
+                                                            </td>
+                                                            <td>
+                                                                <button type="button" onclick="RemoveChildRow(this)" id="@j" class="btn btn-danger removeRow">Remove</button>
+                                                            </td>
+                                                        </tr>
+                                                    }
+
+                                                }
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <td colspan="2">
+                                                        <button type="button" onclick="myFunctionChild(this.id)" class="btn btn-primary" id="0">Add Row</button>
+                                                    </td>
+                                                </tr>
+                                            </tfoot>
+                                        }
+                                        else
+                                        {
+
+                                            string DinamicStudentsTablebody = "StudentsTablebody" + i;
+                                            <tbody id="@DinamicStudentsTablebody">
+
+                                                @for (var j = 0; j <= (Model.ShoferitRrugaVM[i].pagesaShoferitVM.Count() - 1); j++)
+                                                {
+
+                                                    if (j == 0)
+                                                    {
+                                                        string DinamicdetailRow = "detailRow";
+                                                        <tr id="@DinamicdetailRow" class="detailRow">
+
+                                                            <td>
+                                                                @*<input type="text" name="ShoferitRrugaVM[0].pagesaShoferitVM[0].Pagesa" class="form-control" required />*@
+                                                                <input asp-for="ShoferitRrugaVM[i].pagesaShoferitVM[j].Pagesa" type="text" name="ShoferitRrugaVM[@i].pagesaShoferitVM[@j].Pagesa" class="form-control" required />
+
+                                                            </td>
+
+                                                            <td>
+                                                       
+                                                                <select asp-for="ShoferitRrugaVM[i].pagesaShoferitVM[j].CurrencyId" name="ShoferitRrugaVM[@i].pagesaShoferitVM[@j].CurrencyId" class="form-control" required />
+                                                                @foreach (var item in @ViewBag.numberNames)
+
+                                                                { @if (Model.ShoferitRrugaVM[@i].pagesaShoferitVM[@j].CurrencyId == @item.Key ? true : false)
+                                                                    {
+
+                                                                        <option selected="selected" value="@item.Key">@item.Value</option>
+                                                                    }
+                                                                    else
+                                                                    {
+
+                                                                        <option value="@item.Key">@item.Value</option>
+                                                                    }
+                                                                }
+
+
+                                                            </td>
+                                                            <td>
+                                                                <input type="checkbox" asp-for="ShoferitRrugaVM[i].pagesaShoferitVM[j].PagesaKryer" name="ShoferitRrugaVM[@i].pagesaShoferitVM[@j].PagesaKryer" style="width: 30px;height: 30px;" onchange="this.value=this.checked" />
+
+                                                            </td>
+                                                            <td>
+                                                                <button type="button" onclick="RemoveChildRow(this)" id="0" class="btn btn-danger removeRow">Remove</button>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                    else
+                                                    {
+                                                        string DinamicdetailRow = "detailRow" + j;
+                                                        <tr id="@DinamicdetailRow" class="detailRow">
+
+                                                            <td>
+                                                                <input asp-for="ShoferitRrugaVM[i].pagesaShoferitVM[j].Pagesa" type="text" name="ShoferitRrugaVM[@i].pagesaShoferitVM[@j].Pagesa" class="form-control" required />
+
+                                                            </td>
+
+                                                            <td>
+                                                         
+                                                                <select asp-for="ShoferitRrugaVM[i].pagesaShoferitVM[j].CurrencyId" name="ShoferitRrugaVM[@i].pagesaShoferitVM[@j].CurrencyId" class="form-control" required />
+                                                                @foreach (var item in @ViewBag.numberNames)
+
+                                                                { @if (Model.ShoferitRrugaVM[@i].pagesaShoferitVM[@j].CurrencyId == @item.Key ? true : false)
+                                                                    {
+
+                                                                        <option selected="selected" value="@item.Key">@item.Value</option>
+                                                                    }
+                                                                    else
+                                                                    {
+
+                                                                        <option value="@item.Key">@item.Value</option>
+                                                                    }
+                                                                }
+
+
+                                                            </td>
+                                                            <td>
+                                                                <input type="checkbox" asp-for="ShoferitRrugaVM[i].pagesaShoferitVM[j].PagesaKryer" name="ShoferitRrugaVM[@i].pagesaShoferitVM[@j].PagesaKryer" style="width: 30px;height: 30px;" onchange="this.value=this.checked" />
+
+                                                            </td>
+                                                            <td>
+                                                                <button type="button" onclick="RemoveChildRow(this)" id="@j" class="btn btn-danger removeRow">Remove</button>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                }
+                                            </tbody>
+
+
+                                            <tfoot>
+                                                <tr>
+                                                    <td colspan="2">
+                                                        <button type="button" onclick="myFunctionChild(this.id)" class="btn btn-primary" id="@i">Add Row</button>
+                                                    </td>
+                                                </tr>
+                                            </tfoot>
+                                        }
+                                    </table>
+
+                                </td>
+                                <td>
+                                    <button type="button" onclick="RemoveRow(this)" id="@i" class="btn btn-danger ShoferRrugaremoveRow">Remove</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="2">
+                                <button type="button" onclick="myFunction()" class="btn btn-primary" id="ShoferRrugaaddRow">Add Row</button>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
     </div>
     <div class="col-sm-6">
       <button type="submit" class="btn btn-primary mt-3">Ndrysho te dhenat</button>
@@ -28,4 +324,40 @@
 </form>
 </div> 
 </div>
+@section Scripts{
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script>
+
+        $(document).ready(function () {
+
+            $('#DoganaaddRow').click(function () {
+                debugger
+                var rowCount = $('#DoganaTable tbody tr').length;
+                var newRow = $('.DoganadetailRow').first().clone();
+                newRow.find('input[type=text]').val('');
+                newRow.find('input[type=text]').attr('name', 'PagesaDoganaVM[' + rowCount + '].Pagesa');
+                newRow.find('select').val('');
+                newRow.find('select').attr('name', 'PagesaDoganaVM[' + rowCount + '].CurrencyId');
+                //newRow.find('checkbox').val('');
+                //newRow.find('checkbox').attr('name', 'PagesaDoganaVM[' + rowCount + '].PagesaKryer');
+                newRow[0].childNodes[5].childNodes[1].attributes.name.nodeValue = "PagesaDoganaVM[" + rowCount + "].PagesaKryer";
+                newRow.find('button').val('');
+                newRow.find('button').attr('id', rowCount.toString());
+                newRow.appendTo($('#DoganaTable tbody'));
+            });
+            $(document).on('click', '.DoganaremoveRow', function () {
+                debugger
+                var rowCount = $('#DoganaTable tbody tr').length;
+                if ((rowCount ) > 1) {
+                    var id = parseInt((this).id);
+                    if (id != (rowCount - 1))
+                        return
+                    $(this).closest('tr').remove();
+
+                }
+            });
+        });
+
+    </script>
+}
 
