@@ -10,28 +10,28 @@ public class Rruga
     public int RrugaId { get; set; }
     [Required]
     public string Emri { get; set; } // vendoset vetem ne fillim
-    [Required]
-    public decimal Dogana { get; set; } // vendoset vetem ne fillim
+    //[Required]
+    //public decimal Dogana { get; set; } // vendoset vetem ne fillim
     public bool Model { get; set; }
 
-    public string? shenime { get; set; }
-    public decimal shpenzimeEkstra { get; set; }
-    public decimal FitimeEkstra { get; set; }
-    [NotMapped]
-    public decimal NaftaBlereLitra { get; set; } // vendoset cdo here
-    [NotMapped]
-    public decimal NaftaBlereCmim { get; set; } // vendoset cdo here
-    [NotMapped]
-    public decimal PikaPagesa { get; set; } // vendoset cdo here
+    public string shenime { get; set; } = String.Empty;
+    //public decimal shpenzimeEkstra { get; set; }
+    //public decimal FitimeEkstra { get; set; }
+    //[NotMapped]
+    //public decimal NaftaBlereLitra { get; set; } // vendoset cdo here
+    //[NotMapped]
+    //public decimal NaftaBlereCmim { get; set; } // vendoset cdo here
+    //[NotMapped]
+    //public decimal PikaPagesa { get; set; } // vendoset cdo here
     public List<Nafta> Nafta { get; set; } = new List<Nafta>();
     [Required]
     public decimal NaftaShpenzuarLitra { get; set; } // vendoset vetem ne fillim
-    public decimal NaftaPerTuShiturLitra { get; set; } 
+    //public decimal NaftaPerTuShiturLitra { get; set; } 
     //public decimal Shpenzime { get; set; } 
     //public decimal Xhiro { get; set; } 
     //public decimal Fitime { get; set; } 
 
-    public decimal PagesaShoferit { get; set; } // vendoset vetem ne fillim
+    //public decimal PagesaShoferit { get; set; } // vendoset vetem ne fillim
     //public int ShoferId { get; set; }
     //public Shofer? Shofer { get; set; }
     //public int PikaShkarkimiId { get; set; }
@@ -43,7 +43,7 @@ public class Rruga
     public List<RrugaFitime> RrugaFitimes { get; set; } = new List<RrugaFitime>(); // to be calculated
     public List<PikaRruga> PikaRrugas { get; set; } = new List<PikaRruga>();
    // public List<PagesaShoferit> PagesaShoferits { get; set; } = new List<PagesaShoferit>();
-    public List<PagesaPikaShkarkimit> PagesaPikaShkarkimits { get; set; } = new List<PagesaPikaShkarkimit>();
+    //public List<PagesaPikaShkarkimit> PagesaPikaShkarkimits { get; set; } = new List<PagesaPikaShkarkimit>();
     public List<PagesaDogana> PagesaDoganas { get; set; } = new List<PagesaDogana>();
    // public List<NaftaRruga> NaftaRrugas { get; set; } = new List<NaftaRruga>();
 

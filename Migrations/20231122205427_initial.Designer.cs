@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BioLab.Migrations
 {
     [DbContext(typeof(MyContext))]
-    [Migration("20231107090906_AddedBlereShiturNaftaOToM")]
-    partial class AddedBlereShiturNaftaOToM
+    [Migration("20231122205427_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -35,7 +35,7 @@ namespace BioLab.Migrations
 
                     b.HasKey("BlereShiturId");
 
-                    b.ToTable("BlereShitur");
+                    b.ToTable("BlereShiturs");
                 });
 
             modelBuilder.Entity("BioLab.Models.Currency", b =>
@@ -164,9 +164,6 @@ namespace BioLab.Migrations
                     b.Property<int>("PikaShkarkimiId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("RrugaId")
-                        .HasColumnType("int");
-
                     b.Property<bool>("ShpenzimXhiro")
                         .HasColumnType("tinyint(1)");
 
@@ -178,8 +175,6 @@ namespace BioLab.Migrations
                     b.HasIndex("CurrencyId");
 
                     b.HasIndex("PikaShkarkimiId");
-
-                    b.HasIndex("RrugaId");
 
                     b.ToTable("PagesaPikaShkarkimits");
                 });
@@ -319,33 +314,19 @@ namespace BioLab.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<decimal>("Dogana")
-                        .HasColumnType("decimal(65,30)");
-
                     b.Property<string>("Emri")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<decimal>("FitimeEkstra")
-                        .HasColumnType("decimal(65,30)");
-
                     b.Property<bool>("Model")
                         .HasColumnType("tinyint(1)");
-
-                    b.Property<decimal>("NaftaPerTuShiturLitra")
-                        .HasColumnType("decimal(65,30)");
 
                     b.Property<decimal>("NaftaShpenzuarLitra")
                         .HasColumnType("decimal(65,30)");
 
-                    b.Property<decimal>("PagesaShoferit")
-                        .HasColumnType("decimal(65,30)");
-
                     b.Property<string>("shenime")
+                        .IsRequired()
                         .HasColumnType("longtext");
-
-                    b.Property<decimal>("shpenzimeEkstra")
-                        .HasColumnType("decimal(65,30)");
 
                     b.HasKey("RrugaId");
 
@@ -611,10 +592,6 @@ namespace BioLab.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BioLab.Models.Rruga", null)
-                        .WithMany("PagesaPikaShkarkimits")
-                        .HasForeignKey("RrugaId");
-
                     b.Navigation("Currency");
 
                     b.Navigation("Pika");
@@ -805,8 +782,6 @@ namespace BioLab.Migrations
                     b.Navigation("Nafta");
 
                     b.Navigation("PagesaDoganas");
-
-                    b.Navigation("PagesaPikaShkarkimits");
 
                     b.Navigation("PikaRrugas");
 

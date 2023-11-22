@@ -652,8 +652,154 @@ namespace BioLab.Controllers
             return View(rruga);
         }
         [HttpPost]
-        public IActionResult CreateRrugaJoModel(Rruga marrngaadd)
+        public IActionResult CreateRrugaJoModel(Rruga marrngaadd,int id)
         {
+            foreach (var Nafta in marrngaadd.Nafta)
+            {
+                Nafta.BlereShiturSelect = "Blere";
+            }
+            if (marrngaadd.PikaRrugas.FirstOrDefault().PikaShkarkimiName == "Zgjidh")
+            { marrngaadd.PikaRrugas = null; }
+            else
+            {
+                foreach (var pikaRruga in marrngaadd.PikaRrugas)
+                {
+                    int PikaShkarkimiId = _context.PikaShkarkimis.FirstOrDefault(e => e.Emri == pikaRruga.PikaShkarkimiName).PikaShkarkimiId;
+                    PikaRrugasVM pikaRrugasVM = new PikaRrugasVM()
+                    {
+                        PikaShkarkimiId = PikaShkarkimiId
+                    };
+                    foreach (var PikaRrugaPagesa in pikaRruga.PikaRrugaPagesa)
+                    {
+                        PikaRrugaPagesaVM PagesaVM = new PikaRrugaPagesaVM()
+                        {
+                            Pagesa = PikaRrugaPagesa.Pagesa,
+                            CurrencyId = PikaRrugaPagesa.CurrencyId,
+                            PagesaKryer = PikaRrugaPagesa.PagesaKryer,
+                        };
+                        pikaRrugasVM.PikaRrugaPagesaVMs.Add(PagesaVM);
+                    }
+                    marrngaadd.PikaRrugasVM.Add(pikaRrugasVM);
+                }
+                marrngaadd.PikaRrugas = null;
+            }
+            if (marrngaadd.shenime == null) marrngaadd.shenime = "test";
+
+            //RrugaShpenzimeEkstras
+            foreach (var RrugaShpenzimeEkstra in marrngaadd.RrugaShpenzimeEkstras)
+            {
+                if (RrugaShpenzimeEkstra.Pagesa == 0)
+                {
+                    RrugaShpenzimeEkstra.PagesaKryer = true;
+                }
+
+            }
+            //RrugaFitimeEkstras
+            foreach (var RrugaFitimeEkstra in marrngaadd.RrugaFitimeEkstras)
+            {
+                if (RrugaFitimeEkstra.Pagesa == 0)
+                {
+                    RrugaFitimeEkstra.PagesaKryer = true;
+                }
+            }
+            //  Pika Nafta
+            foreach (var Nafta in marrngaadd.Nafta)
+            {
+
+                if (Nafta.Pagesa == 0)
+                {
+                    Nafta.PagesaKryer = true;
+                }
+            }
+
+            _context.Add(marrngaadd);
+            _context.SaveChanges(); 
+
+            //Pagesa dogana RRUGA
+            foreach (var PagesaDoganaVM in marrngaadd.PagesaDoganaVM)
+            {
+                if(PagesaDoganaVM.Pagesa == 0)
+                {
+                    PagesaDoganaVM.PagesaKryer = true;
+                }
+                PagesaDogana PagesaShoferit = new PagesaDogana()
+                {
+                    CurrencyId = PagesaDoganaVM.CurrencyId,
+                    Pagesa = PagesaDoganaVM.Pagesa,
+                    RrugaId = marrngaadd.RrugaId,
+                    PagesaKryer = PagesaDoganaVM.PagesaKryer,
+                    ShpenzimXhiro = true
+                };
+                _context.Add(PagesaShoferit);
+                _context.SaveChanges();
+            }
+
+            //Shofer RRUGA
+            foreach (var ShoferitRrugaVM in marrngaadd.ShoferitRrugaVM)
+            {
+                ShoferRruga shoferRruga = new ShoferRruga()
+                {
+                    ShoferId = ShoferitRrugaVM.ShoferId,
+                    RrugaId = marrngaadd.RrugaId,
+                };
+
+                _context.Add(shoferRruga);
+                _context.SaveChanges();
+                foreach (var PagesaShoferitVM in ShoferitRrugaVM.pagesaShoferitVM)
+                {
+                    if (PagesaShoferitVM.Pagesa == 0)
+                    {
+                        PagesaShoferitVM.PagesaKryer = true;
+                    }
+                    PagesaShoferit pagesaShoferit = new PagesaShoferit()
+                    {
+                        CurrencyId = PagesaShoferitVM.CurrencyId,
+                        ShoferRrugaId = shoferRruga.ShoferRrugaId,
+                        Pagesa = PagesaShoferitVM.Pagesa,
+                        PagesaKryer = PagesaShoferitVM.PagesaKryer,
+                        ShpenzimXhiro = true,
+                    };
+                    _context.Add(pagesaShoferit);
+                    _context.SaveChanges();
+                }
+            }
+
+          
+            // Pika Rruga
+            if (marrngaadd.PikaRrugasVM != null)
+            {
+                foreach (var PikaRrugaVM in marrngaadd.PikaRrugasVM)
+                {
+                    int PikaShkarkimiId = _context.PikaShkarkimis.FirstOrDefault(e => e.PikaShkarkimiId == PikaRrugaVM.PikaShkarkimiId).PikaShkarkimiId;
+
+                    PikaRruga pikaRruga = new PikaRruga()
+                    {
+                        RrugaId=marrngaadd.RrugaId,
+                        PikaShkarkimiId = PikaShkarkimiId,
+                    };
+
+                    foreach (var PikaRrugaPagesaVM in PikaRrugaVM.PikaRrugaPagesaVMs)
+                    {
+
+                        if (PikaRrugaPagesaVM.Pagesa == 0)
+                        {
+                            PikaRrugaPagesaVM.PagesaKryer = true;
+                        }
+                        PikaRrugaPagesa pikaRrugaPagesa = new PikaRrugaPagesa()
+                        {
+                            CurrencyId = PikaRrugaPagesaVM.CurrencyId,
+                            Pagesa = PikaRrugaPagesaVM.Pagesa,
+                            PagesaKryer = PikaRrugaPagesaVM.PagesaKryer
+                        };
+                        pikaRruga.PikaRrugaPagesa.Add(pikaRrugaPagesa);
+                    }
+                    _context.Add(pikaRruga);
+                    _context.SaveChanges();
+                }
+            }
+           
+
+
 
             //if (ModelState.IsValid)
             //{
@@ -719,10 +865,10 @@ namespace BioLab.Controllers
             //        _context.Add(marrngaadd);
             //        _context.SaveChanges();
             //    }
+            return View("AllRrugaJoModel");
 
-            //    return RedirectToAction("AllRrugaJoModel");
+       //     return RedirectToAction("AddRrugaJoModel", new { id = id });
             //}
-            return View("AddRrugaJoModel");
         }
         [HttpPost]
         public decimal CreateRrugaJoModel2(int id, string val)
@@ -849,16 +995,16 @@ namespace BioLab.Controllers
                 //marrim nga db anzlizen qe duam te bejm edit dhe vendosim vlerat qe marim nga forma
                 Rruga editing = _context.Rrugas.FirstOrDefault(p => p.RrugaId == id);
                 editing.Emri = marrngaadd.Emri;
-                editing.Dogana = marrngaadd.Dogana;
+             //   editing.Dogana = marrngaadd.Dogana;
                 editing.NaftaShpenzuarLitra = marrngaadd.NaftaShpenzuarLitra;
             //    editing.NaftaPerTuShiturLitra = marrngaadd.NaftaPerTuShiturLitra;
-                editing.NaftaBlereCmim = marrngaadd.NaftaBlereCmim;
-                editing.NaftaBlereLitra = marrngaadd.NaftaBlereLitra;
+             //   editing.NaftaBlereCmim = marrngaadd.NaftaBlereCmim;
+             //   editing.NaftaBlereLitra = marrngaadd.NaftaBlereLitra;
                 //editing.PikaShkarkimiId = marrngaadd.PikaShkarkimiId;
                 //editing.ShoferId = marrngaadd.ShoferId;
                 editing.shenime = marrngaadd.shenime;
-                editing.shpenzimeEkstra = marrngaadd.shpenzimeEkstra;
-                editing.FitimeEkstra = marrngaadd.FitimeEkstra;
+              //  editing.shpenzimeEkstra = marrngaadd.shpenzimeEkstra;
+              //  editing.FitimeEkstra = marrngaadd.FitimeEkstra;
 
 
                 //var shofer = _context.Shofers.FirstOrDefault(sh => sh.ShoferId == marrngaadd.ShoferId);

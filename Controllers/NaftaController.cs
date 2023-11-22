@@ -280,24 +280,24 @@ namespace BioLab.Controllers
             return RedirectToAction("AllNafta");
 
         }
-        public IActionResult NaftaRaport()
-        {
+        //public IActionResult NaftaRaport()
+        //{
 
-            var shofers = _context.Rrugas.GroupBy(r => r.Model == false)
-               .Select(b => new
-               {
-                   shpenzuar = b.Sum(m => m.NaftaPerTuShiturLitra * m.NaftaBlereCmim),
-                   nafta = b.Sum(m => m.NaftaPerTuShiturLitra),
-               })
-               .ToList();
-            var cmimi = shofers.Select(b => b.shpenzuar / b.nafta);
+        //    var shofers = _context.Rrugas.GroupBy(r => r.Model == false)
+        //       .Select(b => new
+        //       {
+        //           shpenzuar = b.Sum(m => m.NaftaPerTuShiturLitra * m.NaftaBlereCmim),
+        //           nafta = b.Sum(m => m.NaftaPerTuShiturLitra),
+        //       })
+        //       .ToList();
+        //    var cmimi = shofers.Select(b => b.shpenzuar / b.nafta);
 
-            if (shofers != null)
-            {
-                ViewBag.Shofers = shofers;
-            }
-            return View();
-        }
+        //    if (shofers != null)
+        //    {
+        //        ViewBag.Shofers = shofers;
+        //    }
+        //    return View();
+        //}
 
     }
 }

@@ -3,7 +3,7 @@
 <partial name="NavPartial" />
 <div class="mt-5 container">
     <h1 class="text-center mb-5">Krijo nje Rruge</h1>
-    <form asp-controller="Rruga" asp-action="CreateRrugaJoModel" method="post">
+    <form asp-controller="Rruga" asp-action="CreateRrugaJoModel" asp-route-id="@ViewBag.id" method="post">
         <div class="row">
 
             <div class="col-sm-6">
@@ -378,16 +378,7 @@
                     </tfoot>
                 </table>
 
-                <div class="form-group">
-                    <span asp-validation-for="NaftaBlereLitra"></span>
-                    <label asp-for="NaftaBlereLitra"></label>
-                    <input asp-for="NaftaBlereLitra" class="form-control">
-                </div>
-                <div class="form-group">
-                    <span asp-validation-for="NaftaBlereCmim"></span>
-                    <label asp-for="NaftaBlereCmim"></label>
-                    <input asp-for="NaftaBlereCmim" class="form-control">
-                </div>
+
 
             </div>
             <div class="col-sm-6">
@@ -718,37 +709,7 @@
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script>
         function sendData(event,id) {
-      //      debugger
-           //var test =  @Model.PikaPagesa;
-           //var ilgi = @ViewBag.id ;
-//           class PikaRruga {
-//    constructor() {
-//        this.PikaRrugaId = 0;
-//        this.PikaShkarkimiId = 0;
-//        this.PikaShkarkimi = null;
-//        this.RrugaId = 0;
-//        this.Rruga = null;
-//        this.PikaRrugaPagesa = [];
-//        this.CreatedDate = new Date();
-//        this.UpdatedDate = new Date();
-//        this.PikaShkarkimiName = "";
-//    }
-//}
 
-//class PikaRrugaPagesa {
-//    constructor() {
-//        this.PikaRrugaPagesaId = 0;
-//        this.CurrencyId = 0;
-//        this.Currency = null;
-//        this.PikaRrugaId = 0;
-//        this.Pika = null;
-//        this.Pagesa = 0;
-//        this.ShpenzimXhiro = false;
-//        this.PagesaKryer = false;
-//        this.CreatedDate = new Date();
-//        this.UpdatedDate = new Date();
-//    }
-//}
 
             $.ajax({
                 type: "POST",
@@ -758,14 +719,9 @@
 
                 success: function (result) {
                     AddPika(result)
-        //            debugger
-                    //@Model.PikaPagesa= result;
-                    //ilgi = result
-                    //@ViewBag.id =1;
-                   // selectedFilter2[0].value = result;
+      
                 },
                 error: function () {
-        //            debugger
                     alert("there was an error");
                 }
             })

@@ -10,7 +10,7 @@
         public decimal Pagesa { get; set; }
         public bool ShpenzimXhiro { get; set; }
         public bool PagesaKryer { get; set; }
-        public string shenime { get; set; }
+        public string shenime { get; set; } = string.Empty;
         public DateTime CreatedDate { get; set; } = DateTime.Now;
         public DateTime UpdatedDate { get; set; } = DateTime.Now;
 
