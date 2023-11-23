@@ -654,10 +654,62 @@ namespace BioLab.Controllers
         [HttpPost]
         public IActionResult CreateRrugaJoModel(Rruga marrngaadd,int id)
         {
+            //to calculate all fitimet grouped by currency
+            // flag for pagesa kryer 
+            // to calculate nafta per tu shitur
+
+            RrugaFitime rrugaFitime = new RrugaFitime() { };
+/////
+            decimal naftaBlereLitra = 0;
+            decimal NaftaShpenzuarLitra = marrngaadd.NaftaShpenzuarLitra;
             foreach (var Nafta in marrngaadd.Nafta)
             {
                 Nafta.BlereShiturSelect = "Blere";
+                naftaBlereLitra = Nafta.Litra + naftaBlereLitra;
             }
+            if (marrngaadd.Nafta.Count() == 1)
+            {
+                marrngaadd.Nafta.First().Litra = naftaBlereLitra - marrngaadd.NaftaShpenzuarLitra;
+            }
+            if (marrngaadd.Nafta.Count() >1)
+            {
+                int naftaCount = marrngaadd.Nafta.Count();
+                for (int i = 0; i < marrngaadd.Nafta.Count(); i++)
+                {
+                    if (i < naftaCount-1 )
+                    {
+                        if (marrngaadd.Nafta[i].Litra < NaftaShpenzuarLitra)
+                        {
+                            decimal litra = marrngaadd.Nafta[i].Litra;
+                            NaftaShpenzuarLitra = NaftaShpenzuarLitra - litra;
+                            marrngaadd.Nafta[i].Litra = 0;
+                        }
+                        else
+                        {
+                            marrngaadd.Nafta[i].Litra = marrngaadd.Nafta[i].Litra - NaftaShpenzuarLitra;
+                        }
+                    }
+                    else 
+                    {
+                        
+                            marrngaadd.Nafta[i].Litra = marrngaadd.Nafta[i].Litra- NaftaShpenzuarLitra;
+                        
+                    }
+
+                }
+                //foreach (var Nafta in marrngaadd.Nafta)
+                //{
+                //     if(Nafta.Litra< NaftaShpenzuarLitra)
+                //    {
+                //        decimal litra = Nafta.Litra;
+                //        NaftaShpenzuarLitra = NaftaShpenzuarLitra - litra;
+                //        Nafta.Litra = 0;
+                //    }
+                //}
+
+            }
+
+///// nafta part
             if (marrngaadd.PikaRrugas.FirstOrDefault().PikaShkarkimiName == "Zgjidh")
             { marrngaadd.PikaRrugas = null; }
             else
@@ -711,7 +763,7 @@ namespace BioLab.Controllers
                     Nafta.PagesaKryer = true;
                 }
             }
-
+            /// shtimi i rruges
             _context.Add(marrngaadd);
             _context.SaveChanges(); 
 
