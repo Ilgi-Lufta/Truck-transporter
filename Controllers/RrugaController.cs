@@ -697,15 +697,19 @@ namespace BioLab.Controllers
                     }
 
                 }
-                //foreach (var Nafta in marrngaadd.Nafta)
-                //{
-                //     if(Nafta.Litra< NaftaShpenzuarLitra)
-                //    {
-                //        decimal litra = Nafta.Litra;
-                //        NaftaShpenzuarLitra = NaftaShpenzuarLitra - litra;
-                //        Nafta.Litra = 0;
-                //    }
-                //}
+
+                ///te shtohet check qe nese nafta eshte negative ne litra te krijohet nje shitje nafte nga nafta stock
+                ///
+                ///
+                ///
+                ///
+                ///
+                ///
+
+
+
+                
+            
 
             }
 
