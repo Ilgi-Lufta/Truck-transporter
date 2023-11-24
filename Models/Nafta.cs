@@ -20,6 +20,7 @@ public class Nafta
     public Rruga? Rruga { get; set; }
     public int? BlereShiturId { get; set; }
     public BlereShitur? BlereShitur { get; set; }
+    public string Shenime { get; set; }
     public DateTime CreatedDate { get; set; } = DateTime.Now;
     public DateTime UpdatedDate { get; set; } = DateTime.Now;
     [NotMapped]
