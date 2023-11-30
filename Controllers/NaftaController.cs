@@ -18,7 +18,7 @@ namespace BioLab.Controllers
 
         public IActionResult AllNafta(DateTime searchFirstTime, DateTime searchSecondTime)
         {
-            var shofers = _context.Naftas.Include(e=>e.Currency)
+            var shofers = _context.NaftaStocks.Include(e=>e.Currency)
                      .Where(m => searchFirstTime != DateTime.MinValue ? m.CreatedDate > searchFirstTime : true)
                     .Where(m => searchSecondTime != DateTime.MinValue ? m.CreatedDate < searchSecondTime : true)
                 .ToList();
@@ -31,12 +31,12 @@ namespace BioLab.Controllers
             {
                 ViewBag.Shofers = shofers;
             }
-            var naftaShitur = _context.Naftas.Where(b => b.BlereShiturSelect == "Blere")
+            var naftaShitur = _context.NaftaStocks.Where(b => b.BlereShiturSelect == "Blere")
                   .Where(m => searchFirstTime != DateTime.MinValue ? m.CreatedDate > searchFirstTime : true)
                     .Where(m => searchSecondTime != DateTime.MinValue ? m.CreatedDate > searchSecondTime : true)
 
                     .ToList();
-            var naftaBlere = _context.Naftas.Where(b => b.BlereShiturSelect == "Shitur")
+            var naftaBlere = _context.NaftaStocks.Where(b => b.BlereShiturSelect == "Shitur")
                   .Where(m => searchFirstTime != DateTime.MinValue ? m.CreatedDate > searchFirstTime : true)
                     .Where(m => searchSecondTime != DateTime.MinValue ? m.CreatedDate > searchSecondTime : true)
 
@@ -98,9 +98,9 @@ namespace BioLab.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateNafta(Nafta marrngaadd)
+        public IActionResult CreateNafta(NaftaStock marrngaadd)
         {
-            var litrablere = _context.Naftas.Where(e => e.BlereShiturSelect == "Blere")
+            var litrablere = _context.NaftaStocks.Where(e => e.BlereShiturSelect == "Blere")
               //.Where(e => e.Litra > 0 && e.Leke > 0)
               .GroupBy(e => e.CurrencyId == marrngaadd.CurrencyId)
               .Select(e => e.Sum(b => b.Litra)).FirstOrDefault();
@@ -122,7 +122,7 @@ namespace BioLab.Controllers
                     }
                     BlereShitur blereShitur = new BlereShitur();
 
-                    var cmimRef = _context.Naftas.Where(e => e.BlereShiturSelect == "Blere")
+                    var cmimRef = _context.NaftaStocks.Where(e => e.BlereShiturSelect == "Blere")
                     //.Where(e => e.Litra > 0 && e.Leke > 0)
                     .GroupBy(e => e.CurrencyId == marrngaadd.CurrencyId)
                     .Select(e =>
@@ -133,7 +133,7 @@ namespace BioLab.Controllers
                     _context.Add(blereShitur);
                     _context.SaveChanges();
 
-                    Nafta nafta = new Nafta
+                    NaftaStock nafta = new NaftaStock
                     {
                         BlereShiturSelect = "Blere",
                         Litra = (0 - marrngaadd.Litra),
@@ -147,7 +147,7 @@ namespace BioLab.Controllers
                     //  return RedirectToAction("AllNafta");
                     marrngaadd.BlereShiturId = blereShitur.BlereShiturId;
                 }
-                _context.Naftas.Add(marrngaadd);
+                _context.NaftaStocks.Add(marrngaadd);
                 _context.SaveChanges();
                 //else
                 //{
@@ -162,7 +162,7 @@ namespace BioLab.Controllers
         {
             ViewBag.id = id;
             List<SelectListItem> blereShitur = new List<SelectListItem>();
-            Nafta Editing = _context.Naftas.FirstOrDefault(p => p.NaftaId == id);
+            NaftaStock Editing = _context.NaftaStocks.FirstOrDefault(p => p.NaftaStockId == id);
 
             blereShitur.Add(new SelectListItem
             {
@@ -204,10 +204,10 @@ namespace BioLab.Controllers
         }
 
         [HttpPost]
-        public IActionResult EditedNafta(int id, Nafta marrngaadd)
+        public IActionResult EditedNafta(int id, NaftaStock marrngaadd)
         {
-            var EditingBlereNegativ = _context.Naftas.FirstOrDefault(p => p.BlereShiturId == marrngaadd.BlereShiturId && p.BlereShiturSelect == "Blere");
-            var litrablere = _context.Naftas.Where(e => e.BlereShiturSelect == "Blere")
+            var EditingBlereNegativ = _context.NaftaStocks.FirstOrDefault(p => p.BlereShiturId == marrngaadd.BlereShiturId && p.BlereShiturSelect == "Blere");
+            var litrablere = _context.NaftaStocks.Where(e => e.BlereShiturSelect == "Blere")
                               //.Where(e => e.Litra > 0 && e.Leke > 0)
                               ////// to be discused
                               .GroupBy(e => e.CurrencyId == marrngaadd.CurrencyId)
@@ -231,7 +231,7 @@ namespace BioLab.Controllers
                     //////to be discused
 
                     //get cmim  ref
-                    var cmimRef = _context.Naftas.Where(e => e.BlereShiturSelect == "Blere")
+                    var cmimRef = _context.NaftaStocks.Where(e => e.BlereShiturSelect == "Blere")
                        //.Where(e => e.Litra > 0 && e.Leke > 0)
                        .GroupBy(e => e.CurrencyId == marrngaadd.CurrencyId)
                        .Select(e =>
@@ -249,10 +249,10 @@ namespace BioLab.Controllers
                         EditingBlereNegativ.CurrencyId = marrngaadd.CurrencyId;
                     
                 }
-                    //edit marr nga add
+                //edit marr nga add
 
-                    //marrim nga db anzlizen qe duam te bejm edit dhe vendosim vlerat qe marim nga forma
-                    Nafta editing = _context.Naftas.FirstOrDefault(p => p.NaftaId == id);
+                //marrim nga db anzlizen qe duam te bejm edit dhe vendosim vlerat qe marim nga forma
+                NaftaStock editing = _context.NaftaStocks.FirstOrDefault(p => p.NaftaStockId == id);
                     editing.Pagesa = marrngaadd.Pagesa;
                     editing.CurrencyId = marrngaadd.CurrencyId;
                     editing.Litra = marrngaadd.Litra;
@@ -268,14 +268,14 @@ namespace BioLab.Controllers
         {
 
             //fshijme analizen e marre nga db me analizId si parametri id
-            Nafta nafta = _context.Naftas.FirstOrDefault(p => p.NaftaId == id);
+            NaftaStock nafta = _context.NaftaStocks.FirstOrDefault(p => p.NaftaStockId == id);
             if (nafta.BlereShiturId != null || nafta.BlereShiturId != 0)
             {
                 var BlereNegativ = _context.Naftas.FirstOrDefault(p => p.BlereShiturId == nafta.BlereShiturId && p.BlereShiturSelect == "Blere");
                 _context.Naftas.Remove(BlereNegativ);
             }
 
-            _context.Naftas.Remove(nafta);
+            _context.NaftaStocks.Remove(nafta);
             _context.SaveChanges();
             return RedirectToAction("AllNafta");
 

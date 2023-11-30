@@ -715,13 +715,13 @@ namespace BioLab.Controllers
                 {
                     if (i < naftaCount-1 )
                     {
-                        if (marrngaadd.Nafta[i].Litra < NaftaShpenzuarLitra)
+                        if (marrngaadd.Nafta[i].Litra <= NaftaShpenzuarLitra)
                         {
                             //decimal cmim = marrngaadd.Nafta[i].Pagesa / marrngaadd.Nafta[i].Litra;
                             //decimal shpenzim = marrngaadd.Nafta[i].Litra * cmim;
 
-                            //var rrugaFitimeShpenzim = rrugaFitimeShpenzims.FirstOrDefault(e => e.CurrencyId == marrngaadd.Nafta[i].CurrencyId);
-                            //rrugaFitimeShpenzim.Pagesa = rrugaFitimeShpenzim.Pagesa + marrngaadd.Nafta[i].Pagesa;
+                            var rrugaFitimeShpenzim = rrugaFitimeShpenzims.FirstOrDefault(e => e.CurrencyId == marrngaadd.Nafta[i].CurrencyId);
+                            rrugaFitimeShpenzim.Pagesa = rrugaFitimeShpenzim.Pagesa + marrngaadd.Nafta[i].Pagesa;
 
 
                             decimal litra = marrngaadd.Nafta[i].Litra;
@@ -730,29 +730,43 @@ namespace BioLab.Controllers
                         }
                         else
                         {
-                            marrngaadd.Nafta[i].Litra = marrngaadd.Nafta[i].Litra - NaftaShpenzuarLitra;
-
-                            //var rrugaFitimeShpenzim = rrugaFitimeShpenzims.FirstOrDefault(e => e.CurrencyId == marrngaadd.Nafta[i].CurrencyId);
+                            var rrugaFitimeShpenzim = rrugaFitimeShpenzims.FirstOrDefault(e => e.CurrencyId == marrngaadd.Nafta[i].CurrencyId);
                             
 
-                            //    decimal cmim = marrngaadd.Nafta[i].Pagesa / marrngaadd.Nafta[i].Litra;
-                            //    decimal shpenzim = NaftaShpenzuarLitra * cmim;
+                                decimal cmim = marrngaadd.Nafta[i].Pagesa / marrngaadd.Nafta[i].Litra;
+                                decimal shpenzim = NaftaShpenzuarLitra * cmim;
 
-                            //  rrugaFitimeShpenzim.Pagesa = rrugaFitimeShpenzim.Pagesa + shpenzim;
+                              rrugaFitimeShpenzim.Pagesa = rrugaFitimeShpenzim.Pagesa + shpenzim;
+
+
+                            marrngaadd.Nafta[i].Litra = marrngaadd.Nafta[i].Litra - NaftaShpenzuarLitra;
+                            marrngaadd.Nafta[i].Pagesa = marrngaadd.Nafta[i].Pagesa - shpenzim;
+
+
 
                         }
                     }
                     else 
                     {
-                        marrngaadd.Nafta[i].Litra = marrngaadd.Nafta[i].Litra- NaftaShpenzuarLitra;
+                        if (marrngaadd.Nafta[i].Litra > NaftaShpenzuarLitra)
+                        {
+                            var rrugaFitimeShpenzim = rrugaFitimeShpenzims.FirstOrDefault(e => e.CurrencyId == marrngaadd.Nafta[i].CurrencyId);
 
-                        //var rrugaFitimeShpenzim = rrugaFitimeShpenzims.FirstOrDefault(e => e.CurrencyId == marrngaadd.Nafta[i].CurrencyId);
+                        decimal cmim = marrngaadd.Nafta[i].Pagesa / marrngaadd.Nafta[i].Litra;
+                        decimal shpenzim = NaftaShpenzuarLitra * cmim;
 
+                        rrugaFitimeShpenzim.Pagesa = rrugaFitimeShpenzim.Pagesa + shpenzim;
+                        
+                        marrngaadd.Nafta[i].Pagesa = marrngaadd.Nafta[i].Pagesa - shpenzim;
+                        marrngaadd.Nafta[i].Litra = marrngaadd.Nafta[i].Litra - NaftaShpenzuarLitra;
+                        }
+                        else
+                        {
+                            var rrugaFitimeShpenzim = rrugaFitimeShpenzims.FirstOrDefault(e => e.CurrencyId == marrngaadd.Nafta[i].CurrencyId);
+                            rrugaFitimeShpenzim.Pagesa = rrugaFitimeShpenzim.Pagesa + marrngaadd.Nafta[i].Pagesa;
+                            marrngaadd.Nafta[i].Litra = marrngaadd.Nafta[i].Litra - NaftaShpenzuarLitra;
+                        }
 
-                        //    decimal cmim = marrngaadd.Nafta[i].Pagesa / marrngaadd.Nafta[i].Litra;
-                        //    decimal shpenzim = NaftaShpenzuarLitra * cmim;
-
-                        //  rrugaFitimeShpenzim.Pagesa = rrugaFitimeShpenzim.Pagesa + shpenzim;
 
                     }
 
@@ -806,8 +820,12 @@ namespace BioLab.Controllers
                     }
 
                 }
+                if(naftasRrugas.Count > 0)
+                {
+                    //to discuss
                         _context.Naftas.AddRange(naftasRrugas);
                         _context.SaveChanges();
+                }
         }
 
 ///// nafta part
@@ -859,7 +877,7 @@ namespace BioLab.Controllers
             foreach (var Nafta in marrngaadd.Nafta)
             {
 
-                if (Nafta.Pagesa == 0)
+                if (Nafta.Litra == 0)
                 {
                     Nafta.PagesaKryer = true;
                 }
@@ -956,6 +974,7 @@ namespace BioLab.Controllers
             ///nafta shitur pagesa 0 lidhja me rrugen  vendosja e pageses per naften e blere
             foreach (var Nafta in marrngaadd.Nafta)
             {
+                if (Nafta.BlereShiturId != null) {
                 int BlereShiturId = _context.BlereShiturs.FirstOrDefault(e => e.BlereShiturId == Nafta.BlereShiturId).BlereShiturId;
                 Nafta naftaShitur = _context.Naftas.FirstOrDefault(e => e.BlereShiturId == Nafta.BlereShiturId && e.BlereShiturSelect == "Shitur");
                 if(naftaShitur!= null)
@@ -975,6 +994,7 @@ namespace BioLab.Controllers
                            )
                    .FirstOrDefault();
                     naftaBlere.Pagesa = 0 - (cmimRef * Nafta.Litra);
+                } 
                 }
             }
 

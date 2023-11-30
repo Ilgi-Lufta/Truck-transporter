@@ -3,10 +3,10 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BioLab.Models;
-public class Nafta
+public class NaftaStock
 {
     [Key]
-    public int NaftaId { get; set; }
+    public int NaftaStockId { get; set; }
     [Required]
     public Decimal Litra { get; set; }
     [Required]

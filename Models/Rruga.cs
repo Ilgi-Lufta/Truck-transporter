@@ -15,6 +15,7 @@ public class Rruga
     public bool Model { get; set; }
 
     public string shenime { get; set; } = String.Empty;
+    public bool PagesaKryer { get; set; }
     //public decimal shpenzimeEkstra { get; set; }
     //public decimal FitimeEkstra { get; set; }
     //[NotMapped]
