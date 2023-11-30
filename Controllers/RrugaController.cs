@@ -685,148 +685,148 @@ namespace BioLab.Controllers
             }
 
             /////
-            decimal naftaBlereLitra = 0;
-            decimal NaftaShpenzuarLitra = marrngaadd.NaftaShpenzuarLitra;
-            foreach (var Nafta in marrngaadd.Nafta)
-            {
-                Nafta.BlereShiturSelect = "Blere";
-                naftaBlereLitra = Nafta.Litra + naftaBlereLitra;
-            }
-            /// to calculate nafta shpenzuarLitra si shpenzim
-            if (marrngaadd.Nafta.Count() == 1)
-            {
+//            decimal naftaBlereLitra = 0;
+//            decimal NaftaShpenzuarLitra = marrngaadd.NaftaShpenzuarLitra;
+//            foreach (var Nafta in marrngaadd.Nafta)
+//            {
+//                Nafta.BlereShiturSelect = "Blere";
+//                naftaBlereLitra = Nafta.Litra + naftaBlereLitra;
+//            }
+//            /// to calculate nafta shpenzuarLitra si shpenzim
+//            if (marrngaadd.Nafta.Count() == 1)
+//            {
 
-                marrngaadd.Nafta.First().Litra = naftaBlereLitra - marrngaadd.NaftaShpenzuarLitra;
+//                marrngaadd.Nafta.First().Litra = naftaBlereLitra - marrngaadd.NaftaShpenzuarLitra;
 
-                //var rrugaFitimeShpenzim = rrugaFitimeShpenzims.FirstOrDefault(e => e.CurrencyId == marrngaadd.Nafta[i].CurrencyId);
-
-
-                //    decimal cmim = marrngaadd.Nafta[i].Pagesa / marrngaadd.Nafta[i].Litra;
-                //    decimal shpenzim = NaftaShpenzuarLitra * cmim;
-
-                //  rrugaFitimeShpenzim.Pagesa = rrugaFitimeShpenzim.Pagesa + shpenzim;
-
-            }
-// heqja nga nafta e blere naften e shpenzuar
-            if (marrngaadd.Nafta.Count() >1)
-            {
-                int naftaCount = marrngaadd.Nafta.Count();
-                for (int i = 0; i < marrngaadd.Nafta.Count(); i++)
-                {
-                    if (i < naftaCount-1 )
-                    {
-                        if (marrngaadd.Nafta[i].Litra <= NaftaShpenzuarLitra)
-                        {
-                            //decimal cmim = marrngaadd.Nafta[i].Pagesa / marrngaadd.Nafta[i].Litra;
-                            //decimal shpenzim = marrngaadd.Nafta[i].Litra * cmim;
-
-                            var rrugaFitimeShpenzim = rrugaFitimeShpenzims.FirstOrDefault(e => e.CurrencyId == marrngaadd.Nafta[i].CurrencyId);
-                            rrugaFitimeShpenzim.Pagesa = rrugaFitimeShpenzim.Pagesa + marrngaadd.Nafta[i].Pagesa;
+//                //var rrugaFitimeShpenzim = rrugaFitimeShpenzims.FirstOrDefault(e => e.CurrencyId == marrngaadd.Nafta[i].CurrencyId);
 
 
-                            decimal litra = marrngaadd.Nafta[i].Litra;
-                            NaftaShpenzuarLitra = NaftaShpenzuarLitra - litra;
-                            marrngaadd.Nafta[i].Litra = 0;
-                        }
-                        else
-                        {
-                            var rrugaFitimeShpenzim = rrugaFitimeShpenzims.FirstOrDefault(e => e.CurrencyId == marrngaadd.Nafta[i].CurrencyId);
+//                //    decimal cmim = marrngaadd.Nafta[i].Pagesa / marrngaadd.Nafta[i].Litra;
+//                //    decimal shpenzim = NaftaShpenzuarLitra * cmim;
+
+//                //  rrugaFitimeShpenzim.Pagesa = rrugaFitimeShpenzim.Pagesa + shpenzim;
+
+//            }
+//// heqja nga nafta e blere naften e shpenzuar
+//            if (marrngaadd.Nafta.Count() >1)
+//            {
+//                int naftaCount = marrngaadd.Nafta.Count();
+//                for (int i = 0; i < marrngaadd.Nafta.Count(); i++)
+//                {
+//                    if (i < naftaCount-1 )
+//                    {
+//                        if (marrngaadd.Nafta[i].Litra <= NaftaShpenzuarLitra)
+//                        {
+//                            //decimal cmim = marrngaadd.Nafta[i].Pagesa / marrngaadd.Nafta[i].Litra;
+//                            //decimal shpenzim = marrngaadd.Nafta[i].Litra * cmim;
+
+//                            var rrugaFitimeShpenzim = rrugaFitimeShpenzims.FirstOrDefault(e => e.CurrencyId == marrngaadd.Nafta[i].CurrencyId);
+//                            rrugaFitimeShpenzim.Pagesa = rrugaFitimeShpenzim.Pagesa + marrngaadd.Nafta[i].Pagesa;
+
+
+//                            decimal litra = marrngaadd.Nafta[i].Litra;
+//                            NaftaShpenzuarLitra = NaftaShpenzuarLitra - litra;
+//                            marrngaadd.Nafta[i].Litra = 0;
+//                        }
+//                        else
+//                        {
+//                            var rrugaFitimeShpenzim = rrugaFitimeShpenzims.FirstOrDefault(e => e.CurrencyId == marrngaadd.Nafta[i].CurrencyId);
                             
 
-                                decimal cmim = marrngaadd.Nafta[i].Pagesa / marrngaadd.Nafta[i].Litra;
-                                decimal shpenzim = NaftaShpenzuarLitra * cmim;
+//                                decimal cmim = marrngaadd.Nafta[i].Pagesa / marrngaadd.Nafta[i].Litra;
+//                                decimal shpenzim = NaftaShpenzuarLitra * cmim;
 
-                              rrugaFitimeShpenzim.Pagesa = rrugaFitimeShpenzim.Pagesa + shpenzim;
-
-
-                            marrngaadd.Nafta[i].Litra = marrngaadd.Nafta[i].Litra - NaftaShpenzuarLitra;
-                            marrngaadd.Nafta[i].Pagesa = marrngaadd.Nafta[i].Pagesa - shpenzim;
+//                              rrugaFitimeShpenzim.Pagesa = rrugaFitimeShpenzim.Pagesa + shpenzim;
 
 
+//                            marrngaadd.Nafta[i].Litra = marrngaadd.Nafta[i].Litra - NaftaShpenzuarLitra;
+//                            marrngaadd.Nafta[i].Pagesa = marrngaadd.Nafta[i].Pagesa - shpenzim;
 
-                        }
-                    }
-                    else 
-                    {
-                        if (marrngaadd.Nafta[i].Litra > NaftaShpenzuarLitra)
-                        {
-                            var rrugaFitimeShpenzim = rrugaFitimeShpenzims.FirstOrDefault(e => e.CurrencyId == marrngaadd.Nafta[i].CurrencyId);
 
-                        decimal cmim = marrngaadd.Nafta[i].Pagesa / marrngaadd.Nafta[i].Litra;
-                        decimal shpenzim = NaftaShpenzuarLitra * cmim;
 
-                        rrugaFitimeShpenzim.Pagesa = rrugaFitimeShpenzim.Pagesa + shpenzim;
+//                        }
+//                    }
+//                    else 
+//                    {
+//                        if (marrngaadd.Nafta[i].Litra > NaftaShpenzuarLitra)
+//                        {
+//                            var rrugaFitimeShpenzim = rrugaFitimeShpenzims.FirstOrDefault(e => e.CurrencyId == marrngaadd.Nafta[i].CurrencyId);
+
+//                        decimal cmim = marrngaadd.Nafta[i].Pagesa / marrngaadd.Nafta[i].Litra;
+//                        decimal shpenzim = NaftaShpenzuarLitra * cmim;
+
+//                        rrugaFitimeShpenzim.Pagesa = rrugaFitimeShpenzim.Pagesa + shpenzim;
                         
-                        marrngaadd.Nafta[i].Pagesa = marrngaadd.Nafta[i].Pagesa - shpenzim;
-                        marrngaadd.Nafta[i].Litra = marrngaadd.Nafta[i].Litra - NaftaShpenzuarLitra;
-                        }
-                        else
-                        {
-                            var rrugaFitimeShpenzim = rrugaFitimeShpenzims.FirstOrDefault(e => e.CurrencyId == marrngaadd.Nafta[i].CurrencyId);
-                            rrugaFitimeShpenzim.Pagesa = rrugaFitimeShpenzim.Pagesa + marrngaadd.Nafta[i].Pagesa;
-                            marrngaadd.Nafta[i].Litra = marrngaadd.Nafta[i].Litra - NaftaShpenzuarLitra;
-                        }
+//                        marrngaadd.Nafta[i].Pagesa = marrngaadd.Nafta[i].Pagesa - shpenzim;
+//                        marrngaadd.Nafta[i].Litra = marrngaadd.Nafta[i].Litra - NaftaShpenzuarLitra;
+//                        }
+//                        else
+//                        {
+//                            var rrugaFitimeShpenzim = rrugaFitimeShpenzims.FirstOrDefault(e => e.CurrencyId == marrngaadd.Nafta[i].CurrencyId);
+//                            rrugaFitimeShpenzim.Pagesa = rrugaFitimeShpenzim.Pagesa + marrngaadd.Nafta[i].Pagesa;
+//                            marrngaadd.Nafta[i].Litra = marrngaadd.Nafta[i].Litra - NaftaShpenzuarLitra;
+//                        }
 
 
-                    }
+//                    }
 
-                }
+//                }
 
-                ///te shtohet check qe nese nafta eshte negative ne litra te krijohet nje shitje nafte nga nafta stock
-                ///te shtohet rruga Id tek nafta me shitje pages 0 
-                ///
-                ///
-                ///
-                ///
-                ///
-                List<Nafta> naftasRrugas = new List<Nafta>();
-                foreach (var Nafta in marrngaadd.Nafta)
-                {
-                    if(Nafta.Litra < 0)
-                    {
-                        Nafta.BlereShiturSelect = "Shitur";
-                        Nafta.Litra = (0-Nafta.Litra);
+//                ///te shtohet check qe nese nafta eshte negative ne litra te krijohet nje shitje nafte nga nafta stock
+//                ///te shtohet rruga Id tek nafta me shitje pages 0 
+//                ///
+//                ///
+//                ///
+//                ///
+//                ///
+//                List<Nafta> naftasRrugas = new List<Nafta>();
+//                foreach (var Nafta in marrngaadd.Nafta)
+//                {
+//                    if(Nafta.Litra < 0)
+//                    {
+//                        Nafta.BlereShiturSelect = "Shitur";
+//                        Nafta.Litra = (0-Nafta.Litra);
 
-                        BlereShitur blereShitur = new BlereShitur();
+//                        BlereShitur blereShitur = new BlereShitur();
 
-                        var cmimRef = _context.Naftas.Where(e => e.BlereShiturSelect == "Blere")
-                        //.Where(e => e.Litra > 0 && e.Leke > 0)
-                        .GroupBy(e => e.CurrencyId == Nafta.CurrencyId)
-                        .Select(e =>
-                        (e.Sum(b => b.Pagesa) / e.Sum(b => b.Litra))
-                                )
-                        .FirstOrDefault();
+//                        var cmimRef = _context.Naftas.Where(e => e.BlereShiturSelect == "Blere")
+//                        //.Where(e => e.Litra > 0 && e.Leke > 0)
+//                        .GroupBy(e => e.CurrencyId == Nafta.CurrencyId)
+//                        .Select(e =>
+//                        (e.Sum(b => b.Pagesa) / e.Sum(b => b.Litra))
+//                                )
+//                        .FirstOrDefault();
 
-                        _context.Add(blereShitur);
-                        _context.SaveChanges();
+//                        _context.Add(blereShitur);
+//                        _context.SaveChanges();
 
-                        Nafta nafta = new Nafta
-                        {
-                            BlereShiturSelect = "Blere",
-                            Litra = (0 - Nafta.Litra),
-                          //  Pagesa = 0 - (cmimRef * Nafta.Litra),
-                            CurrencyId = Nafta.CurrencyId,
-                            BlereShiturId = blereShitur.BlereShiturId,
-                            Shenime = "Blerje nga rruga"
-                        };
+//                        Nafta nafta = new Nafta
+//                        {
+//                            BlereShiturSelect = "Blere",
+//                            Litra = (0 - Nafta.Litra),
+//                          //  Pagesa = 0 - (cmimRef * Nafta.Litra),
+//                            CurrencyId = Nafta.CurrencyId,
+//                            BlereShiturId = blereShitur.BlereShiturId,
+//                            Shenime = "Blerje nga rruga"
+//                        };
 
-                        _context.Add(nafta);
-                        _context.SaveChanges();
-                        //  return RedirectToAction("AllNafta");
-                        Nafta.BlereShiturId = blereShitur.BlereShiturId;
-                        Nafta.Pagesa = 0;
-                        nafta.Shenime = "Shitje nga rruga";
-                        naftasRrugas.Add(Nafta);
-                    }
+//                        _context.Add(nafta);
+//                        _context.SaveChanges();
+//                        //  return RedirectToAction("AllNafta");
+//                        Nafta.BlereShiturId = blereShitur.BlereShiturId;
+//                        Nafta.Pagesa = 0;
+//                        nafta.Shenime = "Shitje nga rruga";
+//                        naftasRrugas.Add(Nafta);
+//                    }
 
-                }
-                if(naftasRrugas.Count > 0)
-                {
-                    //to discuss
-                        _context.Naftas.AddRange(naftasRrugas);
-                        _context.SaveChanges();
-                }
-        }
+//                }
+//                if(naftasRrugas.Count > 0)
+//                {
+//                    //to discuss
+//                        _context.Naftas.AddRange(naftasRrugas);
+//                        _context.SaveChanges();
+//                }
+//        }
 
 ///// nafta part
             if (marrngaadd.PikaRrugas.FirstOrDefault().PikaShkarkimiName == "Zgjidh")
@@ -969,37 +969,97 @@ namespace BioLab.Controllers
                 }
             }
 
- ///NAFTA PART
-            
-            ///nafta shitur pagesa 0 lidhja me rrugen  vendosja e pageses per naften e blere
+            ///NAFTA PART
+
+            /////nafta shitur pagesa 0 lidhja me rrugen  vendosja e pageses per naften e blere
+            //foreach (var Nafta in marrngaadd.Nafta)
+            //{
+            //    if (Nafta.BlereShiturId != null) {
+            //    int BlereShiturId = _context.BlereShiturs.FirstOrDefault(e => e.BlereShiturId == Nafta.BlereShiturId).BlereShiturId;
+            //    Nafta naftaShitur = _context.Naftas.FirstOrDefault(e => e.BlereShiturId == Nafta.BlereShiturId && e.BlereShiturSelect == "Shitur");
+            //    if(naftaShitur!= null)
+            //    {
+
+            //    naftaShitur.RrugaId = marrngaadd.RrugaId;
+            //    }
+
+            //    Nafta naftaBlere = _context.Naftas.FirstOrDefault(e => e.BlereShiturId == Nafta.BlereShiturId && e.BlereShiturSelect == "Blere");
+            //    if(naftaBlere != null)
+            //    {
+            //        var cmimRef = _context.Naftas.Where(e => e.BlereShiturSelect == "Blere")
+            //       //.Where(e => e.Litra > 0 && e.Leke > 0)
+            //       .GroupBy(e => e.CurrencyId == Nafta.CurrencyId)
+            //       .Select(e =>
+            //       (e.Sum(b => b.Pagesa) / e.Sum(b => b.Litra))
+            //               )
+            //       .FirstOrDefault();
+            //        naftaBlere.Pagesa = 0 - (cmimRef * Nafta.Litra);
+            //    } 
+            //    }
+            //}
+
+            ///
+            //// NAFTA PART
+            //llogaritja e naftes se blere
+            decimal naftaBlereLitra = 0;
+            decimal NaftaShpenzuarLitra = marrngaadd.NaftaShpenzuarLitra;
             foreach (var Nafta in marrngaadd.Nafta)
             {
-                if (Nafta.BlereShiturId != null) {
-                int BlereShiturId = _context.BlereShiturs.FirstOrDefault(e => e.BlereShiturId == Nafta.BlereShiturId).BlereShiturId;
-                Nafta naftaShitur = _context.Naftas.FirstOrDefault(e => e.BlereShiturId == Nafta.BlereShiturId && e.BlereShiturSelect == "Shitur");
-                if(naftaShitur!= null)
-                {
-
-                naftaShitur.RrugaId = marrngaadd.RrugaId;
-                }
-
-                Nafta naftaBlere = _context.Naftas.FirstOrDefault(e => e.BlereShiturId == Nafta.BlereShiturId && e.BlereShiturSelect == "Blere");
-                if(naftaBlere != null)
-                {
-                    var cmimRef = _context.Naftas.Where(e => e.BlereShiturSelect == "Blere")
-                   //.Where(e => e.Litra > 0 && e.Leke > 0)
-                   .GroupBy(e => e.CurrencyId == Nafta.CurrencyId)
-                   .Select(e =>
-                   (e.Sum(b => b.Pagesa) / e.Sum(b => b.Litra))
-                           )
-                   .FirstOrDefault();
-                    naftaBlere.Pagesa = 0 - (cmimRef * Nafta.Litra);
-                } 
-                }
+                Nafta.BlereShiturSelect = "Blere";
+                naftaBlereLitra = Nafta.Litra + naftaBlereLitra;
             }
 
-            //// NAFTA PART
-            ///
+            // to add nafta si naftastock
+            // to add nafta si shpenzim
+
+
+            int naftaCount = marrngaadd.Nafta.Count();
+            List<NaftaStock> naftaStocks= new List<NaftaStock>();
+            for (int i = 0; i < naftaCount; i++)
+            {
+                //if (naftaBlereLitra <= NaftaShpenzuarLitra)
+                //{ }
+                    if (marrngaadd.Nafta[i].Litra <= NaftaShpenzuarLitra)
+                {
+                    //naftaBlereLitra = naftaBlereLitra - marrngaadd.Nafta[i].Litra;
+                    NaftaShpenzuarLitra = NaftaShpenzuarLitra - marrngaadd.Nafta[i].Litra;
+
+                }
+                else
+                {
+                    decimal litraMbetur = marrngaadd.Nafta[i].Litra - NaftaShpenzuarLitra;
+                    NaftaShpenzuarLitra = 0;
+                    decimal cmim = marrngaadd.Nafta[i].Pagesa / marrngaadd.Nafta[i].Litra;
+                    decimal pagesaNaftaMbetur= litraMbetur * cmim;
+                    //decimal shpenzim = NaftaShpenzuarLitra * cmim;
+
+                    NaftaStock naftaStock = new NaftaStock()
+                    {
+                        Litra = litraMbetur,
+                        Pagesa = pagesaNaftaMbetur
+                    };
+                    naftaStocks.Add(naftaStock);
+                }
+            }
+            foreach(var naftastock in naftaStocks)
+            {
+                if (naftastock.Litra == 0)
+                    continue;
+                if (naftastock.Litra > 0)
+                {
+                    // shto blerje me cmimin dhe litrat
+                }
+                if (naftastock.Litra < 0)
+                {
+                    //shto shtije cmim + litra +
+                    //shto blerje cmim ref
+                    // cmim ref merret nga nafta stock me curr first
+                    // merr me select liste me currency to naftes stock
+                    // mer cmimin ref per naften e cila e ka sum e litrave te blera pozitiv
+                }
+
+            }
+
 
             /////// Fitime part 
 
