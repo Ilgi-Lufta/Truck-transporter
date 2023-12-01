@@ -1012,7 +1012,7 @@ namespace BioLab.Controllers
             // to add nafta si naftastock
             // to add nafta si shpenzim
 
-
+            //to fix nafta blere no metter the currency
             int naftaCount = marrngaadd.Nafta.Count();
             List<NaftaStock> naftaStocks= new List<NaftaStock>();
             for (int i = 0; i < naftaCount; i++)
@@ -1036,7 +1036,11 @@ namespace BioLab.Controllers
                     NaftaStock naftaStock = new NaftaStock()
                     {
                         Litra = litraMbetur,
-                        Pagesa = pagesaNaftaMbetur
+                        Pagesa = pagesaNaftaMbetur,
+                        PagesaKryer = true,
+                        CurrencyId = marrngaadd.Nafta[i].CurrencyId,
+                        RrugaId = marrngaadd.RrugaId,
+                      //  BlereShiturSelect = "Blere",
                     };
                     naftaStocks.Add(naftaStock);
                 }
@@ -1047,11 +1051,76 @@ namespace BioLab.Controllers
                     continue;
                 if (naftastock.Litra > 0)
                 {
+                    naftastock.BlereShiturSelect = "Blere";
                     // shto blerje me cmimin dhe litrat
                 }
                 if (naftastock.Litra < 0)
                 {
-                    //shto shtije cmim + litra +
+                    BlereShitur blereShitur = new BlereShitur();
+                    _context.Add(blereShitur);
+                    _context.SaveChanges();
+                    
+
+                    //marrja e listes se currencyve te naftes stock dhe cmimit ref pozitiv
+
+                    List<CurrCmimRef> currCmimRefs = new List<CurrCmimRef>();
+                    List<int> naftaStocksCurrencyId = _context.NaftaStocks.Select(e => e.CurrencyId).ToList();
+                    foreach (var CurrencyId in naftaStocksCurrencyId)
+                    {
+                        var cmimRef = _context.Naftas.Where(e => e.BlereShiturSelect == "Blere")
+                       //.Where(e => e.Litra > 0 && e.Leke > 0)
+                       .GroupBy(e => e.CurrencyId == CurrencyId)
+                       .Select(e =>
+                       (e.Sum(b => b.Pagesa) / e.Sum(b => b.Litra))
+                               )
+                       .FirstOrDefault();
+                        if (cmimRef > 0)
+                        {
+                            CurrCmimRef currCmimRef = new CurrCmimRef()
+                            {
+                                CmimRef = cmimRef,
+                                CurrencyId = CurrencyId
+                            };
+                            currCmimRefs.Add(currCmimRef);
+                        }
+                    }
+                    //krijimi i naftes se blere (negative)
+                    NaftaStock naftablereStock = new NaftaStock()
+                    {
+                        Litra = naftastock.Litra,
+                        // Pagesa = pagesaNaftaMbetur,
+                        PagesaKryer = true,
+                        CurrencyId = naftastock.CurrencyId,
+                        RrugaId = marrngaadd.RrugaId,
+                        BlereShiturSelect = "Blere",
+                        BlereShiturId = blereShitur.BlereShiturId
+                    };
+                    if (currCmimRefs.Count > 0 && currCmimRefs.Any(e=>e.CurrencyId == naftablereStock.CurrencyId))
+                    {
+                       naftablereStock.Pagesa = (0 - naftablereStock.Litra) * currCmimRefs.FirstOrDefault(e=>e.CurrencyId== naftablereStock.CurrencyId).CmimRef;
+                    }
+                    else
+                    {
+                        decimal cmim = (0 - naftastock.Pagesa) / (0 - naftastock.Litra);
+                        naftastock.Litra = 0 - naftastock.Litra;
+                        naftastock.Pagesa = naftastock.Litra * cmim;
+                    }
+
+                    naftastock.BlereShiturSelect = "Shitur";
+                    //shto shtije cmim 0 litra +
+                    naftastock.Litra = 0 - naftastock.Litra;
+                    naftastock.Pagesa = 0;
+                    naftastock.BlereShiturId = blereShitur.BlereShiturId;
+
+                    //if cmim ref eshte negativ
+                    //if ()
+                    //{
+                    //decimal cmim = naftastock.Pagesa /(0- naftastock.Litra);
+                    //naftastock.Litra= 0 - naftastock.Litra;
+                    //naftastock.Pagesa= naftastock.Litra* cmim;
+                    //}
+                    //  naftastock.Pagesa= 0 - naftastock.Pagesa;
+
                     //shto blerje cmim ref
                     // cmim ref merret nga nafta stock me curr first
                     // merr me select liste me currency to naftes stock
@@ -1388,5 +1457,10 @@ namespace BioLab.Controllers
 
 
 
+    }
+    public class CurrCmimRef
+    {
+        public decimal CmimRef { get; set; }
+        public int CurrencyId { get; set; }
     }
 }
