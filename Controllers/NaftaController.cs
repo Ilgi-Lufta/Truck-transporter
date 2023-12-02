@@ -271,8 +271,8 @@ namespace BioLab.Controllers
             NaftaStock nafta = _context.NaftaStocks.FirstOrDefault(p => p.NaftaStockId == id);
             if (nafta.BlereShiturId != null || nafta.BlereShiturId != 0)
             {
-                var BlereNegativ = _context.Naftas.FirstOrDefault(p => p.BlereShiturId == nafta.BlereShiturId && p.BlereShiturSelect == "Blere");
-                _context.Naftas.Remove(BlereNegativ);
+                var BlereNegativ = _context.NaftaStocks.FirstOrDefault(p => p.BlereShiturId == nafta.BlereShiturId && p.BlereShiturSelect == "Blere");
+                _context.NaftaStocks.Remove(BlereNegativ);
             }
 
             _context.NaftaStocks.Remove(nafta);

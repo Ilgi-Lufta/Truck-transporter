@@ -1039,7 +1039,7 @@ namespace BioLab.Controllers
                 {
                     decimal cmim = marrngaadd.Nafta[i].Pagesa / marrngaadd.Nafta[i].Litra;
                     decimal litraMbetur = marrngaadd.Nafta[i].Litra - NaftaShpenzuarLitra;
-                    if (litraMbetur>0)
+                    if (litraMbetur>=0)
                     {
                         decimal pagesashpenzim = cmim * NaftaShpenzuarLitra;
                         var rrugaFitimeShpenzim = rrugaFitimeShpenzims.FirstOrDefault(e => e.CurrencyId == marrngaadd.Nafta[i].CurrencyId);
@@ -1080,6 +1080,9 @@ namespace BioLab.Controllers
                     ////shtohet pagesa per litrat e mbetura te naftes si shpenzim
                     //var rrugaFitimeShpenzim = rrugaFitimeShpenzims.FirstOrDefault(e => e.CurrencyId == naftastock.CurrencyId);
                     //rrugaFitimeShpenzim.Pagesa = rrugaFitimeShpenzim.Pagesa + naftastock.Pagesa;
+                    _context.Add(naftastock);
+                    _context.SaveChanges();
+                    continue;
                 }
                 if (naftastock.Litra < 0)
                 {
@@ -1091,7 +1094,7 @@ namespace BioLab.Controllers
                     //marrja e listes se currencyve te naftes stock dhe cmimit ref pozitiv
 
                     List<CurrCmimRef> currCmimRefs = new List<CurrCmimRef>();
-                    List<int> naftaStocksCurrencyId = _context.NaftaStocks.Select(e => e.CurrencyId).ToList();
+                    List<int> naftaStocksCurrencyId = _context.NaftaStocks.GroupBy(e=>e.CurrencyId).Select(e => e.Key).ToList();
                     foreach (var CurrencyId in naftaStocksCurrencyId)
                     {
                         var cmimRef = _context.NaftaStocks.Where(e => e.BlereShiturSelect == "Blere")
@@ -1136,12 +1139,13 @@ namespace BioLab.Controllers
                     else
                     {
                         decimal cmim = (0 - naftastock.Pagesa) / (0 - naftastock.Litra);
-                        naftastock.Litra = 0 - naftastock.Litra;
-                        naftastock.Pagesa = naftastock.Litra * cmim;
+                        naftablereStock.Pagesa = naftastock.Litra * cmim;
                         naftablereStock.Shenime = "cmim nafta blere nga rruga";
                         //shtohet pagesa per litrat (negative) me cmim nga nafta blere nga rruga te naftes si shpenzim
                         var rrugaFitimeShpenzim = rrugaFitimeShpenzims.FirstOrDefault(e => e.CurrencyId == naftastock.CurrencyId);
-                        rrugaFitimeShpenzim.Pagesa = rrugaFitimeShpenzim.Pagesa + naftastock.Pagesa;
+                        rrugaFitimeShpenzim.Pagesa = rrugaFitimeShpenzim.Pagesa - naftastock.Pagesa;
+                        naftablereStock.CurrencyId = naftastock.CurrencyId;
+
                     }
 
                     naftastock.BlereShiturSelect = "Shitur";
@@ -1149,6 +1153,10 @@ namespace BioLab.Controllers
                     naftastock.Litra = 0 - naftastock.Litra;
                     naftastock.Pagesa = 0;
                     naftastock.BlereShiturId = blereShitur.BlereShiturId;
+
+                    _context.Add(naftastock);
+                    _context.Add(naftablereStock);
+                    _context.SaveChanges();
 
                     //if cmim ref eshte negativ
                     //if ()
