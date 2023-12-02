@@ -1037,9 +1037,15 @@ namespace BioLab.Controllers
                 }
                 else
                 {
-                    decimal litraMbetur = marrngaadd.Nafta[i].Litra - NaftaShpenzuarLitra;
-                    NaftaShpenzuarLitra = 0;
                     decimal cmim = marrngaadd.Nafta[i].Pagesa / marrngaadd.Nafta[i].Litra;
+                    decimal litraMbetur = marrngaadd.Nafta[i].Litra - NaftaShpenzuarLitra;
+                    if (litraMbetur>0)
+                    {
+                        decimal pagesashpenzim = cmim * NaftaShpenzuarLitra;
+                        var rrugaFitimeShpenzim = rrugaFitimeShpenzims.FirstOrDefault(e => e.CurrencyId == marrngaadd.Nafta[i].CurrencyId);
+                        rrugaFitimeShpenzim.Pagesa = rrugaFitimeShpenzim.Pagesa + pagesashpenzim;
+                    }
+                    NaftaShpenzuarLitra = 0;
                     decimal pagesaNaftaMbetur= litraMbetur * cmim;
                     //decimal shpenzim = NaftaShpenzuarLitra * cmim;
 
@@ -1071,9 +1077,9 @@ namespace BioLab.Controllers
                 if (naftastock.Litra > 0)
                 {
                     naftastock.BlereShiturSelect = "Blere";
-                    //shtohet pagesa per litrat e mbetura te naftes si shpenzim
-                    var rrugaFitimeShpenzim = rrugaFitimeShpenzims.FirstOrDefault(e => e.CurrencyId == naftastock.CurrencyId);
-                    rrugaFitimeShpenzim.Pagesa = rrugaFitimeShpenzim.Pagesa + naftastock.Pagesa;
+                    ////shtohet pagesa per litrat e mbetura te naftes si shpenzim
+                    //var rrugaFitimeShpenzim = rrugaFitimeShpenzims.FirstOrDefault(e => e.CurrencyId == naftastock.CurrencyId);
+                    //rrugaFitimeShpenzim.Pagesa = rrugaFitimeShpenzim.Pagesa + naftastock.Pagesa;
                 }
                 if (naftastock.Litra < 0)
                 {
@@ -1125,7 +1131,7 @@ namespace BioLab.Controllers
                         naftablereStock.Shenime = "cmim ref";
                         //shtohet pagesa per litrat (negative) me cmimin nga cmimi references te naftes si shpenzim
                         var rrugaFitimeShpenzim = rrugaFitimeShpenzims.FirstOrDefault(e => e.CurrencyId == currCmimRef.CurrencyId);
-                        rrugaFitimeShpenzim.Pagesa = rrugaFitimeShpenzim.Pagesa +(0- naftastock.Pagesa);
+                        rrugaFitimeShpenzim.Pagesa = rrugaFitimeShpenzim.Pagesa +(0- naftablereStock.Pagesa);
                     }
                     else
                     {
