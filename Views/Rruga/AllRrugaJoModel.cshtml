@@ -6,16 +6,15 @@
 
     <form asp-controller="Rruga" asp-action="AllRrugaJoModel">
         <p>
-            <input type="text" placeholder="Emri Shoferit" name="SearchString" />
-   
-        Fillo <input class="ms-1" type="date" name="searchFirstTime" />
-        Perfundo <input class="ms-1" type="date" name="searchSecondTime" />
-      
+            <input type="text" placeholder="Emri rruges" name="SearchString" />
+
+            Fillo <input class="ms-1" type="date" name="searchFirstTime" />
+            Perfundo <input class="ms-1" type="date" name="searchSecondTime" />
+
 
             <input class="btn btn-primary" type="submit" value="Kerko" />
         </p>
     </form>
-    <a class="btn btn-primary" asp-action="AddRrugaJoModel" asp-controller="Rruga"> Shto Rruge</a>
 
     <div class="row">
         <div class="col sm-6">
@@ -23,12 +22,17 @@
                 <thead>
                     <tr>
                         <th scope="col">Emri</th>
+                        <th scope="col">Data</th>
+                        <th scope="col">Nafta Shpenzuar Litra</th>
+                        <th scope="col">Shenime</th>
+                        <th scope="col">Pagesa Kryer</th>
+                        <th scope="col">Shoferet</th>
+                        <th scope="col">Pikat e shkarkimit</th>
+                        @*      <th scope="col">shpenzime ekstra</th>
+                        <th scope="col">Xhiro ekstra</th>
                         <th scope="col">Dogana</th>
-                        <th scope="col">NaftaBlereLitra</th>
-                        <th scope="col">NaftaBlereCmim</th>
-                        <th scope="col">NaftaShpenzuarLitra</th>
-                        <th scope="col">Emri shoferit</th>
-                        <th scope="col">Emri Pikes shkarkimit</th>
+                        <th scope="col">Nafta blere</th>*@
+                        <th scope="col">Fitime</th>
                         <th scope="col">Veprime</th>
                     </tr>
                 </thead>
@@ -37,23 +41,75 @@
                     {
                         <tr>
                             <td scope="row"> @item.Emri</td>
-                            <td scope="row"> @item.Dogana</td>
-                            @if(item.Nafta!=null){
-                                
-                            <td scope="row"> @item.Nafta.Litra</td>
-                            }else{
-                            <td scope="row"></td>
-
-                            }
-                            @if(item.Nafta!=null){
-
-                            <td scope="row"> @item.Nafta.Cmimi</td>
-                            }else{
-                            <td scope="row"></td>
-                            }
+                            <td scope="row"> @item.CreatedDate</td>
                             <td scope="row"> @item.NaftaShpenzuarLitra</td>
-                            <td scope="row"> @item.Shofer.Emri</td>
-                            <td scope="row"> @item.PikaShkarkimi.Emri</td>
+                            <td scope="row"> @item.shenime</td>
+                            <td scope="row"> @item.PagesaKryer</td>
+                            <td scope="row">
+                                <table class="table table-striped table-bordered  ">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Emri</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var Shofer in item.ShoferRrugas)
+                                        {
+                                            <tr>
+
+                                                <td scope="row">
+                                                    @Shofer.Shofer.Emri
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </td>
+                            <td scope="row">
+                                <table class="table table-striped table-bordered  ">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Emri</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var Pika in item.PikaRrugas)
+                                        {
+                                            <tr>
+
+                                                <td scope="row">
+                                                    @Pika.PikaShkarkimi.Emri
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </td>
+                            <td scope="row">
+                                <table class="table table-striped table-bordered  ">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Pagesa</th>
+                                            <th scope="col">Monedha</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var Fitime in item.RrugaFitimes)
+                                        {
+                                            <tr>
+                                                <td scope="row">
+                                                    @Fitime.Pagesa
+                                                </td>
+                                                <td scope="row">
+                                                    @Fitime.Currency.CurrencyUnit
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </td>
                             <td scope="row">
                                 <a class="btn btn-primary" asp-action="EditRrugaJoModel" asp-controller="Rruga" asp-route-id="@item.RrugaId"> Edito</a>
                                 <a class="btn btn-danger" asp-action="FshiRrugaJoModel" asp-controller="Rruga" asp-route-id="@item.RrugaId"> Fshi</a>
