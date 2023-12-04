@@ -108,14 +108,20 @@ namespace BioLab.Controllers
             }
 
             ////nafta
-            //var naftaStocks = _context.NaftaStocks.Where(e=>e.BlereShiturSelect== "Shitur").ToList();
-            //foreach (var naftaStock in naftaStocks)
+            //var naftaStocksShitur = _context.NaftaStocks.Where(e => e.BlereShiturSelect == "Shitur").ToList();
+            //foreach (var naftaStock in naftaStocksShitur)
             //{
             //    var rrugaFitim = rrugaFitime.FirstOrDefault(e => e.CurrencyId == naftaStock.CurrencyId);
             //    rrugaFitim.Pagesa = rrugaFitim.Pagesa + naftaStock.Pagesa;
             //}
+            //var naftaStocksBlere = _context.NaftaStocks.Where(e => e.BlereShiturSelect == "Blere" && e.Pagesa>0).ToList();
+            //foreach (var naftaStock in naftaStocksBlere)
+            //{
+            //    var rrugaFitim = rrugaFitime.FirstOrDefault(e => e.CurrencyId == naftaStock.CurrencyId);
+            //    rrugaFitim.Pagesa = rrugaFitim.Pagesa - naftaStock.Pagesa;
+            //}
 
-             ViewBag.Totali = rrugaFitime;
+            ViewBag.Totali = rrugaFitime;
 
 
             return View();
@@ -276,24 +282,144 @@ namespace BioLab.Controllers
             return RedirectToAction("AllGjendja");
 
         }
-        public IActionResult GjendjaRaport()
+        public IActionResult GjendjaRaport(DateTime searchFirstTime, DateTime searchSecondTime)
         {
 
-            //var shofers = _context.ZbritShtoGjendja.GroupBy(r => r.Model == false)
-            //   .Select(b => new
-            //   {
-            //       shpenzuar = b.Sum(m => m.NaftaPerTuShiturLitra * m.NaftaBlereCmim),
-            //       nafta = b.Sum(m => m.NaftaPerTuShiturLitra),
-            //   })
-            //   .ToList();
-            //var cmimi = shofers.Select(b => b.shpenzuar / b.nafta);
+            //var shofers = _context.Naftas
+            //         .Where(m => searchFirstTime != DateTime.MinValue ? m.CreatedDate > searchFirstTime : true)
+            //        .Where(m => searchSecondTime != DateTime.MinValue ? m.CreatedDate < searchSecondTime : true)
+            //    .ToList();
 
             //if (shofers != null)
             //{
             //    ViewBag.Shofers = shofers;
             //}
+            //var naftaShitur = _context.Naftas.Where(b => b.BlereShiturSelect == "Blere")
+            //      .Where(m => searchFirstTime != DateTime.MinValue ? m.CreatedDate > searchFirstTime : true)
+            //        .Where(m => searchSecondTime != DateTime.MinValue ? m.CreatedDate > searchSecondTime : true)
+
+            //        .ToList();
+            //var naftaBlere = _context.Naftas.Where(b => b.BlereShiturSelect == "Shitur")
+            //      .Where(m => searchFirstTime != DateTime.MinValue ? m.CreatedDate > searchFirstTime : true)
+            //        .Where(m => searchSecondTime != DateTime.MinValue ? m.CreatedDate > searchSecondTime : true)
+
+            //        .ToList();
+            //ViewBag.RefPrice = _context.Naftas
+            //     //.Where(e => e.Litra > 0 && e.Leke > 0)
+            //     .GroupBy(e => e.BlereShiturSelect == "Blere")
+            //     .Select(e =>
+            //     (e.Sum(b => b.Leke) / e.Sum(b => b.Litra))
+            //             )
+            //     .FirstOrDefault();
+
+         //   ViewBag.Shofers = _context.ZbritShtoGjendjas.Include(e => e.Currency).OrderBy(e => e.CreatedDate).ToList();
+
+            var Currencys = _context.Currencys.ToList();
+            List<RrugaFitime> rrugaFitime = new List<RrugaFitime>();
+
+            foreach (var item in Currencys)
+            {
+                var Currency = _context.Currencys.FirstOrDefault(e => e.CurrencyId == item.CurrencyId);
+                RrugaFitime rrugaFitim = new RrugaFitime()
+                {
+                    CurrencyId = item.CurrencyId,
+                    Currency = Currency,
+                    ShpenzimXhiro = false,
+                    Pagesa = 0
+                };
+                rrugaFitime.Add(rrugaFitim);
+            }
+
+           // rruga
+            var rrugas = _context.Rrugas
+                //.Include(e => e.Shofer)
+                //.Include(e => e.PikaShkarkimi)
+                //.Include(e=>e.Nafta).ThenInclude(e => e.Currency)
+                //.Include(e=>e.PagesaDoganas).ThenInclude(e=>e.Currency)
+                .Include(e => e.ShoferRrugas).ThenInclude(e => e.Shofer)
+                .Include(e => e.PikaRrugas).ThenInclude(e => e.PikaShkarkimi)
+                //.Include(e=>e.RrugaShpenzimeEkstras).ThenInclude(e=>e.Currency)
+                //.Include(e=>e.RrugaFitimeEkstras).ThenInclude(e=>e.Currency)
+                .Include(e => e.RrugaFitimes).ThenInclude(e => e.Currency)
+                .Where(e => e.Model == false)
+                .Where(m => searchFirstTime != DateTime.MinValue ? m.CreatedDate > searchFirstTime : true)
+                .Where(m => searchSecondTime != DateTime.MinValue ? m.CreatedDate > searchSecondTime : true)
+                .ToList();
+
+            foreach (var rruga in rrugas)
+            {
+                if (rruga.RrugaFitimes.Count > 0)
+                {
+                    foreach (var fitim in rruga.RrugaFitimes)
+                    {
+                        var rrugaFitim = rrugaFitime.FirstOrDefault(e => e.CurrencyId == fitim.CurrencyId);
+                        rrugaFitim.Pagesa = rrugaFitim.Pagesa + fitim.Pagesa;
+                        rrugaFitim.PagesaReale = rrugaFitim.PagesaReale + fitim.PagesaReale;
+                    }
+                }
+            }
+
+            //gjendja
+            var gjendjas = _context.ZbritShtoGjendjas.Include(e => e.Currency)
+                 .Where(m => searchFirstTime != DateTime.MinValue ? m.CreatedDate > searchFirstTime : true)
+                .Where(m => searchSecondTime != DateTime.MinValue ? m.CreatedDate > searchSecondTime : true)
+                .ToList();
+
+            foreach (var gjendja in gjendjas)
+            {
+                if (gjendja.ZbritShtoSelect == "Zbrit")
+                {
+                    var rrugaFitim = rrugaFitime.FirstOrDefault(e => e.CurrencyId == gjendja.CurrencyId);
+                    rrugaFitim.Pagesa = rrugaFitim.Pagesa - gjendja.Pagesa;
+                    rrugaFitim.PagesaReale = rrugaFitim.PagesaReale - gjendja.Pagesa;
+                }
+                else
+                {
+                    var rrugaFitim = rrugaFitime.FirstOrDefault(e => e.CurrencyId == gjendja.CurrencyId);
+                    rrugaFitim.Pagesa = rrugaFitim.Pagesa + gjendja.Pagesa;
+                    rrugaFitim.PagesaReale = rrugaFitim.PagesaReale + gjendja.Pagesa;
+                }
+            }
+
+            //nafta
+            var naftaStocksShitur = _context.NaftaStocks
+                .Where(e => e.BlereShiturSelect == "Shitur" && e.RrugaId==null)
+                .Where(m => searchFirstTime != DateTime.MinValue ? m.CreatedDate > searchFirstTime : true)
+                .Where(m => searchSecondTime != DateTime.MinValue ? m.CreatedDate > searchSecondTime : true)
+                .ToList();
+            foreach (var naftaStock in naftaStocksShitur)
+            {
+                var rrugaFitim = rrugaFitime.FirstOrDefault(e => e.CurrencyId == naftaStock.CurrencyId);
+                rrugaFitim.Pagesa = rrugaFitim.Pagesa + naftaStock.Pagesa;
+                if (naftaStock.PagesaKryer)
+                {
+                    rrugaFitim.PagesaReale = rrugaFitim.PagesaReale + naftaStock.Pagesa;
+                }
+            }
+
+            var naftaStocksBlere = _context.NaftaStocks
+                .Where(e => e.BlereShiturSelect == "Blere" && e.Pagesa > 0 && e.RrugaId == null)
+                .Where(m => searchFirstTime != DateTime.MinValue ? m.CreatedDate > searchFirstTime : true)
+                .Where(m => searchSecondTime != DateTime.MinValue ? m.CreatedDate > searchSecondTime : true)
+                .ToList();
+
+            foreach (var naftaStock in naftaStocksBlere)
+            {
+                var rrugaFitim = rrugaFitime.FirstOrDefault(e => e.CurrencyId == naftaStock.CurrencyId);
+                rrugaFitim.Pagesa = rrugaFitim.Pagesa - naftaStock.Pagesa;
+                if (naftaStock.PagesaKryer)
+                {
+                    rrugaFitim.PagesaReale = rrugaFitim.PagesaReale - naftaStock.Pagesa;
+                }
+            }
+
+            ViewBag.Totali = rrugaFitime;
+
+
             return View();
         }
+
+      
 
     }
 }

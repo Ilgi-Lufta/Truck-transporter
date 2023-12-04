@@ -928,7 +928,10 @@ namespace BioLab.Controllers
                     //shtohet pagesa e plote e naftes si shpenzim
                     var rrugaFitimeShpenzim = rrugaFitimeShpenzims.FirstOrDefault(e => e.CurrencyId == marrngaadd.Nafta[i].CurrencyId);
                     rrugaFitimeShpenzim.Pagesa = rrugaFitimeShpenzim.Pagesa + marrngaadd.Nafta[i].Pagesa;
-
+                    if (marrngaadd.Nafta[i].PagesaKryer == true)
+                    {
+                        rrugaFitimeShpenzim.PagesaReale = rrugaFitimeShpenzim.PagesaReale + marrngaadd.Nafta[i].Pagesa;
+                    }
                 }
                 else
                 {
@@ -939,6 +942,11 @@ namespace BioLab.Controllers
                         decimal pagesashpenzim = cmim * NaftaShpenzuarLitra;
                         var rrugaFitimeShpenzim = rrugaFitimeShpenzims.FirstOrDefault(e => e.CurrencyId == marrngaadd.Nafta[i].CurrencyId);
                         rrugaFitimeShpenzim.Pagesa = rrugaFitimeShpenzim.Pagesa + pagesashpenzim;
+                        if (marrngaadd.Nafta[i].PagesaKryer == true)
+                        {
+                            rrugaFitimeShpenzim.PagesaReale = rrugaFitimeShpenzim.PagesaReale + pagesashpenzim;
+                        }
+
                     }
                     NaftaShpenzuarLitra = 0;
                     decimal pagesaNaftaMbetur= litraMbetur * cmim;
@@ -948,7 +956,7 @@ namespace BioLab.Controllers
                     {
                         Litra = litraMbetur,
                         Pagesa = pagesaNaftaMbetur,
-                        PagesaKryer = true,
+                        PagesaKryer = marrngaadd.Nafta[i].PagesaKryer,
                         CurrencyId = marrngaadd.Nafta[i].CurrencyId,
                         RrugaId = marrngaadd.RrugaId,
                       //  BlereShiturSelect = "Blere",
@@ -973,8 +981,13 @@ namespace BioLab.Controllers
                 {
                     naftastock.BlereShiturSelect = "Blere";
                     ////shtohet pagesa per litrat e mbetura te naftes si shpenzim
-                    //var rrugaFitimeShpenzim = rrugaFitimeShpenzims.FirstOrDefault(e => e.CurrencyId == naftastock.CurrencyId);
-                    //rrugaFitimeShpenzim.Pagesa = rrugaFitimeShpenzim.Pagesa + naftastock.Pagesa;
+                    ///
+                    var rrugaFitimeShpenzim = rrugaFitimeShpenzims.FirstOrDefault(e => e.CurrencyId == naftastock.CurrencyId);
+                    rrugaFitimeShpenzim.Pagesa = rrugaFitimeShpenzim.Pagesa + naftastock.Pagesa;
+                     if (naftastock.PagesaKryer)
+                    {
+                        rrugaFitimeShpenzim.PagesaReale = rrugaFitimeShpenzim.PagesaReale + naftastock.Pagesa;
+                    }
                     _context.Add(naftastock);
                     _context.SaveChanges();
                     continue;
@@ -1014,7 +1027,7 @@ namespace BioLab.Controllers
                     {
                         Litra = naftastock.Litra,
                         // Pagesa = pagesaNaftaMbetur,
-                        PagesaKryer = true,
+                        PagesaKryer = naftastock.PagesaKryer,
                       //  CurrencyId = naftastock.CurrencyId,
                         RrugaId = marrngaadd.RrugaId,
                         BlereShiturSelect = "Blere",
@@ -1030,6 +1043,9 @@ namespace BioLab.Controllers
                         //shtohet pagesa per litrat (negative) me cmimin nga cmimi references te naftes si shpenzim
                         var rrugaFitimeShpenzim = rrugaFitimeShpenzims.FirstOrDefault(e => e.CurrencyId == currCmimRef.CurrencyId);
                         rrugaFitimeShpenzim.Pagesa = rrugaFitimeShpenzim.Pagesa +(0- naftablereStock.Pagesa);
+
+
+                        rrugaFitimeShpenzim.PagesaReale = rrugaFitimeShpenzim.PagesaReale + (0- naftablereStock.Pagesa);
                     }
                     else
                     {
@@ -1038,8 +1054,13 @@ namespace BioLab.Controllers
                         naftablereStock.Shenime = "cmim nafta blere nga rruga";
                         //shtohet pagesa per litrat (negative) me cmim nga nafta blere nga rruga te naftes si shpenzim
                         var rrugaFitimeShpenzim = rrugaFitimeShpenzims.FirstOrDefault(e => e.CurrencyId == naftastock.CurrencyId);
-                        rrugaFitimeShpenzim.Pagesa = rrugaFitimeShpenzim.Pagesa - naftastock.Pagesa;
                         naftablereStock.CurrencyId = naftastock.CurrencyId;
+                        rrugaFitimeShpenzim.Pagesa = rrugaFitimeShpenzim.Pagesa - naftablereStock.Pagesa;
+
+                        if (naftastock.PagesaKryer == true)
+                        {
+                            rrugaFitimeShpenzim.PagesaReale = rrugaFitimeShpenzim.PagesaReale - naftablereStock.Pagesa;
+                        }
 
                     }
 
@@ -1063,12 +1084,17 @@ namespace BioLab.Controllers
             // Shpenzim part      dogana 
             foreach (var PagesaDoganaVM in marrngaadd.PagesaDoganaVM)
             {
+               var rrugaFitimeShpenzim =  rrugaFitimeShpenzims.FirstOrDefault(e => e.CurrencyId == PagesaDoganaVM.CurrencyId);
+                rrugaFitimeShpenzim.Pagesa = rrugaFitimeShpenzim.Pagesa + PagesaDoganaVM.Pagesa;
                 if (PagesaDoganaVM.PagesaKryer == false)
                 {
                     PagesaKryer = false;
                 }
-               var rrugaFitimeShpenzim =  rrugaFitimeShpenzims.FirstOrDefault(e => e.CurrencyId == PagesaDoganaVM.CurrencyId);
-                rrugaFitimeShpenzim.Pagesa = rrugaFitimeShpenzim.Pagesa + PagesaDoganaVM.Pagesa;
+                else
+                {
+                    rrugaFitimeShpenzim.PagesaReale = rrugaFitimeShpenzim.PagesaReale + PagesaDoganaVM.Pagesa;
+                }
+
             }
 
             // Shpenzim part   Shofer RRUGA
@@ -1076,12 +1102,16 @@ namespace BioLab.Controllers
             {
                 foreach (var PagesaShoferitVM in ShoferitRrugaVM.pagesaShoferitVM)
                 {
+                    var rrugaFitimeShpenzim = rrugaFitimeShpenzims.FirstOrDefault(e => e.CurrencyId == PagesaShoferitVM.CurrencyId);
+                    rrugaFitimeShpenzim.Pagesa = rrugaFitimeShpenzim.Pagesa + PagesaShoferitVM.Pagesa;
                     if (PagesaShoferitVM.PagesaKryer == false)
                     {
                         PagesaKryer = false;
                     }
-                    var rrugaFitimeShpenzim = rrugaFitimeShpenzims.FirstOrDefault(e => e.CurrencyId == PagesaShoferitVM.CurrencyId);
-                    rrugaFitimeShpenzim.Pagesa = rrugaFitimeShpenzim.Pagesa + PagesaShoferitVM.Pagesa;
+                    else
+                    {
+                        rrugaFitimeShpenzim.PagesaReale = rrugaFitimeShpenzim.PagesaReale + PagesaShoferitVM.Pagesa;
+                    }
                 }
             }
 
@@ -1092,13 +1122,17 @@ namespace BioLab.Controllers
                 {
                     foreach (var PikaRrugaPagesaVM in PikaRrugaVM.PikaRrugaPagesaVMs)
                     {
-
+                        var rrugaFitimeXhiro = rrugaFitimeXhiros.FirstOrDefault(e => e.CurrencyId == PikaRrugaPagesaVM.CurrencyId);
+                        rrugaFitimeXhiro.Pagesa = rrugaFitimeXhiro.Pagesa + PikaRrugaPagesaVM.Pagesa;
                         if (PikaRrugaPagesaVM.PagesaKryer == false)
                         {
                             PagesaKryer = false;
                         }
-                        var rrugaFitimeXhiro = rrugaFitimeXhiros.FirstOrDefault(e => e.CurrencyId == PikaRrugaPagesaVM.CurrencyId);
-                        rrugaFitimeXhiro.Pagesa = rrugaFitimeXhiro.Pagesa + PikaRrugaPagesaVM.Pagesa;
+                        else
+                        {
+                            rrugaFitimeXhiro.PagesaReale = rrugaFitimeXhiro.PagesaReale + PikaRrugaPagesaVM.Pagesa;
+                        }
+                       
                     }
                    
                 }
@@ -1106,22 +1140,32 @@ namespace BioLab.Controllers
             //  Shpenzim part    RrugaShpenzimeEkstras
             foreach (var RrugaShpenzimeEkstra in marrngaadd.RrugaShpenzimeEkstras)
             {
+                var rrugaFitimeShpenzim = rrugaFitimeShpenzims.FirstOrDefault(e => e.CurrencyId == RrugaShpenzimeEkstra.CurrencyId);
+                rrugaFitimeShpenzim.Pagesa = rrugaFitimeShpenzim.Pagesa + RrugaShpenzimeEkstra.Pagesa;
                 if (RrugaShpenzimeEkstra.PagesaKryer == false)
                 {
                     PagesaKryer = false;
                 }
-                var rrugaFitimeShpenzim = rrugaFitimeShpenzims.FirstOrDefault(e => e.CurrencyId == RrugaShpenzimeEkstra.CurrencyId);
-                rrugaFitimeShpenzim.Pagesa = rrugaFitimeShpenzim.Pagesa + RrugaShpenzimeEkstra.Pagesa;
+                else
+                {
+                    rrugaFitimeShpenzim.PagesaReale = rrugaFitimeShpenzim.PagesaReale + RrugaShpenzimeEkstra.Pagesa;
+
+                }
             }
             //  Fitim part    RrugaFitimeEkstras
             foreach (var RrugaFitimeEkstra in marrngaadd.RrugaFitimeEkstras)
             {
+                var rrugaFitimeXhiro = rrugaFitimeXhiros.FirstOrDefault(e => e.CurrencyId == RrugaFitimeEkstra.CurrencyId);
+                rrugaFitimeXhiro.Pagesa = rrugaFitimeXhiro.Pagesa + RrugaFitimeEkstra.Pagesa;
                 if (RrugaFitimeEkstra.PagesaKryer == false)
                 {
                     PagesaKryer = false;
                 }
-                var rrugaFitimeXhiro = rrugaFitimeXhiros.FirstOrDefault(e => e.CurrencyId == RrugaFitimeEkstra.CurrencyId);
-                rrugaFitimeXhiro.Pagesa = rrugaFitimeXhiro.Pagesa + RrugaFitimeEkstra.Pagesa;
+                else
+                {
+                    rrugaFitimeXhiro.PagesaReale = rrugaFitimeXhiro.PagesaReale + RrugaFitimeEkstra.Pagesa;
+
+                }
             }
 
             foreach (var RrugaNafte in marrngaadd.Nafta)
@@ -1136,11 +1180,13 @@ namespace BioLab.Controllers
             {
                 var rrugaFitimecurr = rrugaFitime.FirstOrDefault(e => e.CurrencyId == rrugaFitimeXhiro.CurrencyId);
                 rrugaFitimecurr.Pagesa = rrugaFitimecurr.Pagesa+ rrugaFitimeXhiro.Pagesa ;
+                rrugaFitimecurr.PagesaReale = rrugaFitimecurr.PagesaReale + rrugaFitimeXhiro.PagesaReale;
             }
             foreach (var rrugaFitimeShpenzim in rrugaFitimeShpenzims)
             {
                 var rrugaFitimecurr = rrugaFitime.FirstOrDefault(e => e.CurrencyId == rrugaFitimeShpenzim.CurrencyId);
                 rrugaFitimecurr.Pagesa = rrugaFitimecurr.Pagesa - rrugaFitimeShpenzim.Pagesa;
+                rrugaFitimecurr.PagesaReale = rrugaFitimecurr.PagesaReale - rrugaFitimeShpenzim.PagesaReale;
             }
 
             marrngaadd.RrugaFitimes = rrugaFitime;
@@ -2099,7 +2145,9 @@ namespace BioLab.Controllers
         {
 
             //fshijme analizen e marre nga db me analizId si parametri id
-            Rruga removingShofer = _context.Rrugas.FirstOrDefault(p => p.RrugaId == id);
+            Rruga removingShofer = _context.Rrugas
+                .Include(e=>e.Nafta)
+                .FirstOrDefault(p => p.RrugaId == id);
             _context.Rrugas.Remove(removingShofer);
             _context.SaveChanges();
             return RedirectToAction("AllRrugaJoModel");

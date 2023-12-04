@@ -1,7 +1,7 @@
 @model ZbritShtoGjendja
 <partial name="NavPartial" />
 <div class="mt-5 container">
-    <h1 class="text-center mb-5">Shto nje shitje/blerje nafte</h1>
+    <h1 class="text-center mb-5">Ndrysho gjendjen</h1>
     <div class="row">
         <form asp-controller="Gjendja" asp-action="CreateGjendja" method="post">
             <div class="col-sm-6">
@@ -13,14 +13,6 @@
 
                 </div>
 
-                @*
-                <span asp-validation-for="CurrencyId"></span>
-                <label asp-for="CurrencyId"></label>
-                <select asp-for="CurrencyId" class="form-control" required />
-                @foreach (var item in @ViewBag.numberNames)
-                {
-                <option value="@item.Key">@item.Value</option>
-                }*@
                 <div class="form-group mb-2">
 
                     <span asp-validation-for="CurrencyId"></span>
