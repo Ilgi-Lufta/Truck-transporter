@@ -7,6 +7,7 @@ public class Currency
 {
     [Key]
     public int CurrencyId { get; set; }
+    [Display(Name = "Monedha")]
     public string CurrencyUnit { get; set; }
     public DateTime CreatedDate { get; set; } = DateTime.Now;
     public DateTime UpdatedDate { get; set; } = DateTime.Now;
@@ -18,15 +19,4 @@ public class Currency
     public List<PagesaDogana> PagesaDoganas { get; set; } = new List<PagesaDogana>();
     public List<Nafta> Naftas { get; set; } = new List<Nafta>();
     public List<PikaRrugaPagesa> PikaRrugaPagesa { get; set; } = new List<PikaRrugaPagesa>();
-
-    // public List<PikaRruga> PikaRrugas { get; set; } = new List<PikaRruga>();
-    // public List<ShoferRruga> shoferRrugas { get; set; } = new List<ShoferRruga>();
-    // public List<NaftaRruga> NaftaRrugas { get; set; } = new List<NaftaRruga>();
-
-
-
-
-
-
-
 }

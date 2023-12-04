@@ -1,4 +1,8 @@
-﻿namespace BioLab.Models
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+using System.Xml.Linq;
+
+namespace BioLab.Models
 {
     public class ZbritShtoGjendja
     {
@@ -6,9 +10,11 @@
         public int CurrencyId { get; set; }
         public Currency? Currency { get; set; }
         public string Shenime { get; set; } =string.Empty;
+        [Precision(18, 2)]
         public decimal Pagesa { get; set; }
+        [Display(Name = "Zbrit/Shto")]
         public string ZbritShtoSelect { get; set; }
-
+        [Display(Name = "Shpenzim/Xhiro")]
         public bool ShpenzimXhiro { get; set; }
         public DateTime CreatedDate { get; set; } = DateTime.Now;
         public DateTime UpdatedDate { get; set; } = DateTime.Now;

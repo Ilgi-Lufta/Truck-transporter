@@ -1,4 +1,5 @@
 #pragma warning disable CS8618
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -8,13 +9,18 @@ public class NaftaStock
     [Key]
     public int NaftaStockId { get; set; }
     [Required]
-    public Decimal Litra { get; set; }
+    [Precision(18, 2)]
+    public decimal Litra { get; set; }
     [Required]
+    [Display(Name = "Blere/Shitur")]
     public string BlereShiturSelect { get; set; }
     public int CurrencyId { get; set; }
     public Currency? Currency { get; set; }
+    [Precision(18, 2)]
     public decimal Pagesa { get; set; }
+    [Display(Name = "Shpenzim/Xhiro")]
     public bool ShpenzimXhiro { get; set; }
+    [Display(Name = "Pagesa Kryer")]
     public bool PagesaKryer { get; set; }
     public int? RrugaId { get; set; }
     public Rruga? Rruga { get; set; }
@@ -23,6 +29,9 @@ public class NaftaStock
     public string Shenime { get; set; } = String.Empty;
     public DateTime CreatedDate { get; set; } = DateTime.Now;
     public DateTime UpdatedDate { get; set; } = DateTime.Now;
+
+
     [NotMapped]
+    [Precision(18, 2)]
     public decimal Cmimi { get; set; }
 }

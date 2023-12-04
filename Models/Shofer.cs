@@ -1,4 +1,5 @@
 #pragma warning disable CS8618
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -10,14 +11,11 @@ public class Shofer
     [Required]
     public string Emri { get; set; }
     [Required]
-    public Decimal Pagesa { get; set; }
-
+    [Precision(18, 2)]
+    public decimal Pagesa { get; set; }
     public bool Model { get; set; }
-    //[NotMapped]
-    //public int CurrencyId { get; set; }
     public DateTime CreatedDate { get; set; } = DateTime.Now;
     public DateTime UpdatedDate { get; set; } = DateTime.Now;
-  //  List<Rruga> Rrugas { get; set; }= new List<Rruga>();
     public List<ShoferRruga> shoferRrugas { get; set; } = new List<ShoferRruga>();
 
 }

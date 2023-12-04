@@ -14,14 +14,15 @@
     <a class="btn btn-primary" asp-action="AddRruga" asp-controller="Rruga"> Shto Rruge</a>
 
     <div class="row">
-        <div class="col sm-6">
+        <div class="col sm-12">
             <table class="table table-striped table-bordered  ">
                 <thead>
                     <tr>
                         <th scope="col">Emri</th>
+                        <th scope="col">Data</th>
+                        <th scope="col">Nafta Shpenzuar Litra</th>
                         <th scope="col">Dogana</th>
-                        <th scope="col">PagesaShoferit</th>
-                        <th scope="col">NaftaShpenzuarLitra</th>
+                        <th scope="col">Shoferi</th>
                         <th scope="col">Veprime</th>
                     </tr>
                 </thead>
@@ -30,7 +31,75 @@
                     {
                         <tr>
                             <td scope="row"> @item.Emri</td>
+                            <td scope="row"> @item.CreatedDate</td>
                             <td scope="row"> @item.NaftaShpenzuarLitra</td>
+                            <td scope="row">
+                                <table class="table table-striped table-bordered  ">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Pagesa</th>
+                                            <th scope="col">Monedha</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var dogana in item.PagesaDoganas)
+                                        {
+                                            <tr>
+                                                <td scope="row">
+                                                    @dogana.Pagesa
+                                                </td>
+                                                <td scope="row">
+                                                    @dogana.Currency.CurrencyUnit
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </td>
+                            <td scope="row">
+                                <table class="table table-striped table-bordered  ">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Emri</th>
+                                            <th scope="col">Lloji Pageses</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var shofer in item.ShoferRrugas)
+                                        {
+                                            <tr>
+                                                <td scope="row">
+                                                    @shofer.Shofer.Emri
+                                                </td>
+                                                <td scope="row">
+                                                    <table class="table table-striped table-bordered  ">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col">Pagesa</th>
+                                                                <th scope="col">Monedha</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach (var Pagesashofer in shofer.PagesaShoferits)
+                                                            {
+                                                                <tr>
+                                                                    <td scope="row">
+                                                                        @Pagesashofer.Pagesa
+                                                                    </td>
+                                                                    <td scope="row">
+                                                                        @Pagesashofer.Currency.CurrencyUnit
+                                                                    </td>
+                                                                </tr>
+                                                            }
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </td>
                             <td scope="row">
                                 <a class="btn btn-primary" asp-action="EditRruga" asp-controller="Rruga" asp-route-id="@item.RrugaId"> Edito</a>
                                 <a class="btn btn-danger" asp-action="FshiRruga" asp-controller="Rruga" asp-route-id="@item.RrugaId"> Fshi</a>
@@ -41,8 +110,6 @@
                     }
                 </tbody>
             </table>
-            <div>
-            </div>
         </div>
     </div>
 </div>
