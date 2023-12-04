@@ -371,17 +371,43 @@ namespace BioLab.Controllers
             //{
             //    if(shofer.Nafta.Litra)
             //}
-
+            List<Rruga> rrugas = new List<Rruga>();
             if (shofers != null)
             {
-                ViewBag.Shofers = shofers;
+                rrugas = shofers;
+                ViewBag.Shofers = rrugas;
             }
             if (!String.IsNullOrEmpty(searchString))
             {
-                ViewBag.Shofers = shofers.Where(s => s.Emri!.Contains(searchString))
+                rrugas = shofers.Where(s => s.Emri!.Contains(searchString))
                                         .Where(m => searchFirstTime != DateTime.MinValue ? m.CreatedDate > searchFirstTime : true)
-                    .Where(m => searchSecondTime != DateTime.MinValue ? m.CreatedDate > searchSecondTime : true);
+                    .Where(m => searchSecondTime != DateTime.MinValue ? m.CreatedDate > searchSecondTime : true).ToList();
+                ViewBag.Shofers = rrugas;
+
             }
+
+            var rrugafitime = 0;
+            var gjendja = 0;
+            var nafta = 0;
+            ViewBag.Totali = 0;
+
+            var Currencys = _context.Currencys.ToList();
+            List<RrugaFitime> rrugaFitime = new List<RrugaFitime>();
+
+            foreach (var item in Currencys)
+            {
+
+                RrugaFitime rrugaFitim = new RrugaFitime()
+                {
+                    CurrencyId = item.CurrencyId,
+                    ShpenzimXhiro = false
+                };
+                rrugaFitime.Add(rrugaFitim);
+             // var pagesa = rrugas.RrugaFitimes.FirstOrDefault(c=>c.CurrencyId == item.CurrencyId);
+              var pagesa = rrugas.Sum(e=>e.RrugaFitimes.FirstOrDefault().Pagesa);
+
+            }
+
 
 
             return View();
