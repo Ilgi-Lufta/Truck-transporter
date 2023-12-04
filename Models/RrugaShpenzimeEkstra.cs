@@ -14,8 +14,8 @@ namespace BioLab.Models
         [Precision(18, 2)]
         public decimal Pagesa { get; set; }
         [Precision(18, 2)]
-        [Display(Name = "Pagesa Vertet")]
-        public decimal PagesaVertet { get; set; }
+        [Display(Name = "Pagesa Reale")]
+        public decimal PagesaReale { get; set; }
         [Display(Name = "Shpenzim/Xhiro")]
         public bool ShpenzimXhiro { get; set; }
         [Display(Name = "Pagesa Kryer")]
