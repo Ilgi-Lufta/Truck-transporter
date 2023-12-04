@@ -13,6 +13,9 @@ namespace BioLab.Models
         public Rruga? Rruga { get; set; }
         [Precision(18, 2)]
         public decimal Pagesa { get; set; }
+        [Precision(18, 2)]
+        [Display(Name = "Pagesa Reale")]
+        public decimal PagesaReale { get; set; }
         [Display(Name = "Shpenzim/Xhiro")]
         public bool ShpenzimXhiro { get; set; }
         public DateTime CreatedDate { get; set; } = DateTime.Now;
