@@ -41,6 +41,23 @@ namespace BioLab.Controllers
 
                     ;
             }
+
+            //var Currencys = _context.Currencys.ToList();
+            //List<RrugaFitime> rrugaFitime = new List<RrugaFitime>();
+
+            //foreach (var item in Currencys)
+            //{
+            //    var pagesa = rrugas.Sum(e => e.RrugaFitimes.FirstOrDefault().Pagesa);
+            //    RrugaFitime rrugaFitim = new RrugaFitime()
+            //    {
+            //        CurrencyId = item.CurrencyId,
+            //        ShpenzimXhiro = false,
+            //        Pagesa = pagesa,
+            //    };
+            //    rrugaFitime.Add(rrugaFitim);
+            //}
+
+            //ViewBag.Totali = rrugaFitime;
             return View();
         }
 
@@ -386,29 +403,39 @@ namespace BioLab.Controllers
 
             }
 
-            var rrugafitime = 0;
-            var gjendja = 0;
-            var nafta = 0;
-            ViewBag.Totali = 0;
+            //var rrugafitime = 0;
+            //var gjendja = 0;
+            //var nafta = 0;
 
             var Currencys = _context.Currencys.ToList();
             List<RrugaFitime> rrugaFitime = new List<RrugaFitime>();
 
             foreach (var item in Currencys)
             {
-
+                  var Currency = _context.Currencys.FirstOrDefault(e=>e.CurrencyId == item.CurrencyId);
                 RrugaFitime rrugaFitim = new RrugaFitime()
                 {
                     CurrencyId = item.CurrencyId,
-                    ShpenzimXhiro = false
+                    Currency = Currency,
+                    ShpenzimXhiro = false,
+                    Pagesa = 0
                 };
                 rrugaFitime.Add(rrugaFitim);
-             // var pagesa = rrugas.RrugaFitimes.FirstOrDefault(c=>c.CurrencyId == item.CurrencyId);
-              var pagesa = rrugas.Sum(e=>e.RrugaFitimes.FirstOrDefault().Pagesa);
-
             }
 
+            foreach (var rruga in rrugas)
+            {
+                if (rruga.RrugaFitimes.Count > 0)
+                {
+                    foreach (var fitim in rruga.RrugaFitimes)
+                    { 
+                       var rrugaFitim= rrugaFitime.FirstOrDefault(e => e.CurrencyId == fitim.CurrencyId);
+                        rrugaFitim.Pagesa = rrugaFitim.Pagesa + fitim.Pagesa;
+                    }
+                }
+            }
 
+            ViewBag.Totali = rrugaFitime;
 
             return View();
         }

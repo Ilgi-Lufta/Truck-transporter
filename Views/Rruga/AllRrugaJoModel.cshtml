@@ -17,6 +17,16 @@
     </form>
 
     <div class="row">
+        @foreach (var item in ViewBag.Totali)
+        {
+            <p>Pagesa @item.Pagesa</p>
+            <p>Monedha @item.Currency.CurrencyUnit</p>
+            <br>
+        }
+    </div>
+    <div class="row">
+
+       
         <div class="col">
             <table class="table table-striped table-bordered  ">
                 <thead>
