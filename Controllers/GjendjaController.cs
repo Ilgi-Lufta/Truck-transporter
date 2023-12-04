@@ -47,6 +47,77 @@ namespace BioLab.Controllers
 
             ViewBag.Shofers = _context.ZbritShtoGjendjas.Include(e=>e.Currency).OrderBy(e=>e.CreatedDate).ToList();
 
+            var Currencys = _context.Currencys.ToList();
+            List<RrugaFitime> rrugaFitime = new List<RrugaFitime>();
+
+            foreach (var item in Currencys)
+            {
+                var Currency = _context.Currencys.FirstOrDefault(e => e.CurrencyId == item.CurrencyId);
+                RrugaFitime rrugaFitim = new RrugaFitime()
+                {
+                    CurrencyId = item.CurrencyId,
+                    Currency = Currency,
+                    ShpenzimXhiro = false,
+                    Pagesa = 0
+                };
+                rrugaFitime.Add(rrugaFitim);
+            }
+            //rruga
+            //var rrugas =  _context.Rrugas
+            //    //.Include(e => e.Shofer)
+            //    //.Include(e => e.PikaShkarkimi)
+            //    //.Include(e=>e.Nafta).ThenInclude(e => e.Currency)
+            //    //.Include(e=>e.PagesaDoganas).ThenInclude(e=>e.Currency)
+            //    .Include(e => e.ShoferRrugas).ThenInclude(e => e.Shofer)
+            //    .Include(e => e.PikaRrugas).ThenInclude(e => e.PikaShkarkimi)
+            //    //.Include(e=>e.RrugaShpenzimeEkstras).ThenInclude(e=>e.Currency)
+            //    //.Include(e=>e.RrugaFitimeEkstras).ThenInclude(e=>e.Currency)
+            //    .Include(e => e.RrugaFitimes).ThenInclude(e => e.Currency)
+            //    .Where(e => e.Model == false)
+            //                        .Where(m => searchFirstTime != DateTime.MinValue ? m.CreatedDate > searchFirstTime : true)
+            //        .Where(m => searchSecondTime != DateTime.MinValue ? m.CreatedDate > searchSecondTime : true)
+            //    .ToList();
+
+            //foreach (var rruga in rrugas)
+            //{
+            //    if (rruga.RrugaFitimes.Count > 0)
+            //    {
+            //        foreach (var fitim in rruga.RrugaFitimes)
+            //        {
+            //            var rrugaFitim = rrugaFitime.FirstOrDefault(e => e.CurrencyId == fitim.CurrencyId);
+            //            rrugaFitim.Pagesa = rrugaFitim.Pagesa + fitim.Pagesa;
+            //        }
+            //    }
+            //}
+
+            //gjendja
+            var gjendjas = _context.ZbritShtoGjendjas.Include(e=>e.Currency).ToList();
+
+            foreach (var gjendja in gjendjas)
+            {
+                if (gjendja.ZbritShtoSelect == "Zbrit")
+                {
+                        var rrugaFitim = rrugaFitime.FirstOrDefault(e => e.CurrencyId == gjendja.CurrencyId);
+                        rrugaFitim.Pagesa = rrugaFitim.Pagesa - gjendja.Pagesa;
+                }
+                else
+                {
+                    var rrugaFitim = rrugaFitime.FirstOrDefault(e => e.CurrencyId == gjendja.CurrencyId);
+                    rrugaFitim.Pagesa = rrugaFitim.Pagesa + gjendja.Pagesa;
+                }
+            }
+
+            ////nafta
+            //var naftaStocks = _context.NaftaStocks.Where(e=>e.BlereShiturSelect== "Shitur").ToList();
+            //foreach (var naftaStock in naftaStocks)
+            //{
+            //    var rrugaFitim = rrugaFitime.FirstOrDefault(e => e.CurrencyId == naftaStock.CurrencyId);
+            //    rrugaFitim.Pagesa = rrugaFitim.Pagesa + naftaStock.Pagesa;
+            //}
+
+             ViewBag.Totali = rrugaFitime;
+
+
             return View();
         }
 
