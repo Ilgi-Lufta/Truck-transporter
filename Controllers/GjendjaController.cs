@@ -430,7 +430,7 @@ namespace BioLab.Controllers
                 llogaris.Add(llogari);
             }
             ViewBag.Totali = rrugaFitime;
-            ViewBag.Llogari = llogaris;
+            ViewBag.Llogari = llogaris.OrderBy(e => e.CreatedDate);
             return View();
         }
         public class Llogari
