@@ -1519,6 +1519,7 @@ namespace BioLab.Controllers
                 .Include(e => e.Nafta)
                 .Include(e => e.RrugaShpenzimeEkstras)
                 .Include(e => e.RrugaFitimeEkstras)
+                .Include(e => e.RrugaFitimes)
                 .FirstOrDefault(p => p.RrugaId == id);
             editing.Emri = marrngaadd.Emri;
             editing.NaftaShpenzuarLitra = marrngaadd.NaftaShpenzuarLitra;
@@ -1690,10 +1691,26 @@ namespace BioLab.Controllers
 
                 _context.RrugaFitimeEkstras.Remove(pagpikashakrkimi);
             }
-            editing.RrugaFitimes = null;
+          
             _context.SaveChanges();
 
             editing.RrugaFitimeEkstras = marrngaadd.RrugaFitimeEkstras;
+
+            /// fitime
+            List<int> FitimeId = new List<int>();
+            foreach (var item in editing.RrugaFitimes)
+            {
+                var pagpikashakrkimi = _context.RrugaFitimes.FirstOrDefault(e => e.RrugaFitimeId == item.RrugaFitimeId).RrugaFitimeId;
+                FitimeId.Add(pagpikashakrkimi);
+            }
+            foreach (var item in FitimeId)
+            {
+                var pagpikashakrkimi = _context.RrugaFitimes.FirstOrDefault(e => e.RrugaFitimeId == item);
+
+                _context.RrugaFitimes.Remove(pagpikashakrkimi);
+            }
+
+            _context.SaveChanges();
 
 
             /// nafata
@@ -2226,7 +2243,7 @@ namespace BioLab.Controllers
 
             //fshijme analizen e marre nga db me analizId si parametri id
             Rruga removingShofer = _context.Rrugas
-                .Include(e=>e.Nafta)
+             //   .Include(e=>e.Nafta)
                 .FirstOrDefault(p => p.RrugaId == id);
             _context.Rrugas.Remove(removingShofer);
             _context.SaveChanges();
