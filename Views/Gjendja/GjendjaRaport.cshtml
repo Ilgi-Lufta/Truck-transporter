@@ -24,7 +24,7 @@
     </div>*@
     <div class="row">
         <div class="col sm-6">
-            <table class="table table-striped table-bordered  ">
+            <table class="table table-hover table-sm table-info table-bordered  ">
                 <thead>
                     <tr>
                         
@@ -45,6 +45,44 @@
 
                             <td scope="row"> @item.Currency.CurrencyUnit</td>
 
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col ">
+            <table class="table table-striped table-bordered  ">
+                <thead>
+                    <tr>
+                        <th scope="col">Data krijimit</th>
+                        <th scope="col">Pershkrim</th>
+                        <th scope="col">Pagesa kreditim</th>
+                        <th scope="col">Pagesa debitim</th>
+                        <th scope="col">Monedha</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ViewBag.Llogari)
+                    {
+                        <tr>
+                            <td scope="row"> @item.CreatedDate</td>
+                            <td scope="row"> @item.Pershkrim</td>
+                            @if (item.Pagesa < 0)
+                            {
+                            <td scope="row"> @item.Pagesa</td>
+                                <td scope="row"></td>
+                            }
+                            else
+                            {
+                                <td scope="row"></td>
+                                <td scope="row"> @item.Pagesa</td>
+                            }
+                            <td scope="row"> @item.Currency</td>
                         </tr>
                     }
                 </tbody>
