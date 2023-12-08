@@ -10,7 +10,7 @@
             <input class="btn btn-primary" type="submit" value="Kerko" />
         </p>
     </form>
-    <a class="btn btn-primary" asp-action="AddShofer" asp-controller="Shofer"> Shto Shofer</a>
+    <a class="btn btn-primary mb-1" asp-action="AddShofer" asp-controller="Shofer"> Shto Shofer</a>
 
     <div class="row">
         <div class="col sm-6">
@@ -18,7 +18,7 @@
                 <thead>
                     <tr>
                         <th scope="col">Emri</th>
-                        <th scope="col">Pagesa</th>
+                        @*<th scope="col">Pagesa</th>*@
 
                     </tr>
                 </thead>
@@ -27,7 +27,7 @@
                     {
                         <tr>
                             <td scope="row"> @item.Emri</td>
-                            <td scope="row"> @item.Pagesa</td>
+                          @*  <td scope="row"> @item.Pagesa</td>*@
 
 
                             <td scope="row">

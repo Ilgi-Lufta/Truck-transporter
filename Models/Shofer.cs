@@ -10,9 +10,9 @@ public class Shofer
     public int ShoferId { get; set; } 
     [Required]
     public string Emri { get; set; }
-    [Required]
-    [Precision(18, 2)]
-    public decimal Pagesa { get; set; }
+    //[Required]
+    //[Precision(18, 2)]
+    //public decimal Pagesa { get; set; }
     public bool Model { get; set; }
     public DateTime CreatedDate { get; set; } = DateTime.Now;
     public DateTime UpdatedDate { get; set; } = DateTime.Now;
