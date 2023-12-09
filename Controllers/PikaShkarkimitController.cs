@@ -54,7 +54,8 @@ namespace BioLab.Controllers
         [HttpPost]
         public IActionResult CreatePika(PikaShkarkimi marrngaadd)
         {
-           
+            marrngaadd.PagesaPikaShkarkimitsVM = marrngaadd.PagesaPikaShkarkimitsVM.Where(e=>e.CurrencyId!=0).ToList();
+
             if (ModelState.IsValid)
             {
                 //bejm kontrollin nese ekziston nje analize me kte emer e krijuar nga admini i loguar

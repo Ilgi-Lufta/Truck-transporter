@@ -267,6 +267,18 @@ namespace BioLab.Controllers
         [HttpPost]
         public IActionResult EditedRruga(int id, Rruga marrngaadd)
         {
+            foreach (var shof in marrngaadd.ShoferitRrugaVM)
+            {
+                for (var item = shof.pagesaShoferitVM.Count - 1; item >= 0; item--)
+                {
+                    if (shof.pagesaShoferitVM[item].CurrencyId == 0)
+                    {
+                        shof.pagesaShoferitVM.Remove(shof.pagesaShoferitVM[item]);
+                    }
+                }
+            }
+            marrngaadd.PagesaDoganaVM = marrngaadd.PagesaDoganaVM.Where(e => e.CurrencyId != 0).ToList();
+
             if (ModelState.IsValid)
             {
                 //bejm kontrollin nese ekziston nje analize me kte emer e krijuar nga admini i loguar
@@ -425,6 +437,14 @@ namespace BioLab.Controllers
 
             foreach (var rruga in rrugas)
             {
+                if (rruga.NaftaBlereLitra < rruga.NaftaShpenzuarLitra)
+                {
+                    rruga.NaftaNegative = true;
+                }
+                else
+                {
+                    rruga.NaftaNegative = false;
+                }
                 if (rruga.RrugaFitimes.Count > 0)
                 {
                     foreach (var fitim in rruga.RrugaFitimes)
@@ -716,14 +736,26 @@ namespace BioLab.Controllers
         [HttpPost]
         public IActionResult CreateRrugaJoModel(Rruga marrngaadd,int id)
         {
-    //to calculate all fitimet grouped by currency
-   // flag for pagesa kryer 
-  //TO TEST to calculate nafta per tu shitur  
+            //to calculate all fitimet grouped by currency
+            // flag for pagesa kryer 
+            //TO TEST to calculate nafta per tu shitur  
 
-/// to fix llogaritja e shpenzimit te naftes
+            /// to fix llogaritja e shpenzimit te naftes
+
+            foreach (var shof in marrngaadd.ShoferitRrugaVM)
+            {
+                for (var item = shof.pagesaShoferitVM.Count - 1; item >= 0; item--)
+                {
+                    if (shof.pagesaShoferitVM[item].CurrencyId == 0)
+                    {
+                        shof.pagesaShoferitVM.Remove(shof.pagesaShoferitVM[item]);
+                    }
+                }
+            }
+            marrngaadd.PagesaDoganaVM = marrngaadd.PagesaDoganaVM.Where(e => e.CurrencyId != 0).ToList();
 
 
-           var Currencys= _context.Currencys.ToList();
+            var Currencys= _context.Currencys.ToList();
             List<RrugaFitime> rrugaFitime = new List<RrugaFitime>();
             List<RrugaFitime> rrugaFitimeShpenzims = new List<RrugaFitime>();
             List<RrugaFitime> rrugaFitimeXhiros = new List<RrugaFitime>();
@@ -780,7 +812,7 @@ namespace BioLab.Controllers
                 }
                 marrngaadd.PikaRrugas = null;
             }
-            if (marrngaadd.shenime == null) marrngaadd.shenime = "test";
+            if (marrngaadd.shenime == null) marrngaadd.shenime = "";
 
             //RrugaShpenzimeEkstras
             foreach (var RrugaShpenzimeEkstra in marrngaadd.RrugaShpenzimeEkstras)
@@ -907,7 +939,7 @@ namespace BioLab.Controllers
                 Nafta.BlereShiturSelect = "Blere";
                 naftaBlereLitra = Nafta.Litra + naftaBlereLitra;
             }
-
+            
             marrngaadd.NaftaBlereLitra = naftaBlereLitra;
             // to add nafta si naftastock
             // to add nafta si shpenzim
@@ -1504,6 +1536,7 @@ namespace BioLab.Controllers
         [HttpPost]
         public IActionResult EditedRrugaJoModel(int id, Rruga marrngaadd)
         {
+
             //to calculate all fitimet grouped by currency
             // flag for pagesa kryer 
             //TO TEST to calculate nafta per tu shitur  
@@ -1512,6 +1545,82 @@ namespace BioLab.Controllers
             /// 
 
             //marrim nga db anzlizen qe duam te bejm edit dhe vendosim vlerat qe marim nga forma
+
+            marrngaadd.PagesaDoganaVM = marrngaadd.PagesaDoganaVM.Where(e=>e.CurrencyId!=0).ToList();
+            marrngaadd.RrugaFitimeEkstras = marrngaadd.RrugaFitimeEkstras.Where(e=>e.CurrencyId!=0).ToList();
+            marrngaadd.RrugaShpenzimeEkstras = marrngaadd.RrugaShpenzimeEkstras.Where(e=>e.CurrencyId!=0).ToList();
+            marrngaadd.Nafta = marrngaadd.Nafta.Where(e=>e.CurrencyId!=0).ToList();
+       
+
+            foreach (var shof in marrngaadd.ShoferitRrugaVM)
+            {
+                for (var item= shof.pagesaShoferitVM.Count-1; item>=0;item--)
+                {
+                    if (shof.pagesaShoferitVM[item].CurrencyId == 0)
+                    {
+                        shof.pagesaShoferitVM.Remove(shof.pagesaShoferitVM[item]);
+                    }
+                }
+            }
+
+
+            foreach (var shof in marrngaadd.PikaRrugas)
+            {
+                for (var item = shof.PikaRrugaPagesa.Count - 1; item >= 0; item--)
+                {
+                    if (shof.PikaRrugaPagesa[item].CurrencyId == 0)
+                    {
+                        shof.PikaRrugaPagesa.Remove(shof.PikaRrugaPagesa[item]);
+                    }
+                }
+            }
+            // marrngaadd.ShoferitRrugaVM = shofs;
+
+
+            //List<ShoferitRrugaVM> shofs = new List<ShoferitRrugaVM>();
+            //List<PagesaShoferitVM> shofpag = new List<PagesaShoferitVM>();
+
+            //foreach (var shof in marrngaadd.ShoferitRrugaVM)
+            //{
+            //    foreach (var item in shof.pagesaShoferitVM)
+            //    {
+
+            //        if (item.CurrencyId != 0)
+            //        {
+            //            shofpag.Add(item);
+            //        }
+
+            //    }
+            //    shof.pagesaShoferitVM = shofpag;
+            //    shof.ShoferId = shof.ShoferId;
+            //    shofs.Add(shof);
+            //    shofpag = new List<PagesaShoferitVM>();
+            //}
+            //marrngaadd.ShoferitRrugaVM = shofs;
+
+            //List<PikaRruga> shofs = new List<ShoferitRrugaVM>();
+            //List<PagesaShoferitVM> shofpag = new List<PagesaShoferitVM>();
+
+            //foreach (var shof in marrngaadd.ShoferitRrugaVM)
+            //{
+            //    foreach (var item in shof.pagesaShoferitVM)
+            //    {
+
+            //        if (item.CurrencyId != 0)
+            //        {
+            //            shofpag.Add(item);
+            //        }
+
+            //    }
+            //    shof.pagesaShoferitVM = shofpag;
+            //    shof.ShoferId = shof.ShoferId;
+            //    shofs.Add(shof);
+            //    shofpag = new List<PagesaShoferitVM>();
+            //}
+            //marrngaadd.PagesaDoganaVM = pagesaDoganaVM;
+
+
+
             Rruga editing = _context.Rrugas
                 .Include(e => e.PagesaDoganas)
                 .Include(e => e.ShoferRrugas).ThenInclude(e => e.PagesaShoferits)
@@ -1624,9 +1733,9 @@ namespace BioLab.Controllers
             _context.SaveChanges();
 
             //pika RRUGA
-            if (editing.PikaRrugas.FirstOrDefault() != null)
+            if (marrngaadd.PikaRrugas.FirstOrDefault() != null)
             {
-                if(editing.PikaRrugas.FirstOrDefault().PikaShkarkimi.Emri == "Zgjidh")
+                if(marrngaadd.PikaRrugas.FirstOrDefault().PikaShkarkimiName == "Zgjidh")
                 editing.PikaRrugas = null;
                 else
                 {
@@ -1675,6 +1784,7 @@ namespace BioLab.Controllers
             }
 
             _context.SaveChanges();
+
 
             editing.RrugaShpenzimeEkstras = marrngaadd.RrugaShpenzimeEkstras;
 
@@ -1728,7 +1838,10 @@ namespace BioLab.Controllers
             }
 
             _context.SaveChanges();
-
+            foreach(var naft in marrngaadd.Nafta)
+            {
+                naft.BlereShiturSelect = "Blere";
+            }
             editing.Nafta = marrngaadd.Nafta;
 
             ///naftasStocks
@@ -1750,6 +1863,8 @@ namespace BioLab.Controllers
             foreach (var item in naftaStocksList)
             {
                 _context.NaftaStocks.Remove(item);
+                _context.SaveChanges();
+
             }
             editing.PagesaKryer = true;
 
@@ -1785,7 +1900,7 @@ namespace BioLab.Controllers
 
          
 
-            if (marrngaadd.shenime == null) marrngaadd.shenime = "test";
+            if (marrngaadd.shenime == null) marrngaadd.shenime = "";
 
             //RrugaShpenzimeEkstras
             foreach (var RrugaShpenzimeEkstra in editing.RrugaShpenzimeEkstras)
@@ -1882,6 +1997,8 @@ namespace BioLab.Controllers
                         RrugaId = editing.RrugaId,
                         PikaShkarkimiId = PikaShkarkimiId,
                     };
+                    _context.Add(pikaRruga);
+                    _context.SaveChanges();
 
                     foreach (var PikaRrugaPagesaVM in PikaRrugaVM.PikaRrugaPagesaVMs)
                     {
@@ -1894,12 +2011,13 @@ namespace BioLab.Controllers
                         {
                             CurrencyId = PikaRrugaPagesaVM.CurrencyId,
                             Pagesa = PikaRrugaPagesaVM.Pagesa,
-                            PagesaKryer = PikaRrugaPagesaVM.PagesaKryer
+                            PagesaKryer = PikaRrugaPagesaVM.PagesaKryer,
+                            PikaRrugaId = pikaRruga.PikaRrugaId
                         };
-                        pikaRruga.PikaRrugaPagesa.Add(pikaRrugaPagesa);
+                        _context.Add(pikaRrugaPagesa);
+                        _context.SaveChanges();
                     }
-                    _context.Add(pikaRruga);
-                    _context.SaveChanges();
+                   
                 }
             }
 
@@ -1925,6 +2043,8 @@ namespace BioLab.Controllers
             {
                 //if (naftaBlereLitra <= NaftaShpenzuarLitra)
                 //{ }
+                if (editing.Nafta[i].Litra <= 0)
+                    continue;
                 if (editing.Nafta[i].Litra <= NaftaShpenzuarLitra && i != naftaCount - 1)
                 {
                     //naftaBlereLitra = naftaBlereLitra - marrngaadd.Nafta[i].Litra;
@@ -2243,20 +2363,28 @@ namespace BioLab.Controllers
 
             //fshijme analizen e marre nga db me analizId si parametri id
             Rruga removingShofer = _context.Rrugas
-             //   .Include(e=>e.Nafta)
+                .Include(e => e.Nafta)
                 .FirstOrDefault(p => p.RrugaId == id);
+
+            List<NaftaStock> removingnaftastock = _context.NaftaStocks.Where(e => e.RrugaId == removingShofer.RrugaId).ToList();
+            foreach (var nafta in removingnaftastock)
+            {
+                _context.NaftaStocks.Remove(nafta);
+
+            }
+
             _context.Rrugas.Remove(removingShofer);
             _context.SaveChanges();
             return RedirectToAction("AllRrugaJoModel");
 
         }
 
-    //    public JsonResult GetPikaRrugaPagesa(int pikaShkarkimiId)
-    //    {
-    //        var pikaRrugaPagesaItems = // Retrieve PikaRrugaPagesa items based on the selected PikaShkarkimiId
+        //    public JsonResult GetPikaRrugaPagesa(int pikaShkarkimiId)
+        //    {
+        //        var pikaRrugaPagesaItems = // Retrieve PikaRrugaPagesa items based on the selected PikaShkarkimiId
 
-    //return Json(pikaRrugaPagesaItems);
-    //    }
+        //return Json(pikaRrugaPagesaItems);
+        //    }
 
 
 

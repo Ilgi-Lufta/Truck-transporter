@@ -22,7 +22,8 @@ public class Rruga
     public decimal NaftaShpenzuarLitra { get; set; }
     [Precision(18, 2)]
     [Display(Name = "Nafta Blere Litra")]
-    public decimal NaftaBlereLitra { get; set; } 
+    public decimal NaftaBlereLitra { get; set; }
+    public bool NaftaNegative { get; set; }
     public DateTime CreatedDate { get; set; } = DateTime.Now;
     public List<ShoferRruga> ShoferRrugas { get; set; } = new List<ShoferRruga>();
     public List<RrugaShpenzimeEkstra> RrugaShpenzimeEkstras { get; set; } = new List<RrugaShpenzimeEkstra>();

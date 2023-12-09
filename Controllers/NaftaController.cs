@@ -25,6 +25,7 @@ namespace BioLab.Controllers
             foreach (var shofer in shofers)
             {
                 shofer.Cmimi = shofer.Pagesa / shofer.Litra;
+                shofer.Cmimi= Math.Round(shofer.Cmimi, 2);
             }
 
             if (shofers != null)
@@ -247,6 +248,7 @@ namespace BioLab.Controllers
                     EditingBlereNegativ.Litra = (0 - marrngaadd.Litra);
                     EditingBlereNegativ.Pagesa = 0 - (cmimRef * marrngaadd.Litra);
                         EditingBlereNegativ.CurrencyId = marrngaadd.CurrencyId;
+                        EditingBlereNegativ.PagesaKryer = marrngaadd.PagesaKryer;
                     
                 }
                 //edit marr nga add
@@ -257,6 +259,7 @@ namespace BioLab.Controllers
                     editing.CurrencyId = marrngaadd.CurrencyId;
                     editing.Litra = marrngaadd.Litra;
                     editing.BlereShiturSelect = marrngaadd.BlereShiturSelect;
+                    editing.PagesaKryer = marrngaadd.PagesaKryer;
 
                     _context.SaveChanges();
                     return RedirectToAction("AllNafta");

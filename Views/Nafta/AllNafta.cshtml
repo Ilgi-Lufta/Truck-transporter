@@ -21,9 +21,11 @@
                     <tr>
                         <th scope="col">Litra</th>
                         <th scope="col">Pagesa</th>
+                        <th scope="col">Pagesa Kryer</th>
                         <th scope="col">Curency</th>
                         <th scope="col">Blere-Shitur</th>
                         <th scope="col">Cmimi</th>
+                        <th scope="col">Shtuar</th>
                         <th scope="col">veprime</th>
 
                     </tr>
@@ -34,12 +36,20 @@
                         <tr>
                             <td scope="row"> @item.Litra</td>
                             <td scope="row"> @item.Pagesa</td>
+                            <td scope="row"> @item.PagesaKryer</td>
                             <td scope="row"> @item.Currency.CurrencyUnit</td>
                             <td scope="row"> @item.BlereShiturSelect</td>
                             <td scope="row"> @item.Cmimi @item.Currency.CurrencyUnit/L</td>
-                            
+                            @if (item.RrugaId != null){
+                            <td scope="row">
+                                Pjese e rruges                                
+                            </td>
+                            }else{
+                                <td scope="row">
+                                    si nafte
+                                </td>
 
-
+                            }
                             <td scope="row">
                                 <a class="btn btn-primary" asp-action="EditNafta" asp-controller="Nafta" asp-route-id="@item.NaftaStockId"> Edito</a>
                                 <a class="btn btn-danger" asp-action="FshiNafta" asp-controller="Nafta" asp-route-id="@item.NaftaStockId"> Fshi</a>

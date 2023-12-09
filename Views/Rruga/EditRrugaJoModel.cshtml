@@ -501,7 +501,7 @@
                                                         <input type="checkbox" asp-for="PikaRrugas[i].PikaRrugaPagesa[j].PagesaKryer" name="PikaRrugas[@i].PikaRrugaPagesa[@j].PagesaKryer" style="width: 30px;height: 30px;" onchange="this.value=this.checked" />
                                                     </td>
                                                     <td>
-                                                        <button type="button" id="0" onclick="RemoveChildRow(this)" class="btn btn-danger PikaRrugaPagesaremoveRow">Remove</button>
+                                                        <button type="button" id="@j" onclick="RemoveChildRow(this)" class="btn btn-danger PikaRrugaPagesaremoveRow">Remove</button>
                                                     </td>
                                                 </tr>
                                             }
@@ -700,7 +700,7 @@
 
             </div>
             <div>
-                <button type="submit" class="btn btn-primary mt-3">Krijo Rruge</button>
+                <button type="submit" class="btn btn-primary mt-3">Ndrysho Rruge</button>
                 <a asp-controller="Rruga" asp-action="AllRrugaJoModel" class="btn btn-primary mt-3 mr-3"> Kthehu pas</a>
             </div>
         </div>
