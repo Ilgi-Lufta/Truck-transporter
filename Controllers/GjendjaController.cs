@@ -318,6 +318,7 @@ namespace BioLab.Controllers
                 {
                     foreach (var fitim in rruga.RrugaFitimes)
                     {
+                        if(fitim.Pagesa==0) continue;
                         var rrugaFitim = rrugaFitime.FirstOrDefault(e => e.CurrencyId == fitim.CurrencyId);
                         rrugaFitim.Pagesa = rrugaFitim.Pagesa + fitim.Pagesa;
                         rrugaFitim.PagesaReale = rrugaFitim.PagesaReale + fitim.PagesaReale;
@@ -327,7 +328,7 @@ namespace BioLab.Controllers
                             Pagesa = fitim.Pagesa,
                             Tipi = TIPI.RRUGE,
                             CreatedDate = rruga.CreatedDate,
-                            Pershkrim = "Fitime Nga Rruga",
+                            Pershkrim = "Fitime Nga Rruga " + rruga.Emri,
                             Currency= fitim.Currency.CurrencyUnit
                         };
                         llogaris.Add( llogari );
@@ -343,6 +344,7 @@ namespace BioLab.Controllers
 
             foreach (var gjendja in gjendjas)
             {
+                    if (gjendja.Pagesa == 0) continue;
                 if (gjendja.ZbritShtoSelect == "Zbrit")
                 {
                     var rrugaFitim = rrugaFitime.FirstOrDefault(e => e.CurrencyId == gjendja.CurrencyId);
@@ -361,6 +363,7 @@ namespace BioLab.Controllers
                 }
                 else
                 {
+
                     var rrugaFitim = rrugaFitime.FirstOrDefault(e => e.CurrencyId == gjendja.CurrencyId);
                     rrugaFitim.Pagesa = rrugaFitim.Pagesa + gjendja.Pagesa;
                     rrugaFitim.PagesaReale = rrugaFitim.PagesaReale + gjendja.Pagesa;

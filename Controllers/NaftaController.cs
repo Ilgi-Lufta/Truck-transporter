@@ -18,10 +18,12 @@ namespace BioLab.Controllers
 
         public IActionResult AllNafta(DateTime searchFirstTime, DateTime searchSecondTime)
         {
-            var shofers = _context.NaftaStocks.Include(e=>e.Currency)
-                     .Where(m => searchFirstTime != DateTime.MinValue ? m.CreatedDate > searchFirstTime : true)
-                    .Where(m => searchSecondTime != DateTime.MinValue ? m.CreatedDate < searchSecondTime : true)
-                .ToList();
+            var shofers = _context.NaftaStocks.Include(e=>e.Currency).Include(e=>e.Rruga)
+                        .Where(m => searchFirstTime != DateTime.MinValue ? m.CreatedDate > searchFirstTime : true)
+                        .Where(m => searchSecondTime != DateTime.MinValue ? m.CreatedDate < searchSecondTime : true)
+                        .OrderBy(e=>e.CreatedDate)
+                        .ToList();
+
             foreach (var shofer in shofers)
             {
                 shofer.Cmimi = shofer.Pagesa / shofer.Litra;
@@ -32,16 +34,17 @@ namespace BioLab.Controllers
             {
                 ViewBag.Shofers = shofers;
             }
+
             var naftaShitur = _context.NaftaStocks.Where(b => b.BlereShiturSelect == "Blere")
-                  .Where(m => searchFirstTime != DateTime.MinValue ? m.CreatedDate > searchFirstTime : true)
+                    .Where(m => searchFirstTime != DateTime.MinValue ? m.CreatedDate > searchFirstTime : true)
                     .Where(m => searchSecondTime != DateTime.MinValue ? m.CreatedDate > searchSecondTime : true)
-
                     .ToList();
+
             var naftaBlere = _context.NaftaStocks.Where(b => b.BlereShiturSelect == "Shitur")
-                  .Where(m => searchFirstTime != DateTime.MinValue ? m.CreatedDate > searchFirstTime : true)
+                    .Where(m => searchFirstTime != DateTime.MinValue ? m.CreatedDate > searchFirstTime : true)
                     .Where(m => searchSecondTime != DateTime.MinValue ? m.CreatedDate > searchSecondTime : true)
-
                     .ToList();
+
             //ViewBag.RefPrice = _context.Naftas
             //     //.Where(e => e.Litra > 0 && e.Leke > 0)
             //     .GroupBy(e => e.BlereShiturSelect == "Blere")
@@ -50,7 +53,35 @@ namespace BioLab.Controllers
             //             )
             //     .FirstOrDefault();
 
+            var Currencys = _context.Currencys.ToList();
+            List<NaftaStock> naftaStocks = new List<NaftaStock>();
 
+            foreach (var item in Currencys)
+            {
+                NaftaStock naftaStock = new NaftaStock()
+                {
+                    CurrencyId = item.CurrencyId,
+                    Pagesa = 0,
+                    BlereShiturSelect= "Blere"
+                };
+                naftaStocks.Add(naftaStock);
+            }
+            var naftaBlere2 = _context.NaftaStocks.Include(e=>e.Currency)
+                .Where(e => e.BlereShiturSelect == "Blere")
+                .Where(m => searchFirstTime != DateTime.MinValue ? m.CreatedDate > searchFirstTime : true)
+                .Where(m => searchSecondTime != DateTime.MinValue ? m.CreatedDate > searchSecondTime : true)
+                .GroupBy(e => e.CurrencyId)
+                .Select(m =>
+                new
+                {
+                   Monedha=m.Max(no=>no.Currency.CurrencyUnit),
+                   Pagesa= m.Sum(p => p.Pagesa),
+                    Litra = m.Sum(p => p.Litra),
+                    CmimRef = Math.Round((m.Sum(b => b.Pagesa) / m.Sum(b => b.Litra)),2)
+                }
+                )
+                .ToList();
+            ViewBag.Totali= naftaBlere2;
 
             return View();
         }
@@ -138,9 +169,10 @@ namespace BioLab.Controllers
                     {
                         BlereShiturSelect = "Blere",
                         Litra = (0 - marrngaadd.Litra),
-                        Pagesa = 0 - (cmimRef * marrngaadd.Litra),
+                        Pagesa = 0 - (Math.Round(cmimRef, 2) * marrngaadd.Litra),
                         CurrencyId = marrngaadd.CurrencyId,
-                        BlereShiturId = blereShitur.BlereShiturId
+                        BlereShiturId = blereShitur.BlereShiturId,
+                        PagesaKryer = marrngaadd.PagesaKryer,
                     };
 
                     _context.Add(nafta);
@@ -230,9 +262,21 @@ namespace BioLab.Controllers
                         return RedirectToAction("EditNafta", new { id = id });
                     }
                     //////to be discused
+                    var naftaexzisting = _context.NaftaStocks.FirstOrDefault(p => p.NaftaStockId == id);
+                    if (marrngaadd.Pagesa == naftaexzisting.Pagesa &&  marrngaadd.Litra == naftaexzisting.Litra)
+                    {
+                        naftaexzisting.PagesaKryer = marrngaadd.PagesaKryer;
+                        EditingBlereNegativ.PagesaKryer = marrngaadd.PagesaKryer;
 
-                    //get cmim  ref
-                    var cmimRef = _context.NaftaStocks.Where(e => e.BlereShiturSelect == "Blere")
+                        _context.SaveChanges();
+                        return RedirectToAction("AllNafta");
+                    }
+
+
+
+
+                        //get cmim  ref
+                        var cmimRef = _context.NaftaStocks.Where(e => e.BlereShiturSelect == "Blere")
                        //.Where(e => e.Litra > 0 && e.Leke > 0)
                        .GroupBy(e => e.CurrencyId == marrngaadd.CurrencyId)
                        .Select(e =>
@@ -243,12 +287,11 @@ namespace BioLab.Controllers
 
 
 
-
                     EditingBlereNegativ.BlereShiturSelect = "Blere";
                     EditingBlereNegativ.Litra = (0 - marrngaadd.Litra);
                     EditingBlereNegativ.Pagesa = 0 - (cmimRef * marrngaadd.Litra);
-                        EditingBlereNegativ.CurrencyId = marrngaadd.CurrencyId;
-                        EditingBlereNegativ.PagesaKryer = marrngaadd.PagesaKryer;
+                    EditingBlereNegativ.CurrencyId = marrngaadd.CurrencyId;
+                    EditingBlereNegativ.PagesaKryer = marrngaadd.PagesaKryer;
                     
                 }
                 //edit marr nga add
