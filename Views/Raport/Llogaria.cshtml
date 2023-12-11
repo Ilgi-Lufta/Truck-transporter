@@ -1,0 +1,126 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+<partial name="NavPartial" />
+<div class="mt-5 container">
+
+    <form asp-controller="Raport" asp-action="LLogaria">
+        <p>
+
+            Fillo <input class="ms-1" type="date" name="searchFirstTime" />
+            Perfundo <input class="ms-1" type="date" name="searchSecondTime" />
+            <input class="btn btn-primary" type="submit" value="Kerko" />
+        </p>
+    </form>
+    <a class="btn btn-primary mb-1" asp-action="AddGjendja" asp-controller="Gjendja">Ndrysho gjendjen</a>
+    @*<h1>@ViewBag.RefPrice</h1>*@
+@*    <div class="row">
+        @foreach (var item in ViewBag.Totali)
+        {
+            <p>Pagesa @item.Pagesa</p>
+            <p>Monedha @item.Currency.CurrencyUnit</p>
+            <br>
+        }
+    </div>*@
+    <div class="row">
+        <div class="col sm-6">
+            <table class="table table-hover table-sm table-info table-bordered  ">
+                <thead>
+                    <tr>
+                        
+                        @*    <th scope="col">cmimi Blere-Shitur</th>*@
+                       
+                        <th scope="col">Pagesa</th>
+                        <th scope="col">Pagesa Reale</th>
+                        <th scope="col">Monedha</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ViewBag.Totali)
+                    {
+                        <tr>
+                            <td scope="row"> @item.Pagesa</td>
+                            <td scope="row"> @item.PagesaReale</td>
+                            <td scope="row"> @item.Currency.CurrencyUnit</td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col sm-6">
+            <table class="table table-hover table-sm table-info table-bordered  ">
+                <thead>
+                    <tr>
+
+                        @*    <th scope="col">cmimi Blere-Shitur</th>*@
+
+                        <th scope="col">Pagesa</th>
+                        <th scope="col">Litra</th>
+                        <th scope="col">CmimRef</th>
+                        <th scope="col">Monedha</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ViewBag.naftaBlere2)
+                    {
+                        <tr>
+                            <td scope="row"> @item.Pagesa</td>
+                            <td scope="row"> @item.Litra</td>
+                            <td scope="row"> @item.CmimRef</td>
+                            <td scope="row"> @item.Monedha</td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div>
+            </div>
+        </div>
+    </div>
+@*    <div class="row">
+        <div class="col ">
+            <table class="table table-striped table-bordered  ">
+                <thead>
+                    <tr>
+                        <th scope="col">Data krijimit</th>
+                        <th scope="col">Pershkrim</th>
+                        <th scope="col">shpenzim</th>
+                        <th scope="col">Xhiro</th>
+                        <th scope="col">Monedha</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ViewBag.Llogari)
+                    {
+                        <tr>
+                            <td scope="row"> @item.CreatedDate</td>
+                            <td scope="row"> @item.Pershkrim</td>
+                            @if (item.Pagesa < 0)
+                            {
+                            <td scope="row"> @item.Pagesa</td>
+                                <td scope="row"></td>
+                            }
+                            else
+                            {
+                                <td scope="row"></td>
+                                <td scope="row"> @item.Pagesa</td>
+                            }
+                            <td scope="row"> @item.Currency</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div>
+            </div>
+        </div>
+    </div>*@
+</div>
+
