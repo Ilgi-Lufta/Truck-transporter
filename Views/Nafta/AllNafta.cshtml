@@ -48,6 +48,47 @@
     </div>
     <div class="row">
         <div class="col sm-6">
+            <table class="table table-hover table-sm table-info table-bordered  ">
+                <thead>
+                    <tr>
+
+                        @*    <th scope="col">cmimi Blere-Shitur</th>*@
+
+                        <th scope="col">Litra</th>
+                        <th scope="col">Blere</th>
+                        <th scope="col">Shitur</th>
+                        <th scope="col">Monedha</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ViewBag.naftaPeriudh)
+                    {
+                        <tr>
+                    
+                            <td scope="row"> @item.Litra</td>
+                            @if (item.BlereShiturSelect == "Blere")
+                            {
+                                <td scope="row"> @item.BlereShiturSelect</td>
+                                <td scope="row"></td>
+                            }
+                            else
+                            {
+                                <td scope="row"></td>
+                                <td scope="row"> @item.BlereShiturSelect</td>
+                            }
+                            <td scope="row"> @item.Currency.CurrencyUnit</td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col sm-6">
             <table class="table table-striped table-bordered  ">
                 <thead>
                     <tr>

@@ -394,7 +394,7 @@ namespace BioLab.Controllers
                 .Include(e=>e.RrugaFitimes).ThenInclude(e=>e.Currency)
                 .Where(e => e.Model == false)
                                     .Where(m => searchFirstTime != DateTime.MinValue ? m.CreatedDate > searchFirstTime : true)
-                    .Where(m => searchSecondTime != DateTime.MinValue ? m.CreatedDate > searchSecondTime : true)
+                    .Where(m => searchSecondTime != DateTime.MinValue ? m.CreatedDate < searchSecondTime : true)
                 .ToList();
             //foreach (var shofer in shofers)
             //{
@@ -410,7 +410,7 @@ namespace BioLab.Controllers
             {
                 rrugas = shofers.Where(s => s.Emri!.Contains(searchString))
                                         .Where(m => searchFirstTime != DateTime.MinValue ? m.CreatedDate > searchFirstTime : true)
-                    .Where(m => searchSecondTime != DateTime.MinValue ? m.CreatedDate > searchSecondTime : true).ToList();
+                    .Where(m => searchSecondTime != DateTime.MinValue ? m.CreatedDate < searchSecondTime : true).ToList();
                 ViewBag.Shofers = rrugas;
 
             }

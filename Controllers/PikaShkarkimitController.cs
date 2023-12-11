@@ -19,7 +19,7 @@ namespace BioLab.Controllers
         {
             var shofers = _context.PikaShkarkimis.Include(e=>e.PagesaPikaShkarkimits).ThenInclude(e=>e.Currency)
                     .Where(m => searchFirstTime != DateTime.MinValue ? m.CreatedDate > searchFirstTime : true)
-                    .Where(m => searchSecondTime != DateTime.MinValue ? m.CreatedDate > searchSecondTime : true)
+                    .Where(m => searchSecondTime != DateTime.MinValue ? m.CreatedDate < searchSecondTime : true)
                 .ToList();
 
             if (shofers != null)
@@ -30,7 +30,7 @@ namespace BioLab.Controllers
             {
                 ViewBag.Shofers = shofers.Where(s => s.Emri!.Contains(searchString))
                                         .Where(m => searchFirstTime != DateTime.MinValue ? m.CreatedDate > searchFirstTime : true)
-                    .Where(m => searchSecondTime != DateTime.MinValue ? m.CreatedDate > searchSecondTime : true);
+                    .Where(m => searchSecondTime != DateTime.MinValue ? m.CreatedDate < searchSecondTime : true);
             }
           
 

@@ -309,7 +309,7 @@ namespace BioLab.Controllers
                 .Include(e => e.RrugaFitimes).ThenInclude(e => e.Currency)
                 .Where(e => e.Model == false)
                 .Where(m => searchFirstTime != DateTime.MinValue ? m.CreatedDate > searchFirstTime : true)
-                .Where(m => searchSecondTime != DateTime.MinValue ? m.CreatedDate > searchSecondTime : true)
+                .Where(m => searchSecondTime != DateTime.MinValue ? m.CreatedDate < searchSecondTime : true)
                 .ToList();
 
             foreach (var rruga in rrugas)
@@ -339,7 +339,7 @@ namespace BioLab.Controllers
             //gjendja
             var gjendjas = _context.ZbritShtoGjendjas.Include(e => e.Currency)
                  .Where(m => searchFirstTime != DateTime.MinValue ? m.CreatedDate > searchFirstTime : true)
-                .Where(m => searchSecondTime != DateTime.MinValue ? m.CreatedDate > searchSecondTime : true)
+                .Where(m => searchSecondTime != DateTime.MinValue ? m.CreatedDate < searchSecondTime : true)
                 .ToList();
 
             foreach (var gjendja in gjendjas)
@@ -384,7 +384,7 @@ namespace BioLab.Controllers
             var naftaStocksShitur = _context.NaftaStocks.Include(e=>e.Currency)
                 .Where(e => e.BlereShiturSelect == "Shitur" && e.RrugaId==null)
                 .Where(m => searchFirstTime != DateTime.MinValue ? m.CreatedDate > searchFirstTime : true)
-                .Where(m => searchSecondTime != DateTime.MinValue ? m.CreatedDate > searchSecondTime : true)
+                .Where(m => searchSecondTime != DateTime.MinValue ? m.CreatedDate < searchSecondTime : true)
                 .ToList();
             foreach (var naftaStock in naftaStocksShitur)
             {
@@ -410,7 +410,7 @@ namespace BioLab.Controllers
             var naftaStocksBlere = _context.NaftaStocks.Include(e => e.Currency)
                 .Where(e => e.BlereShiturSelect == "Blere" && e.Pagesa > 0 && e.RrugaId == null)
                 .Where(m => searchFirstTime != DateTime.MinValue ? m.CreatedDate > searchFirstTime : true)
-                .Where(m => searchSecondTime != DateTime.MinValue ? m.CreatedDate > searchSecondTime : true)
+                .Where(m => searchSecondTime != DateTime.MinValue ? m.CreatedDate < searchSecondTime : true)
                 .ToList();
 
             foreach (var naftaStock in naftaStocksBlere)
