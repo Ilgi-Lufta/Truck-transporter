@@ -261,6 +261,7 @@ namespace BioLab.Controllers
                         CurrencyId = marrngaadd.CurrencyId,
                         BlereShiturId = blereShitur.BlereShiturId,
                         PagesaKryer = marrngaadd.PagesaKryer,
+                        Shenime = marrngaadd.Shenime
                     };
 
                     _context.Add(nafta);
@@ -355,6 +356,8 @@ namespace BioLab.Controllers
                     {
                         naftaexzisting.PagesaKryer = marrngaadd.PagesaKryer;
                         EditingBlereNegativ.PagesaKryer = marrngaadd.PagesaKryer;
+                        naftaexzisting.Shenime = marrngaadd.Shenime;
+                        EditingBlereNegativ.Shenime = marrngaadd.Shenime;
 
                         _context.SaveChanges();
                         return RedirectToAction("AllNafta");
@@ -380,6 +383,7 @@ namespace BioLab.Controllers
                     EditingBlereNegativ.Pagesa = 0 - (cmimRef * marrngaadd.Litra);
                     EditingBlereNegativ.CurrencyId = marrngaadd.CurrencyId;
                     EditingBlereNegativ.PagesaKryer = marrngaadd.PagesaKryer;
+                    EditingBlereNegativ.Shenime = marrngaadd.Shenime;
                     
                 }
                 //edit marr nga add
@@ -391,6 +395,7 @@ namespace BioLab.Controllers
                     editing.Litra = marrngaadd.Litra;
                     editing.BlereShiturSelect = marrngaadd.BlereShiturSelect;
                     editing.PagesaKryer = marrngaadd.PagesaKryer;
+                    editing.Shenime = marrngaadd.Shenime;
 
                     _context.SaveChanges();
                     return RedirectToAction("AllNafta");

@@ -329,7 +329,9 @@ namespace BioLab.Controllers
                             Tipi = TIPI.RRUGE,
                             CreatedDate = rruga.CreatedDate,
                             Pershkrim = "Fitime Nga Rruga " + rruga.Emri,
-                            Currency= fitim.Currency.CurrencyUnit
+                            Currency= fitim.Currency.CurrencyUnit,
+                            Shenime = rruga.shenime
+
                         };
                         llogaris.Add( llogari );
                     }
@@ -357,7 +359,9 @@ namespace BioLab.Controllers
                         Tipi = TIPI.NDRYSHIMGJENDJE,
                         CreatedDate = gjendja.CreatedDate,
                         Pershkrim = "Zbritje nga gjendja",
-                        Currency = gjendja.Currency.CurrencyUnit
+                        Currency = gjendja.Currency.CurrencyUnit,
+                        Shenime = gjendja.Shenime
+
                     };
                     llogaris.Add(llogari);
                 }
@@ -373,7 +377,8 @@ namespace BioLab.Controllers
                         Tipi = TIPI.NDRYSHIMGJENDJE,
                         CreatedDate = gjendja.CreatedDate,
                         Pershkrim = "shtim tek gjendja",
-                        Currency = gjendja.Currency.CurrencyUnit
+                        Currency = gjendja.Currency.CurrencyUnit,
+                        Shenime = gjendja.Shenime
 
                     };
                     llogaris.Add(llogari);
@@ -400,7 +405,8 @@ namespace BioLab.Controllers
                     Tipi = TIPI.NAFTA,
                     CreatedDate = naftaStock.CreatedDate,
                     Pershkrim = "Shtije nafte",
-                    Currency = naftaStock.Currency.CurrencyUnit
+                    Currency = naftaStock.Currency.CurrencyUnit,
+                    Shenime = naftaStock.Shenime
 
                 };
                 llogaris.Add(llogari);
@@ -427,8 +433,8 @@ namespace BioLab.Controllers
                     Tipi = TIPI.NAFTA,
                     CreatedDate = naftaStock.CreatedDate,
                     Pershkrim = "Blerje nafte",
-                    Currency = naftaStock.Currency.CurrencyUnit
-
+                    Currency = naftaStock.Currency.CurrencyUnit,
+                    Shenime = naftaStock.Shenime
                 };
                 llogaris.Add(llogari);
             }
@@ -443,6 +449,8 @@ namespace BioLab.Controllers
             public DateTime CreatedDate { get; set; }
             public TIPI Tipi { get; set; }  
             public string Currency { get; set; }  
+
+            public string Shenime { get; set; }
         }
         public enum TIPI
         {

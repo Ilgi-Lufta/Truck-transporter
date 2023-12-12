@@ -12,8 +12,8 @@
             <input class="btn btn-primary" type="submit" value="Kerko" />
         </p>
     </form>
-    <a class="btn btn-primary" asp-action="AddGjendja" asp-controller="Gjendja">Ndrysho gjendjen</a>
-    <h1>@ViewBag.RefPrice</h1>
+    <a class="btn btn-primary mb-1" asp-action="AddGjendja" asp-controller="Gjendja">Ndrysho gjendjen</a>
+@*    <h1>@ViewBag.RefPrice</h1>
     <div class="row">
         @foreach (var item in ViewBag.Totali)
         {
@@ -22,15 +22,47 @@
             <br>
         }
     </div>
+*@
+
+    <div class="row">
+        <div class="col sm-6">
+            <table class="table table-hover table-sm table-info table-bordered  ">
+                <thead>
+                    <tr>
+
+                        @*    <th scope="col">cmimi Blere-Shitur</th>*@
+
+                        <th scope="col">Pagesa</th>
+                        <th scope="col">Monedha</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ViewBag.Totali)
+                    {
+                        <tr>
+                            <td scope="row"> @item.Pagesa</td>
+                            <td scope="row"> @item.Currency.CurrencyUnit</td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div>
+            </div>
+        </div>
+    </div>
     <div class="row">
         <div class="col sm-6">
             <table class="table table-striped table-bordered  ">
                 <thead>
                     <tr>
+                        <th scope="col">Data</th>
                         <th scope="col">Shuma</th>
                     @*    <th scope="col">cmimi Blere-Shitur</th>*@
                         <th scope="col">Shenime</th>
-                        <th scope="col">Shtim/Zvritje</th>
+                        <th scope="col">Shtim</th>
+                        <th scope="col">Zbritje</th>
                         <th scope="col">Monedha</th>
                         <th scope="col">veprime</th>
 
@@ -40,12 +72,20 @@
                     @foreach (var item in ViewBag.Shofers)
                     {
                         <tr>
+                            <td scope="row"> @item.CreatedDate</td>
                             <td scope="row"> @item.Pagesa</td>
                             <td scope="row"> @item.Shenime</td>
-                            <td scope="row"> @item.ZbritShtoSelect</td>
-                            <td scope="row"> @item.Currency.CurrencyUnit</td>
-                            
 
+                            @if (@item.ZbritShtoSelect=="Shto") { 
+                            <td scope="row"> Shtim</td>
+                            <td scope="row"> </td>
+                            }else{
+                            <td scope="row"> </td>
+                            <td scope="row"> @item.ZbritShtoSelect</td>
+                            }
+
+
+                            <td scope="row"> @item.Currency.CurrencyUnit</td>
 
                             <td scope="row">
                                 <a class="btn btn-primary" asp-action="EditGjendja" asp-controller="Gjendja" asp-route-id="@item.ZbritShtoGjendjaId "> Edito</a>

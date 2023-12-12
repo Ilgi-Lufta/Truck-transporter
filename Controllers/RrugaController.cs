@@ -451,6 +451,8 @@ namespace BioLab.Controllers
                     { 
                        var rrugaFitim= rrugaFitime.FirstOrDefault(e => e.CurrencyId == fitim.CurrencyId);
                         rrugaFitim.Pagesa = rrugaFitim.Pagesa + fitim.Pagesa;
+                        rrugaFitim.PagesaReale = rrugaFitim.PagesaReale + fitim.PagesaReale;
+
                     }
                 }
             }
