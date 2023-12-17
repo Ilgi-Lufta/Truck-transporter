@@ -328,17 +328,14 @@ namespace BioLab.Controllers
         [HttpPost]
         public IActionResult EditedNafta(int id, NaftaStock marrngaadd)
         {
-            var EditingBlereNegativ = _context.NaftaStocks.FirstOrDefault(p => p.BlereShiturId == marrngaadd.BlereShiturId && p.BlereShiturSelect == "Blere");
+            var EditingBlereNegativ = _context.NaftaStocks
+                .FirstOrDefault(p => p.BlereShiturId == marrngaadd.BlereShiturId && p.BlereShiturSelect == "Blere");
+
             var litrablere = _context.NaftaStocks.Where(e => e.BlereShiturSelect == "Blere")
-                              //.Where(e => e.Litra > 0 && e.Leke > 0)
-                              ////// to be discused
+                           
                               .GroupBy(e => e.CurrencyId == marrngaadd.CurrencyId)
                               .Select(e => e.Sum(b => b.Litra)).FirstOrDefault();
-            //var litraShitur = _context.Naftas.Where(e => e.BlereShiturSelect == "Shitur")
-            ////.Where(e => e.Litra > 0 && e.Leke > 0)
-            //.GroupBy(e => e.CurrencyId == marrngaadd.CurrencyId)
-            //.Select(e => e.Sum(b => b.Litra)).FirstOrDefault();
-            //var litra = litrablere - litraShitur;
+   
             var litraBlereNegativ = EditingBlereNegativ.Litra;
 
             var litra = litrablere - litraBlereNegativ;
@@ -363,9 +360,6 @@ namespace BioLab.Controllers
                         return RedirectToAction("AllNafta");
                     }
 
-
-
-
                         //get cmim  ref
                         var cmimRef = _context.NaftaStocks.Where(e => e.BlereShiturSelect == "Blere")
                        //.Where(e => e.Litra > 0 && e.Leke > 0)
@@ -375,8 +369,6 @@ namespace BioLab.Controllers
                                )
                        .FirstOrDefault();
                     //get editing negativ nafta end edit
-
-
 
                     EditingBlereNegativ.BlereShiturSelect = "Blere";
                     EditingBlereNegativ.Litra = (0 - marrngaadd.Litra);
