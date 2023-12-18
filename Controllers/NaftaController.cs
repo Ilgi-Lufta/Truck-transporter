@@ -221,19 +221,11 @@ namespace BioLab.Controllers
         public IActionResult CreateNafta(NaftaStock marrngaadd)
         {
             var litrablere = _context.NaftaStocks.Where(e => e.BlereShiturSelect == "Blere")
-              //.Where(e => e.Litra > 0 && e.Leke > 0)
               .GroupBy(e => e.CurrencyId == marrngaadd.CurrencyId)
               .Select(e => e.Sum(b => b.Litra)).FirstOrDefault();
-            //var litraShitur = _context.Naftas.Where(e => e.BlereShiturSelect == "Shitur")
-            ////.Where(e => e.Litra > 0 && e.Leke > 0)
-            //.GroupBy(e => e.CurrencyId == marrngaadd.CurrencyId)
-            //.Select(e => e.Sum(b => b.Litra)).FirstOrDefault();
-            // var litra = litrablere - litraBlereNegativ;
-
+        
             if (ModelState.IsValid)
             {
-                
-
                 if (marrngaadd.BlereShiturSelect == "Shitur")
                 {
                     if (litrablere < marrngaadd.Litra)
@@ -243,7 +235,6 @@ namespace BioLab.Controllers
                     BlereShitur blereShitur = new BlereShitur();
 
                     var cmimRef = _context.NaftaStocks.Where(e => e.BlereShiturSelect == "Blere")
-                    //.Where(e => e.Litra > 0 && e.Leke > 0)
                     .GroupBy(e => e.CurrencyId == marrngaadd.CurrencyId)
                     .Select(e =>
                     (e.Sum(b => b.Pagesa) / e.Sum(b => b.Litra))
@@ -266,16 +257,10 @@ namespace BioLab.Controllers
 
                     _context.Add(nafta);
                     _context.SaveChanges();
-                    //  return RedirectToAction("AllNafta");
                     marrngaadd.BlereShiturId = blereShitur.BlereShiturId;
                 }
                 _context.NaftaStocks.Add(marrngaadd);
                 _context.SaveChanges();
-                //else
-                //{
-
-                //}
-
                 return RedirectToAction("AllNafta");
             }
             return View("AddNafta");
@@ -306,7 +291,6 @@ namespace BioLab.Controllers
             var AllCurrency2 = _context.Currencys.ToList();
             if (AllCurrency2 != null)
             {
-                // IDictionary<int, string> numberNames = new Dictionary<int, string>();
                 List<SelectListItem> numberNames = new List<SelectListItem>();
                 foreach (var currency in AllCurrency2)
                 {
@@ -319,9 +303,6 @@ namespace BioLab.Controllers
                 }
                 ViewBag.numberNames = numberNames;
             }
-
-           
-
             return View(Editing);
         }
 
@@ -349,10 +330,9 @@ namespace BioLab.Controllers
                     }
                     //////to be discused
                     var naftaexzisting = _context.NaftaStocks.FirstOrDefault(p => p.NaftaStockId == id);
-                    if (marrngaadd.Pagesa == naftaexzisting.Pagesa &&  marrngaadd.Litra == naftaexzisting.Litra)
+                    if (marrngaadd.Pagesa == naftaexzisting.Pagesa && marrngaadd.Litra == naftaexzisting.Litra && marrngaadd.BlereShiturSelect == naftaexzisting.BlereShiturSelect)
                     {
-                        naftaexzisting.PagesaKryer = marrngaadd.PagesaKryer;
-                        EditingBlereNegativ.PagesaKryer = marrngaadd.PagesaKryer;
+
                         naftaexzisting.Shenime = marrngaadd.Shenime;
                         EditingBlereNegativ.Shenime = marrngaadd.Shenime;
 
@@ -374,7 +354,6 @@ namespace BioLab.Controllers
                     EditingBlereNegativ.Litra = (0 - marrngaadd.Litra);
                     EditingBlereNegativ.Pagesa = 0 - (cmimRef * marrngaadd.Litra);
                     EditingBlereNegativ.CurrencyId = marrngaadd.CurrencyId;
-                    EditingBlereNegativ.PagesaKryer = marrngaadd.PagesaKryer;
                     EditingBlereNegativ.Shenime = marrngaadd.Shenime;
                     
                 }
@@ -386,7 +365,6 @@ namespace BioLab.Controllers
                     editing.CurrencyId = marrngaadd.CurrencyId;
                     editing.Litra = marrngaadd.Litra;
                     editing.BlereShiturSelect = marrngaadd.BlereShiturSelect;
-                    editing.PagesaKryer = marrngaadd.PagesaKryer;
                     editing.Shenime = marrngaadd.Shenime;
 
                     _context.SaveChanges();
@@ -411,24 +389,124 @@ namespace BioLab.Controllers
             return RedirectToAction("AllNafta");
 
         }
-        //public IActionResult NaftaRaport()
-        //{
+        [HttpPost]
+        public IActionResult EditedNafta2(int id, NaftaStock marrngaadd)
+        {
+            var EditingBlereNegativ = _context.NaftaStocks
+                .FirstOrDefault(p => p.BlereShiturId == marrngaadd.BlereShiturId && p.BlereShiturSelect == "Blere");
 
-        //    var shofers = _context.Rrugas.GroupBy(r => r.Model == false)
-        //       .Select(b => new
-        //       {
-        //           shpenzuar = b.Sum(m => m.NaftaPerTuShiturLitra * m.NaftaBlereCmim),
-        //           nafta = b.Sum(m => m.NaftaPerTuShiturLitra),
-        //       })
-        //       .ToList();
-        //    var cmimi = shofers.Select(b => b.shpenzuar / b.nafta);
+            var litrablere = _context.NaftaStocks.Where(e => e.BlereShiturSelect == "Blere")
 
-        //    if (shofers != null)
-        //    {
-        //        ViewBag.Shofers = shofers;
-        //    }
-        //    return View();
-        //}
+                              .GroupBy(e => e.CurrencyId == marrngaadd.CurrencyId)
+                              .Select(e => e.Sum(b => b.Litra)).FirstOrDefault();
+
+            var litraBlereNegativ = EditingBlereNegativ.Litra;
+
+            var litra = litrablere - litraBlereNegativ;
+            if (ModelState.IsValid)
+            {
+                if (marrngaadd.BlereShiturSelect == "Shitur")
+                {
+                    if (litra < marrngaadd.Litra)
+                    {
+                        return RedirectToAction("EditNafta", new { id = id });
+                    }
+                    //////to be discused
+                    var naftaexzisting = _context.NaftaStocks.FirstOrDefault(p => p.NaftaStockId == id);
+                    if (marrngaadd.Pagesa == naftaexzisting.Pagesa && marrngaadd.Litra == naftaexzisting.Litra && marrngaadd.BlereShiturSelect == naftaexzisting.BlereShiturSelect)
+                    {
+                     
+                        naftaexzisting.Shenime = marrngaadd.Shenime;
+                        EditingBlereNegativ.Shenime = marrngaadd.Shenime;
+
+                        _context.SaveChanges();
+                        return RedirectToAction("AllNafta");
+                    }
+
+                    //get cmim  ref
+                    var cmimRef = _context.NaftaStocks.Where(e => e.BlereShiturSelect == "Blere")
+                   //.Where(e => e.Litra > 0 && e.Leke > 0)
+                   .GroupBy(e => e.CurrencyId == marrngaadd.CurrencyId)
+                   .Select(e =>
+                   (e.Sum(b => b.Pagesa) / e.Sum(b => b.Litra))
+                           )
+                   .FirstOrDefault();
+                    //get editing negativ nafta end edit
+
+                    EditingBlereNegativ.BlereShiturSelect = "Blere";
+                    EditingBlereNegativ.Litra = (0 - marrngaadd.Litra);
+                    EditingBlereNegativ.Pagesa = 0 - (cmimRef * marrngaadd.Litra);
+                    EditingBlereNegativ.CurrencyId = marrngaadd.CurrencyId;
+                    EditingBlereNegativ.Shenime = marrngaadd.Shenime;
+
+                }
+                //edit marr nga add
+
+                //marrim nga db anzlizen qe duam te bejm edit dhe vendosim vlerat qe marim nga forma
+                NaftaStock editing = _context.NaftaStocks.FirstOrDefault(p => p.NaftaStockId == id);
+                editing.Pagesa = marrngaadd.Pagesa;
+                editing.CurrencyId = marrngaadd.CurrencyId;
+                editing.Litra = marrngaadd.Litra;
+                editing.BlereShiturSelect = marrngaadd.BlereShiturSelect;
+                editing.Shenime = marrngaadd.Shenime;
+
+                _context.SaveChanges();
+                return RedirectToAction("AllNafta");
+
+            }
+            return RedirectToAction("EditNafta", new { id = id });
+
+
+
+           var editingNaftaStock =  _context.NaftaStocks.FirstOrDefault(e=>e.NaftaStockId==id);
+            if(editingNaftaStock.BlereShiturId != null)
+            {
+                var editingBlereShitur = _context.NaftaStocks
+                    .FirstOrDefault(e => e.NaftaStockId != id && e.BlereShiturId == editingNaftaStock.BlereShiturId);
+            }
+            // handle rastin kur ndryshon BlereShiturSelect
+            if (editingNaftaStock.BlereShiturSelect!= marrngaadd.BlereShiturSelect)
+            {
+
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        }
+
+        public ActionResult BejPagesen(int id)
+        {
+          var naftaPerPagese =  _context.NaftaStocks.FirstOrDefault(e => e.NaftaStockId == id);
+
+            if(naftaPerPagese!=null)
+            {
+                if(naftaPerPagese.BlereShiturSelect!= null)
+                {
+
+                 var NaftaBlere = _context.NaftaStocks
+                        .FirstOrDefault(e=>e.BlereShiturId== naftaPerPagese.BlereShiturId && e.NaftaStockId!= id);
+                    NaftaBlere.PagesaKryer = !NaftaBlere.PagesaKryer;
+
+                }
+                naftaPerPagese.PagesaKryer = !naftaPerPagese.PagesaKryer;
+                _context.SaveChanges();
+            }
+
+            return RedirectToAction("AllNafta");
+        }
         public class naftaPeriudh
         {
             public string Monedha { get; set; } 

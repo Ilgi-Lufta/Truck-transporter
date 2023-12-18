@@ -65,7 +65,6 @@
                     @foreach (var item in ViewBag.naftaPeriudh)
                     {
                         <tr>
-                    
                             <td scope="row"> @item.Litra</td>
                             @if (item.BlereShiturSelect == "Blere")
                             {
@@ -115,13 +114,25 @@
                             @if (item.PagesaKryer)
                             {
                                 <td scope="row">
-                                    <div><h2>  <i style="color:green;width:40px;height:40px;" class="bi bi-check-circle-fill"></i></h2></div>
+                                    <div>
+                                        <h2>
+                                            <i style="color:green;width:40px;height:40px;" class="bi bi-check-circle-fill"></i>
+                                        <a class="btn btn-primary" asp-action="BejPagesen" asp-controller="Nafta" asp-route-id="@item.NaftaStockId">Ndrysho</a>
+                                         </h2>
+                                    </div>
                                 </td>
+
                             }
                             else
                             {
                                 <td scope="row">
-                                    <div><h2>  <i style="color:red;width:40px;height:40px;" class="bi bi-exclamation-circle-fill"></i></h2></div>
+                                    <div>
+                                        <h2> 
+                                            <i style="color:red;width:40px;height:40px;" class="bi bi-exclamation-circle-fill"></i>
+                                        <a class="btn btn-primary" asp-action="BejPagesen" asp-controller="Nafta" asp-route-id="@item.NaftaStockId">Ndrysho</a>
+                                        </h2>
+
+                                    </div>
                                 </td>
                             }
                             <td scope="row"> @item.Currency.CurrencyUnit</td>
