@@ -105,19 +105,20 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in ViewBag.Shofers)
+                    @for (int i = 0; i < ViewBag.Shofers.Count; i++)
                     {
+                        
                         <tr>
-                            <td scope="row"> @item.CreatedDate</td>
-                            <td scope="row"> @item.Litra</td>
-                            <td scope="row"> @item.Pagesa</td>
-                            @if (item.PagesaKryer)
+                            <td scope="row"> @ViewBag.Shofers[i].CreatedDate</td>
+                            <td scope="row"> @ViewBag.Shofers[i].Litra</td>
+                            <td scope="row"> @ViewBag.Shofers[i].Pagesa</td>
+                            @if (ViewBag.Shofers[i].PagesaKryer)
                             {
                                 <td scope="row">
                                     <div>
                                         <h2>
                                             <i style="color:green;width:40px;height:40px;" class="bi bi-check-circle-fill"></i>
-                                        <a class="btn btn-primary" asp-action="BejPagesen" asp-controller="Nafta" asp-route-id="@item.NaftaStockId">Ndrysho</a>
+                                            <a class="btn btn-primary" asp-action="BejPagesen" asp-controller="Nafta" asp-route-id="@ViewBag.Shofers[i].NaftaStockId">Ndrysho</a>
                                          </h2>
                                     </div>
                                 </td>
@@ -129,28 +130,29 @@
                                     <div>
                                         <h2> 
                                             <i style="color:red;width:40px;height:40px;" class="bi bi-exclamation-circle-fill"></i>
-                                        <a class="btn btn-primary" asp-action="BejPagesen" asp-controller="Nafta" asp-route-id="@item.NaftaStockId">Ndrysho</a>
+                                            <a class="btn btn-primary" asp-action="BejPagesen" asp-controller="Nafta" asp-route-id="@ViewBag.Shofers[i].NaftaStockId">Ndrysho</a>
                                         </h2>
 
                                     </div>
                                 </td>
                             }
-                            <td scope="row"> @item.Currency.CurrencyUnit</td>
-                            @if (item.BlereShiturSelect =="Blere")
+                            <td scope="row"> @ViewBag.Shofers[i].Currency.CurrencyUnit</td>
+                            @if (ViewBag.Shofers[i].BlereShiturSelect == "Blere")
                             {
-                                <td scope="row"> @item.BlereShiturSelect</td>
+                                <td scope="row"> @ViewBag.Shofers[i].BlereShiturSelect</td>
                                 <td scope="row"></td>
                             }
                             else
                             {
                                 <td scope="row"></td>
-                                <td scope="row"> @item.BlereShiturSelect</td>
+                                <td scope="row"> @ViewBag.Shofers[i].BlereShiturSelect</td>
                             }
 
-                            <td scope="row"> @item.Cmimi @item.Currency.CurrencyUnit/L</td>
-                            @if (item.RrugaId != null){
+                            <td scope="row"> @ViewBag.Shofers[i].Cmimi @ViewBag.Shofers[i].Currency.CurrencyUnit/L</td>
+                            @if (ViewBag.Shofers[i].RrugaId != null)
+                            {
                             <td scope="row">
-                                    Pjese e rruges  @item.Rruga.Emri
+                                    Pjese e rruges  @ViewBag.Shofers[i].Rruga.Emri
                                 </td>
                             }else{
                                 <td scope="row">
@@ -158,16 +160,17 @@
                                 </td>
 
                             }
-                            @if (item.RrugaId != null || (item.BlereShiturSelect == "Blere" && item.Pagesa<0))
+                            @if (ViewBag.Shofers[i].RrugaId != null || (ViewBag.Shofers[i].BlereShiturSelect == "Blere" && ViewBag.Shofers[i].Pagesa < 0) || i != ViewBag.Shofers.Count-1)
                             {
                                 <td scope="row">
+                                    <a class="btn btn-primary" asp-action="EditNafta" asp-controller="Nafta" asp-route-id="@ViewBag.Shofers[i].NaftaStockId"> Edito</a>
                                 </td>
                             }
                             else
                             {
                                 <td scope="row">
-                                    <a class="btn btn-primary" asp-action="EditNafta" asp-controller="Nafta" asp-route-id="@item.NaftaStockId"> Edito</a>
-                                    <a class="btn btn-danger" asp-action="FshiNafta" asp-controller="Nafta" asp-route-id="@item.NaftaStockId"> Fshi</a>
+                                    <a class="btn btn-primary" asp-action="EditNafta" asp-controller="Nafta" asp-route-id="@ViewBag.Shofers[i].NaftaStockId"> Edito</a>
+                                    <a class="btn btn-danger" asp-action="FshiNafta" asp-controller="Nafta" asp-route-id="@ViewBag.Shofers[i].NaftaStockId"> Fshi</a>
                                 </td>
                             }
                         </tr>
