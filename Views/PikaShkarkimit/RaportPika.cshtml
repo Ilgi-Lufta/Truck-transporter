@@ -3,35 +3,25 @@
 }
 <partial name="NavPartial" />
 <div class="mt-5 container">
-
-    <form asp-controller="Gjendja" asp-action="GjendjaRaport">
+    <form asp-controller="PikaShkarkimit" asp-action="RaportPika">
         <p>
-
+            <input type="text" placeholder="Emri Pikes shkarkimit" name="SearchString" />
             Fillo <input class="ms-1" type="date" name="searchFirstTime" />
             Perfundo <input class="ms-1" type="date" name="searchSecondTime" />
             <input class="btn btn-primary" type="submit" value="Kerko" />
         </p>
     </form>
-    @*<a class="btn btn-primary mb-1" asp-action="AddGjendja" asp-controller="Gjendja">Ndrysho gjendjen</a>*@
-    @*<h1>@ViewBag.RefPrice</h1>*@
-@*    <div class="row">
-        @foreach (var item in ViewBag.Totali)
-        {
-            <p>Pagesa @item.Pagesa</p>
-            <p>Monedha @item.Currency.CurrencyUnit</p>
-            <br>
-        }
-    </div>*@
     <div class="row">
         <div class="col sm-6">
             <table class="table table-hover table-sm table-info table-bordered  ">
                 <thead>
                     <tr>
-                        
+
                         @*    <th scope="col">cmimi Blere-Shitur</th>*@
-                       
-                        <th scope="col">Gjendja</th>
-                        <th scope="col">Gjendja Reale</th>
+
+                        <th scope="col">Pika Shkarkimit</th>
+                        <th scope="col">Pagesa</th>
+                        <th scope="col">Pagesa Reale</th>
                         <th scope="col">Monedha</th>
 
                     </tr>
@@ -40,6 +30,7 @@
                     @foreach (var item in ViewBag.Totali)
                     {
                         <tr>
+                            <td scope="row"> @item.Emri</td>
                             <td scope="row"> @item.Pagesa</td>
                             <td scope="row"> @item.PagesaReale</td>
                             <td scope="row"> @item.Currency.CurrencyUnit</td>
@@ -62,6 +53,7 @@
                         <th scope="col">Shenime</th>
                         <th scope="col">shpenzim</th>
                         <th scope="col">Xhiro</th>
+                        <th scope="col">Pagesa Kryer</th>
                         <th scope="col">Monedha</th>
 
                     </tr>
@@ -75,13 +67,25 @@
                             <td scope="row"> @item.Shenime</td>
                             @if (item.Pagesa < 0)
                             {
-                            <td scope="row"> @item.Pagesa</td>
+                                <td scope="row"> @item.Pagesa</td>
                                 <td scope="row"></td>
                             }
                             else
                             {
                                 <td scope="row"></td>
                                 <td scope="row"> @item.Pagesa</td>
+                            }
+                            @if (item.PagesaKryer)
+                            {
+                                <td scope="row">
+                                    <div><h2>  <i style="color:green;width:40px;height:40px;" class="bi bi-check-circle-fill"></i></h2></div>
+                                </td>
+                            }
+                            else
+                            {
+                                <td scope="row">
+                                    <div><h2>  <i style="color:red;width:40px;height:40px;" class="bi bi-exclamation-circle-fill"></i></h2></div>
+                                </td>
                             }
                             <td scope="row"> @item.Currency</td>
                         </tr>
@@ -92,5 +96,6 @@
             </div>
         </div>
     </div>
+</div>
 </div>
 

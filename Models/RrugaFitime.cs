@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Xml.Linq;
 
 namespace BioLab.Models
@@ -20,6 +21,8 @@ namespace BioLab.Models
         public bool ShpenzimXhiro { get; set; }
         public DateTime CreatedDate { get; set; } = DateTime.Now;
         public DateTime UpdatedDate { get; set; } = DateTime.Now;
+        [NotMapped]
+        public string Emri  { get; set; }
 
     }
 }

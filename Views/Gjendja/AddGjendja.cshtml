@@ -24,14 +24,24 @@
 
                     <span asp-validation-for="Shenime"></span>
                     <label asp-for="Shenime"></label>
-                    <input asp-for="Shenime" type="text" class="form-control" required />
+                    <input asp-for="Shenime" type="text" class="form-control"  />
                 </div>
 
                 <div class="form-group">
-
                     <span asp-validation-for="ZbritShtoSelect"></span>
                     <label asp-for="ZbritShtoSelect"></label>
                     <select asp-for="ZbritShtoSelect" asp-items="@ViewBag.blereShitur" class="form-control"></select>
+                </div>
+
+                <div class="form-group">
+                    <span asp-validation-for="ShoferId"></span>
+                    <label asp-for="ShoferId"></label>
+                    <select asp-for="ShoferId" asp-items="@ViewBag.ShoferIdNames" class="form-control"></select>
+                </div>
+                <div class="form-group">
+                    <span asp-validation-for="PikaShkarkimiId"></span>
+                    <label asp-for="PikaShkarkimiId"></label>
+                    <select asp-for="PikaShkarkimiId" asp-items="@ViewBag.PikaShkarkimiIdNames" class="form-control"></select>
                 </div>
 
             </div>

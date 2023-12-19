@@ -1,6 +1,7 @@
 ﻿using BioLab.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace BioLab.Controllers
 {
@@ -111,15 +112,112 @@ namespace BioLab.Controllers
             return RedirectToAction("AllShofer");
 
         }
-        //public IActionResult Search(string searchString)
-        //{
-        //    var Shofer = _context.Shofers.ToList();
-        //    ViewBag.Shofer = Shofer;
-        //    if (!String.IsNullOrEmpty(searchString))
-        //    {
-        //        ViewBag.Shofer = Shofer.Where(s => s.Emri!.Contains(searchString));
-        //    }
-        //    return View("AllShofer");
-        //}
+        public IActionResult RaportShofer(string searchString, DateTime searchFirstTime, DateTime searchSecondTime)
+        {
+            var Currencys = _context.Currencys.ToList();
+            List<RrugaFitime> rrugaFitime = new List<RrugaFitime>();
+            List<Llogari> llogaris = new List<Llogari>();
+
+            foreach (var item in Currencys)
+            {
+                var Currency = _context.Currencys.FirstOrDefault(e => e.CurrencyId == item.CurrencyId);
+                RrugaFitime rrugaFitim = new RrugaFitime()
+                {
+                    CurrencyId = item.CurrencyId,
+                    Currency = Currency,
+                    //   ShpenzimXhiro = false,
+                    Pagesa = 0
+                };
+                rrugaFitime.Add(rrugaFitim);
+            }
+
+            var pikaRrugas = _context.ShoferRrugas.Include(e => e.Shofer).Include(e => e.Rruga).Include(e => e.PagesaShoferits).ThenInclude(e => e.Currency)
+                .Where(m => searchFirstTime != DateTime.MinValue ? m.CreatedDate > searchFirstTime : true)
+                .Where(m => searchSecondTime != DateTime.MinValue ? m.CreatedDate < searchSecondTime : true)
+                .Where(m =>  searchString != null ? m.Shofer.Emri.Contains(searchString) : true)
+            .ToList();
+
+            foreach (var rruga in pikaRrugas)
+            {
+                if (rruga.PagesaShoferits.Count > 0)
+                {
+                    foreach (var fitim in rruga.PagesaShoferits)
+                    {
+                        if (fitim.Pagesa == 0) continue;
+                        var rrugaFitim = rrugaFitime.FirstOrDefault(e => e.CurrencyId == fitim.CurrencyId);
+                        rrugaFitim.Pagesa = rrugaFitim.Pagesa + fitim.Pagesa;
+                        if (fitim.PagesaKryer)
+                        {
+                            rrugaFitim.PagesaReale = rrugaFitim.PagesaReale + fitim.Pagesa;
+                        }
+                        rrugaFitim.Emri = rruga.Shofer?.Emri;
+
+                        Llogari llogari = new Llogari()
+                        {
+                            Pagesa = fitim.Pagesa,
+                            Tipi = TIPI.RRUGE,
+                            CreatedDate = rruga.CreatedDate,
+                            Pershkrim = "Fitime " + rruga.Shofer?.Emri + " Nga Rruga " + rruga.Rruga?.Emri,
+                            Currency = fitim.Currency.CurrencyUnit,
+                             Shenime = rruga.Rruga.shenime,
+                            PagesaKryer = fitim.PagesaKryer
+
+
+                        };
+                        llogaris.Add(llogari);
+                    }
+                }
+            }
+            var gjendja = _context.ZbritShtoGjendjas.Include(e => e.Shofer).Include(e => e.Currency)
+                .Where(e => e.ShoferId != null)
+                .Where(m => searchFirstTime != DateTime.MinValue ? m.CreatedDate > searchFirstTime : true)
+                .Where(m => searchSecondTime != DateTime.MinValue ? m.CreatedDate < searchSecondTime : true)
+                .Where(m =>  searchString != null ? m.Shofer.Emri.Contains(searchString) : true)
+            .ToList();
+
+            foreach (var fitim in gjendja)
+            {
+                if (fitim.Pagesa == 0) continue;
+                var rrugaFitim = rrugaFitime.FirstOrDefault(e => e.CurrencyId == fitim.CurrencyId);
+                rrugaFitim.Pagesa = rrugaFitim.Pagesa + fitim.Pagesa;
+                rrugaFitim.PagesaReale = rrugaFitim.PagesaReale + fitim.Pagesa;
+                rrugaFitim.Emri = fitim.Shofer?.Emri;
+                Llogari llogari = new Llogari()
+                {
+                    Pagesa = fitim.Pagesa,
+                    Tipi = TIPI.RRUGE,
+                    CreatedDate = fitim.CreatedDate,
+                    Pershkrim = "ndryshim gjendje " + fitim.Shofer?.Emri,
+                    Currency = fitim.Currency.CurrencyUnit,
+                     Shenime = fitim.Shenime,
+                    PagesaKryer = true
+
+                };
+                llogaris.Add(llogari);
+            }
+
+
+            ViewBag.Totali = rrugaFitime;
+            ViewBag.Llogari = llogaris.OrderBy(e => e.CreatedDate);
+
+            return View();
+        }
+        public class Llogari
+        {
+            public string Pershkrim { get; set; }
+            public decimal Pagesa { get; set; }
+            public bool PagesaKryer { get; set; }
+            public DateTime CreatedDate { get; set; }
+            public TIPI Tipi { get; set; }
+            public string Currency { get; set; }
+
+            public string Shenime { get; set; }
+        }
+        public enum TIPI
+        {
+            RRUGE,
+            NAFTA,
+            NDRYSHIMGJENDJE
+        }
     }
 }

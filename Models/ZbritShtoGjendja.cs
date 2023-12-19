@@ -16,6 +16,14 @@ namespace BioLab.Models
         public string ZbritShtoSelect { get; set; }
         [Display(Name = "Shpenzim/Xhiro")]
         public bool ShpenzimXhiro { get; set; }
+        [Display(Name = "Pika Shkarkimit")]
+
+        public int? PikaShkarkimiId { get; set; }
+        public PikaShkarkimi? PikaShkarkimi { get; set; }
+        [Display(Name = "Shofer")]
+
+        public int? ShoferId { get; set; }
+        public Shofer? Shofer { get; set; }
         public DateTime CreatedDate { get; set; } = DateTime.Now;
         public DateTime UpdatedDate { get; set; } = DateTime.Now;
 

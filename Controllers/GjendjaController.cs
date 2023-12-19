@@ -45,7 +45,7 @@ namespace BioLab.Controllers
             //             )
             //     .FirstOrDefault();
 
-            ViewBag.Shofers = _context.ZbritShtoGjendjas.Include(e=>e.Currency).OrderBy(e=>e.CreatedDate).ToList();
+            ViewBag.Shofers = _context.ZbritShtoGjendjas.Include(e=>e.Currency).Include(m=>m.Shofer).Include(m => m.PikaShkarkimi).OrderBy(e=>e.CreatedDate).ToList();
 
             var Currencys = _context.Currencys.ToList();
             List<RrugaFitime> rrugaFitime = new List<RrugaFitime>();
@@ -167,6 +167,54 @@ namespace BioLab.Controllers
                 ViewBag.numberNames = numberNames;
             }
 
+            List<SelectListItem> ShoferIdNames = new List<SelectListItem>();
+            var AllShofer2 = _context.Shofers.ToList();
+
+            ShoferIdNames.Add(new SelectListItem
+            {
+                Text = "zgjidh",
+                Value = "-1",
+                Selected = true,
+            });
+            foreach (var Shofer2 in AllShofer2)
+            {
+                ShoferIdNames.Add(new SelectListItem
+                {
+                    Text = Shofer2.Emri,
+                    Value = Shofer2.ShoferId.ToString() ,
+                });
+            }
+            ViewBag.ShoferIdNames = ShoferIdNames;
+
+            List<SelectListItem> PikaShkarkimiIdNames = new List<SelectListItem>();
+            var AllPika2 = _context.PikaShkarkimis.ToList();
+
+            PikaShkarkimiIdNames.Add(new SelectListItem
+            {
+                Text = "zgjidh",
+                Value = "-1",
+                Selected = true,
+            });
+            foreach (var pika in AllPika2)
+            {
+                PikaShkarkimiIdNames.Add(new SelectListItem
+                {
+                    Text = pika.Emri,
+                    Value = pika.PikaShkarkimiId.ToString(),
+                });
+            }
+            ViewBag.PikaShkarkimiIdNames = PikaShkarkimiIdNames;
+
+            //var AllPika2 = _context.PikaShkarkimis.ToList();
+            //if (AllPika2 != null)
+            //{
+            //    IDictionary<int, string> PikaShkarkimiIdNames = new Dictionary<int, string>();
+            //    foreach (var pika in AllPika2)
+            //    {
+            //        PikaShkarkimiIdNames.Add(pika.PikaShkarkimiId, pika.Emri);
+            //    }
+            //    ViewBag.PikaShkarkimiIdNames = PikaShkarkimiIdNames;
+            //}
             return View();
         }
 
@@ -174,38 +222,14 @@ namespace BioLab.Controllers
         public IActionResult CreateGjendja(ZbritShtoGjendja marrngaadd)
         {
 
+            if(marrngaadd.Shenime == null) { marrngaadd.Shenime = string.Empty; }
+            if(marrngaadd.ShoferId == -1) { marrngaadd.ShoferId = null; }
+            if(marrngaadd.PikaShkarkimiId == -1) { marrngaadd.PikaShkarkimiId = null; }
 
-            //if(marrngaadd.BlereShiturSelect== "Shitur")
-            //{
-            //    var cmimRef = _context.Naftas
-            //    //.Where(e => e.Litra > 0 && e.Leke > 0)
-            //    .GroupBy(e => e.BlereShiturSelect == "Blere")
-            //    .Select(e =>
-            //    (e.Sum(b => b.Leke) / e.Sum(b => b.Litra))
-            //            )
-            //    .FirstOrDefault();
-
-            //    Nafta nafta = new Nafta
-            //    {
-            //        BlereShiturSelect = "Blere",
-            //        Litra = (0-marrngaadd.Litra),
-            //        Cmimi = cmimRef,
-            //        Leke= 0-(cmimRef* marrngaadd.Litra)
-            //    };
-
-            //    _context.Add(nafta);
-            //    _context.SaveChanges();
-            //}
-
-
-
-            if (ModelState.IsValid)
-            {
                 _context.ZbritShtoGjendjas.Add(marrngaadd);
                 _context.SaveChanges();
                 return RedirectToAction("AllGjendja");
-            }
-            return View("AddGjendja");
+          
         }
         public IActionResult EditGjendja(int id)
         {
@@ -246,7 +270,43 @@ namespace BioLab.Controllers
                 }
                 ViewBag.numberNames = numberNames;
             }
+            List<SelectListItem> ShoferIdNames = new List<SelectListItem>();
+            var AllShofer2 = _context.Shofers.ToList();
 
+            ShoferIdNames.Add(new SelectListItem
+            {
+                Text = "zgjidh",
+                Value = "-1",
+                Selected = true,
+            });
+            foreach (var Shofer2 in AllShofer2)
+            {
+                ShoferIdNames.Add(new SelectListItem
+                {
+                    Text = Shofer2.Emri,
+                    Value = Shofer2.ShoferId.ToString(),
+                });
+            }
+            ViewBag.ShoferIdNames = ShoferIdNames;
+
+            List<SelectListItem> PikaShkarkimiIdNames = new List<SelectListItem>();
+            var AllPika2 = _context.PikaShkarkimis.ToList();
+
+            PikaShkarkimiIdNames.Add(new SelectListItem
+            {
+                Text = "zgjidh",
+                Value = "-1",
+                Selected = true,
+            });
+            foreach (var pika in AllPika2)
+            {
+                PikaShkarkimiIdNames.Add(new SelectListItem
+                {
+                    Text = pika.Emri,
+                    Value = pika.PikaShkarkimiId.ToString(),
+                });
+            }
+            ViewBag.PikaShkarkimiIdNames = PikaShkarkimiIdNames;
 
 
             return View(Editing);
@@ -255,12 +315,13 @@ namespace BioLab.Controllers
         [HttpPost]
         public IActionResult EditedGjendja(int id, ZbritShtoGjendja marrngaadd)
         {
+            if (marrngaadd.Shenime == null) { marrngaadd.Shenime = string.Empty; }
+            if (marrngaadd.ShoferId == -1) { marrngaadd.ShoferId = null; }
+            if (marrngaadd.PikaShkarkimiId == -1) { marrngaadd.PikaShkarkimiId = null; }
 
-            if (ModelState.IsValid)
-            {
 
-                //marrim nga db anzlizen qe duam te bejm edit dhe vendosim vlerat qe marim nga forma
-                ZbritShtoGjendja editing = _context.ZbritShtoGjendjas.FirstOrDefault(p => p.ZbritShtoGjendjaId == id);
+            //marrim nga db anzlizen qe duam te bejm edit dhe vendosim vlerat qe marim nga forma
+            ZbritShtoGjendja editing = _context.ZbritShtoGjendjas.FirstOrDefault(p => p.ZbritShtoGjendjaId == id);
                 // editing.Cmimi = marrngaadd.Cmimi;
                 editing.Shenime = marrngaadd.Shenime;
                 editing.ZbritShtoSelect = marrngaadd.ZbritShtoSelect;
@@ -269,8 +330,7 @@ namespace BioLab.Controllers
 
                 _context.SaveChanges();
                 return RedirectToAction("AllGjendja");
-            }
-            return RedirectToAction("EditGjendja", new { id = id });
+           
         }
         public IActionResult FshiGjendja(int id)
         {

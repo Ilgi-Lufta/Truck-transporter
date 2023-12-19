@@ -4,15 +4,15 @@
 <partial name="NavPartial" />
 <div class="mt-5 container">
 
-    <form asp-controller="Raport" asp-action="LLogaria">
+  @*  <form asp-controller="Raport" asp-action="LLogaria">
         <p>
 
             Fillo <input class="ms-1" type="date" name="searchFirstTime" />
             Perfundo <input class="ms-1" type="date" name="searchSecondTime" />
             <input class="btn btn-primary" type="submit" value="Kerko" />
         </p>
-    </form>
-    <a class="btn btn-primary mb-1" asp-action="AddGjendja" asp-controller="Gjendja">Ndrysho gjendjen</a>
+    </form>*@
+    @*<a class="btn btn-primary mb-1" asp-action="AddGjendja" asp-controller="Gjendja">Ndrysho gjendjen</a>*@
     @*<h1>@ViewBag.RefPrice</h1>*@
 @*    <div class="row">
         @foreach (var item in ViewBag.Totali)
@@ -30,8 +30,8 @@
                         
                         @*    <th scope="col">cmimi Blere-Shitur</th>*@
                        
-                        <th scope="col">Pagesa</th>
-                        <th scope="col">Pagesa Reale</th>
+                        <th scope="col">Gjendja</th>
+                        <th scope="col">GJendja Reale</th>
                         <th scope="col">Monedha</th>
 
                     </tr>

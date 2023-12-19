@@ -64,6 +64,8 @@
                         <th scope="col">Shtim</th>
                         <th scope="col">Zbritje</th>
                         <th scope="col">Monedha</th>
+                        <th scope="col">Shofer</th>
+                        <th scope="col">Pika Shkarkimit</th>
                         <th scope="col">veprime</th>
 
                     </tr>
@@ -86,6 +88,26 @@
 
 
                             <td scope="row"> @item.Currency.CurrencyUnit</td>
+                            @if (@item.Shofer != null)
+                            {
+
+                                <td scope="row"> @item.Shofer.Emri</td>
+                            }
+                            else
+                            {
+                                <td scope="row"> </td>
+
+                            }
+                            @if (@item.PikaShkarkimi != null)
+                            {
+
+                                <td scope="row"> @item.PikaShkarkimi.Emri</td>
+                            }
+                            else
+                            {
+                                <td scope="row"> </td>
+
+                            }
 
                             <td scope="row">
                                 <a class="btn btn-primary" asp-action="EditGjendja" asp-controller="Gjendja" asp-route-id="@item.ZbritShtoGjendjaId "> Edito</a>
