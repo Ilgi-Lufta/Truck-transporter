@@ -1,6 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+@using static  BioLab.Controllers.GjendjaController.TIPI
 <partial name="NavPartial" />
 <div class="mt-5 container">
 
@@ -60,6 +61,7 @@
                         <th scope="col">Data krijimit</th>
                         <th scope="col">Pershkrim</th>
                         <th scope="col">Shenime</th>
+                        <th scope="col">Pagesa Kryer</th>
                         <th scope="col">shpenzim</th>
                         <th scope="col">Xhiro</th>
                         <th scope="col">Monedha</th>
@@ -73,6 +75,54 @@
                             <td scope="row"> @item.CreatedDate</td>
                             <td scope="row"> @item.Pershkrim</td>
                             <td scope="row"> @item.Shenime</td>
+                            @if (item.PagesaKryer)
+                            {
+                                <td scope="row">
+                                    <div>
+                                        <h2>
+                                            <i style="color:green;width:40px;height:40px;" class="bi bi-check-circle-fill">
+
+                                            </i>
+                                            @if (item.Tipi == BioLab.Controllers.GjendjaController.TIPI.RRUGE)
+                                            {
+                                                <a class="btn btn-primary" asp-action="EditRrugaJoModel" asp-controller="Rruga" asp-route-id="@item.RrugaNaftaID">Ndrysho rrugen</a>
+                                            }
+                                            @if (item.Tipi == BioLab.Controllers.GjendjaController.TIPI.NAFTA)
+                                            {
+                                                <a class="btn btn-primary" asp-action="BejPagesen" asp-controller="Nafta" asp-route-id="@item.RrugaNaftaID">Ndrysho naften</a>
+                                            }
+                                            @if (item.Tipi == BioLab.Controllers.GjendjaController.TIPI.NDRYSHIMGJENDJE)
+                                            {
+                                                <a class="btn btn-primary" asp-action="EditGjendja" asp-controller="Gjendja" asp-route-id="@item.RrugaNaftaID">Ndrysho Gjendjen</a>
+                                            }
+                                        </h2>
+                                    </div>
+                                </td>
+                            }
+                            else
+                            {
+                                <td scope="row">
+                                    <div>
+                                        <h2>
+                                            <i style="color:red;width:40px;height:40px;" class="bi bi-exclamation-circle-fill">
+
+                                            </i>
+                                            @if (item.Tipi == BioLab.Controllers.GjendjaController.TIPI.RRUGE)
+                                            {
+                                                <a class="btn btn-primary" asp-action="EditRrugaJoModel" asp-controller="Rruga" asp-route-id="@item.RrugaNaftaID">Ndrysho rrugen</a>
+                                            }
+                                            @if (item.Tipi == BioLab.Controllers.GjendjaController.TIPI.NAFTA)
+                                            {
+                                                <a class="btn btn-primary" asp-action="BejPagesen" asp-controller="Nafta" asp-route-id="@item.RrugaNaftaID">Ndrysho naften</a>
+                                            }
+                                            @if (item.Tipi == BioLab.Controllers.GjendjaController.TIPI.NDRYSHIMGJENDJE)
+                                            {
+                                                <a class="btn btn-primary" asp-action="EditGjendja" asp-controller="Gjendja" asp-route-id="@item.RrugaNaftaID">Ndrysho Gjendjen</a>
+                                            }
+                                        </h2>
+                                    </div>
+                                </td>
+                            }
                             @if (item.Pagesa < 0)
                             {
                             <td scope="row"> @item.Pagesa</td>

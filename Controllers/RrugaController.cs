@@ -432,9 +432,6 @@ namespace BioLab.Controllers
 
             }
 
-            //var rrugafitime = 0;
-            //var gjendja = 0;
-            //var nafta = 0;
 
             var Currencys = _context.Currencys.ToList();
             List<RrugaFitime> rrugaFitime = new List<RrugaFitime>();

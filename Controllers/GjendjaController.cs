@@ -390,7 +390,9 @@ namespace BioLab.Controllers
                             CreatedDate = rruga.CreatedDate,
                             Pershkrim = "Rruga " + rruga.Emri,
                             Currency= fitim.Currency.CurrencyUnit,
-                            Shenime = rruga.shenime
+                            Shenime = rruga.shenime,
+                            PagesaKryer = rruga.PagesaKryer,
+                            RrugaNaftaID = rruga.RrugaId
 
                         };
                         llogaris.Add( llogari );
@@ -418,16 +420,17 @@ namespace BioLab.Controllers
                         Pagesa = (0-gjendja.Pagesa),
                         Tipi = TIPI.NDRYSHIMGJENDJE,
                         CreatedDate = gjendja.CreatedDate,
-                        Pershkrim = "Zbritje nga gjendja",
+                        Pershkrim = "Zbritje gjendje",
                         Currency = gjendja.Currency.CurrencyUnit,
-                        Shenime = gjendja.Shenime
+                        Shenime = gjendja.Shenime,
+                        PagesaKryer = true,
+                        RrugaNaftaID = gjendja.ZbritShtoGjendjaId
 
                     };
                     llogaris.Add(llogari);
                 }
                 else
                 {
-
                     var rrugaFitim = rrugaFitime.FirstOrDefault(e => e.CurrencyId == gjendja.CurrencyId);
                     rrugaFitim.Pagesa = rrugaFitim.Pagesa + gjendja.Pagesa;
                     rrugaFitim.PagesaReale = rrugaFitim.PagesaReale + gjendja.Pagesa;
@@ -436,9 +439,11 @@ namespace BioLab.Controllers
                         Pagesa = gjendja.Pagesa,
                         Tipi = TIPI.NDRYSHIMGJENDJE,
                         CreatedDate = gjendja.CreatedDate,
-                        Pershkrim = "shtim tek gjendja",
+                        Pershkrim = "shtim gjendje",
                         Currency = gjendja.Currency.CurrencyUnit,
-                        Shenime = gjendja.Shenime
+                        Shenime = gjendja.Shenime,
+                        PagesaKryer = true,
+                        RrugaNaftaID = gjendja.ZbritShtoGjendjaId
 
                     };
                     llogaris.Add(llogari);
@@ -466,7 +471,9 @@ namespace BioLab.Controllers
                     CreatedDate = naftaStock.CreatedDate,
                     Pershkrim = "Shtije nafte",
                     Currency = naftaStock.Currency.CurrencyUnit,
-                    Shenime = naftaStock.Shenime
+                    Shenime = naftaStock.Shenime,
+                    PagesaKryer = naftaStock.PagesaKryer,
+                    RrugaNaftaID = naftaStock.NaftaStockId
 
                 };
                 llogaris.Add(llogari);
@@ -494,7 +501,9 @@ namespace BioLab.Controllers
                     CreatedDate = naftaStock.CreatedDate,
                     Pershkrim = "Blerje nafte",
                     Currency = naftaStock.Currency.CurrencyUnit,
-                    Shenime = naftaStock.Shenime
+                    Shenime = naftaStock.Shenime,
+                    PagesaKryer = naftaStock.PagesaKryer,
+                    RrugaNaftaID = naftaStock.NaftaStockId
                 };
                 llogaris.Add(llogari);
             }
@@ -506,17 +515,18 @@ namespace BioLab.Controllers
         {
             public string  Pershkrim { get; set; }
             public decimal  Pagesa { get; set; }
+            public bool  PagesaKryer { get; set; }
             public DateTime CreatedDate { get; set; }
             public TIPI Tipi { get; set; }  
             public string Currency { get; set; }  
-
             public string Shenime { get; set; }
+            public int RrugaNaftaID { get; set; }
         }
         public enum TIPI
         {
-            RRUGE,
-            NAFTA,
-            NDRYSHIMGJENDJE
+            RRUGE =0,
+            NAFTA =1,
+            NDRYSHIMGJENDJE=2
         }
 
 
