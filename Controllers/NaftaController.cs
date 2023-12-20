@@ -167,6 +167,21 @@ namespace BioLab.Controllers
                 ViewBag.numberNames = numberNames;
             }
 
+
+            var naftaBlere2 = _context.NaftaStocks.Include(e => e.Currency)
+            .Where(e => e.BlereShiturSelect == "Blere")
+            .GroupBy(e => e.CurrencyId)
+            .Select(m =>
+            new
+            {
+                Monedha = m.Max(no => no.Currency.CurrencyUnit),
+                Pagesa = m.Sum(p => p.Pagesa),
+                Litra = m.Sum(p => p.Litra),
+                CmimRef = Math.Round((m.Sum(b => b.Pagesa) / m.Sum(b => b.Litra)), 2)
+            }
+            )
+            .ToList();
+            ViewBag.naftaBlere2 = naftaBlere2;
             return View();
         }
 

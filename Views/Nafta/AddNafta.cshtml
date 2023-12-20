@@ -3,6 +3,38 @@
 <div class="mt-5 container">
     <h1 class="text-center mb-5">Shto nje shitje/blerje nafte</h1>
     <div class="row">
+        <div class="col sm-6">
+            <table class="table table-hover table-sm table-info table-bordered  ">
+                <thead>
+                    <tr>
+
+                        @*    <th scope="col">cmimi Blere-Shitur</th>*@
+
+                        <th scope="col">Pagesa</th>
+                        <th scope="col">Litra</th>
+                        <th scope="col">CmimRef</th>
+                        <th scope="col">Monedha</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ViewBag.naftaBlere2)
+                    {
+                        <tr>
+                            <td scope="row"> @item.Pagesa</td>
+                            <td scope="row"> @item.Litra</td>
+                            <td scope="row"> @item.CmimRef</td>
+                            <td scope="row"> @item.Monedha</td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
         <form asp-controller="Nafta" asp-action="CreateNafta" method="post">
             <div class="col-sm-6">
                 <div class="form-group">
