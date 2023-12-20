@@ -1593,53 +1593,6 @@ namespace BioLab.Controllers
                     }
                 }
             }
-            // marrngaadd.ShoferitRrugaVM = shofs;
-
-
-            //List<ShoferitRrugaVM> shofs = new List<ShoferitRrugaVM>();
-            //List<PagesaShoferitVM> shofpag = new List<PagesaShoferitVM>();
-
-            //foreach (var shof in marrngaadd.ShoferitRrugaVM)
-            //{
-            //    foreach (var item in shof.pagesaShoferitVM)
-            //    {
-
-            //        if (item.CurrencyId != 0)
-            //        {
-            //            shofpag.Add(item);
-            //        }
-
-            //    }
-            //    shof.pagesaShoferitVM = shofpag;
-            //    shof.ShoferId = shof.ShoferId;
-            //    shofs.Add(shof);
-            //    shofpag = new List<PagesaShoferitVM>();
-            //}
-            //marrngaadd.ShoferitRrugaVM = shofs;
-
-            //List<PikaRruga> shofs = new List<ShoferitRrugaVM>();
-            //List<PagesaShoferitVM> shofpag = new List<PagesaShoferitVM>();
-
-            //foreach (var shof in marrngaadd.ShoferitRrugaVM)
-            //{
-            //    foreach (var item in shof.pagesaShoferitVM)
-            //    {
-
-            //        if (item.CurrencyId != 0)
-            //        {
-            //            shofpag.Add(item);
-            //        }
-
-            //    }
-            //    shof.pagesaShoferitVM = shofpag;
-            //    shof.ShoferId = shof.ShoferId;
-            //    shofs.Add(shof);
-            //    shofpag = new List<PagesaShoferitVM>();
-            //}
-            //marrngaadd.PagesaDoganaVM = pagesaDoganaVM;
-
-
-
             Rruga editing = _context.Rrugas
                 .Include(e => e.PagesaDoganas)
                 .Include(e => e.ShoferRrugas).ThenInclude(e => e.PagesaShoferits)
@@ -1668,21 +1621,6 @@ namespace BioLab.Controllers
             _context.SaveChanges();
             editing.PagesaDoganaVM = marrngaadd.PagesaDoganaVM;
 
-            //Pagesa dogana RRUGA
-            //List<PagesaDoganaVM> pagesaDoganas = new List<PagesaDoganaVM>();
-            //foreach (var PagesaDoganaVM in marrngaadd.PagesaDoganaVM)
-            //{
-            //    PagesaDogana PagesaShoferit = new PagesaDogana()
-            //    {
-            //        CurrencyId = PagesaDoganaVM.CurrencyId,
-            //        Pagesa = PagesaDoganaVM.Pagesa,
-            //        RrugaId = id,
-            //        PagesaKryer = PagesaDoganaVM.PagesaKryer,
-            //        ShpenzimXhiro = true
-            //    };
-            //    pagesaDoganas.Add(PagesaShoferit);
-            //}
-            //editing.PagesaDoganas = pagesaDoganas;
             
 
             // remove shofer
@@ -1705,35 +1643,6 @@ namespace BioLab.Controllers
             editing.ShoferitRrugaVM = marrngaadd.ShoferitRrugaVM;
 
 
-            ////Shofer RRUGA
-            //foreach (var ShoferitRrugaVM in marrngaadd.ShoferitRrugaVM)
-            //{
-
-            //    ShoferRruga shoferRruga = new ShoferRruga()
-            //    {
-            //        ShoferId = ShoferitRrugaVM.ShoferId,
-            //        RrugaId = id,
-            //    };
-
-            //    _context.Add(shoferRruga);
-            //    _context.SaveChanges();
-            //    foreach (var PagesaShoferitVM in ShoferitRrugaVM.pagesaShoferitVM)
-            //    {
-            //        PagesaShoferit pagesaShoferit = new PagesaShoferit()
-            //        {
-            //            CurrencyId = PagesaShoferitVM.CurrencyId,
-            //            ShoferRrugaId = shoferRruga.ShoferRrugaId,
-            //            Pagesa = PagesaShoferitVM.Pagesa,
-            //            PagesaKryer = PagesaShoferitVM.PagesaKryer,
-            //            ShpenzimXhiro = true,
-            //        };
-            //        _context.Add(pagesaShoferit);
-            //        _context.SaveChanges();
-            //    }
-            //}
-
-            ////
-            ////
             ///
             ////// pika rruga
             List<int> PikaRrugaId = new List<int>();
@@ -1863,20 +1772,7 @@ namespace BioLab.Controllers
             }
             editing.Nafta = marrngaadd.Nafta;
 
-            ///naftasStocks
-            ///
-            //List<int> NaftaStockId = new List<int>();
-            //foreach (var item in editing.Nafta)
-            //{
-            //    var pagpikashakrkimi = _context.NaftaStocks.FirstOrDefault(e => e.NaftaStockId == item.NaftaStockId).NaftaStockId;
-            //    PikaRrugaId.Add(pagpikashakrkimi);
-            //}
-            //foreach (var item in NaftaStockId)
-            //{
-            //    var pagpikashakrkimi = _context.NaftaStocks.FirstOrDefault(e => e.NaftaId == item);
-
-            //    _context.Naftas.Remove(pagpikashakrkimi);
-            //}
+           
             var naftaStocksList = _context.NaftaStocks.Where(e => e.RrugaId == editing.RrugaId).ToList();
 
             foreach (var item in naftaStocksList)

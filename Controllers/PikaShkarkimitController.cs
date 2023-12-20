@@ -196,7 +196,7 @@ namespace BioLab.Controllers
                 rrugaFitime.Add(rrugaFitim);
             }
 
-            var pikaRrugas = _context.PikaRrugas.Include(e => e.PikaShkarkimi).Include(e => e.Rruga).Include(e => e.PikaRrugaPagesa).ThenInclude(e => e.Currency)
+            var pikaRrugas = _context.PikaRrugas.Include(e => e.PikaShkarkimi).Include(e => e.Rruga).Where(e => e.Rruga.Model == false).Include(e => e.PikaRrugaPagesa).ThenInclude(e => e.Currency)
                 .Where(m => searchFirstTime != DateTime.MinValue ? m.CreatedDate > searchFirstTime : true)
                 .Where(m => searchSecondTime != DateTime.MinValue ? m.CreatedDate < searchSecondTime : true)
                 .Where(m =>  searchString != null ? m.PikaShkarkimi.Emri.Contains(searchString) : true)
@@ -222,7 +222,7 @@ namespace BioLab.Controllers
                             Pagesa = fitim.Pagesa,
                             Tipi = TIPI.RRUGE,
                             CreatedDate = rruga.CreatedDate,
-                            Pershkrim = "Fitime " + rruga.PikaShkarkimi?.Emri + " Nga Rruga " + rruga.Rruga.Emri ,
+                            Pershkrim = "Pika " + rruga.PikaShkarkimi?.Emri + ", Rruga " + rruga.Rruga.Emri ,
                             Currency = fitim.Currency.CurrencyUnit,
                             Shenime = rruga.Rruga.shenime,
                             PagesaKryer = fitim.PagesaKryer
