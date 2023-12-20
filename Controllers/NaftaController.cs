@@ -36,24 +36,6 @@ namespace BioLab.Controllers
                 ViewBag.Shofers = shofers;
             }
 
-            //var naftaShitur = _context.NaftaStocks.Where(b => b.BlereShiturSelect == "Blere")
-            //        .Where(m => searchFirstTime != DateTime.MinValue ? m.CreatedDate > searchFirstTime : true)
-            //        .Where(m => searchSecondTime != DateTime.MinValue ? m.CreatedDate < searchSecondTime : true)
-            //        .ToList();
-
-            //var naftaBlere = _context.NaftaStocks.Where(b => b.BlereShiturSelect == "Shitur")
-            //        .Where(m => searchFirstTime != DateTime.MinValue ? m.CreatedDate > searchFirstTime : true)
-            //        .Where(m => searchSecondTime != DateTime.MinValue ? m.CreatedDate < searchSecondTime : true)
-            //        .ToList();
-
-            //ViewBag.RefPrice = _context.Naftas
-            //     //.Where(e => e.Litra > 0 && e.Leke > 0)
-            //     .GroupBy(e => e.BlereShiturSelect == "Blere")
-            //     .Select(e =>
-            //     (e.Sum(b => b.Leke) / e.Sum(b => b.Litra))
-            //             )
-            //     .FirstOrDefault();
-
             var Currencys = _context.Currencys.ToList();
 
             List<NaftaStock> naftaStock = new List<NaftaStock>();
@@ -81,25 +63,10 @@ namespace BioLab.Controllers
                 naftaStock.Add(rrugaFitim);
                 naftaStock.Add(rrugaFitim2);
             }
-
-
-
-            //List<NaftaStock> naftaStocks = new List<NaftaStock>();
-
-            //foreach (var item in Currencys)
-            //{
-            //    NaftaStock naftaStock = new NaftaStock()
-            //    {
-            //        CurrencyId = item.CurrencyId,
-            //        Pagesa = 0,
-            //        BlereShiturSelect= "Blere"
-            //    };
-            //    naftaStocks.Add(naftaStock);
-            //}
+          
             var naftaBlere2 = _context.NaftaStocks.Include(e=>e.Currency)
                 .Where(e => e.BlereShiturSelect == "Blere")
-               // .Where(m => searchFirstTime != DateTime.MinValue ? m.CreatedDate > searchFirstTime : true)
-               // .Where(m => searchSecondTime != DateTime.MinValue ? m.CreatedDate < searchSecondTime : true)
+      
                 .GroupBy(e => e.CurrencyId)
                 .Select(m =>
                 new
@@ -135,12 +102,6 @@ namespace BioLab.Controllers
 
             foreach (var item in Currencys)
             {
-
-                //var naftablereperiudh = _context.NaftaStocks.Where(e => e.BlereShiturSelect == "Blere" && e.Litra > 0 && e.CurrencyId==item.CurrencyId)
-                // .Where(m => searchFirstTime != DateTime.MinValue ? m.CreatedDate > searchFirstTime : true)
-                // .Where(m => searchSecondTime != DateTime.MinValue ? m.CreatedDate < searchSecondTime : true)
-                // .Sum(e => e.Litra);
-
                var naftablere= naftaStock.FirstOrDefault(e => e.BlereShiturSelect == "Blere" && e.CurrencyId == item.CurrencyId);
 
                var nBlere =Blere.FirstOrDefault(e => e.Monedha == item.CurrencyUnit);
@@ -150,11 +111,6 @@ namespace BioLab.Controllers
                 naftablere.Pagesa = nBlere.Pagesa;
                 }
 
-                //   var naftaShiturperiudh = _context.NaftaStocks.Where(e => e.BlereShiturSelect == "Shitur" && e.CurrencyId == item.CurrencyId)
-                //.Where(m => searchFirstTime != DateTime.MinValue ? m.CreatedDate > searchFirstTime : true)
-                //.Where(m => searchSecondTime != DateTime.MinValue ? m.CreatedDate < searchSecondTime : true)
-                //.Sum(e => e.Litra);
-
                 var naftaShitur = naftaStock.FirstOrDefault(e => e.BlereShiturSelect == "Shitur" && e.CurrencyId == item.CurrencyId);
 
                var nShitur = Shitur.FirstOrDefault(e => e.Monedha == item.CurrencyUnit);
@@ -163,11 +119,7 @@ namespace BioLab.Controllers
                 naftaShitur.Litra = nShitur.Litra;
                 naftablere.Pagesa = nShitur.Pagesa;
                 }
-                //naftablere.Pagesa = naftablereperiudh;
-
             }
-        
-
 
             ViewBag.Totali= naftaBlere2;
             ViewBag.naftaPeriudh= naftaStock;
@@ -401,9 +353,10 @@ namespace BioLab.Controllers
             if(marrngaadd.Shenime!= null)
             {
                 EditingBlereNegativ.Shenime = marrngaadd.Shenime;
+                EditingBlereNegativ.UpdatedDate = DateTime.Now;
                 _context.SaveChanges();
             }
-         
+
 
             return RedirectToAction("AllNafta");
 
@@ -416,7 +369,7 @@ namespace BioLab.Controllers
 
             if(naftaPerPagese!=null)
             {
-                if(naftaPerPagese.BlereShiturSelect!= null)
+                if(naftaPerPagese.BlereShiturId != null)
                 {
 
                  var NaftaBlere = _context.NaftaStocks

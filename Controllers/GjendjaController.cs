@@ -388,7 +388,7 @@ namespace BioLab.Controllers
                             Pagesa = fitim.Pagesa,
                             Tipi = TIPI.RRUGE,
                             CreatedDate = rruga.CreatedDate,
-                            Pershkrim = "Fitime Nga Rruga " + rruga.Emri,
+                            Pershkrim = "Rruga " + rruga.Emri,
                             Currency= fitim.Currency.CurrencyUnit,
                             Shenime = rruga.shenime
 

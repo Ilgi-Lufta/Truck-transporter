@@ -94,6 +94,7 @@ namespace BioLab.Controllers
                 //marrim nga db anzlizen qe duam te bejm edit dhe vendosim vlerat qe marim nga forma
                 Shofer editing = _context.Shofers.FirstOrDefault(p => p.ShoferId == id);
                 editing.Emri = marrngaadd.Emri;
+                editing.UpdatedDate = DateTime.Now;
               //  editing.Pagesa = marrngaadd.Pagesa;
                
                 _context.SaveChanges();

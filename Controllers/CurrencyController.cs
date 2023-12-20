@@ -78,6 +78,7 @@ namespace BioLab.Controllers
                 //marrim nga db anzlizen qe duam te bejm edit dhe vendosim vlerat qe marim nga forma
                 Currency editing = _context.Currencys.FirstOrDefault(p => p.CurrencyId == id);
                 editing.CurrencyUnit = marrngaadd.CurrencyUnit;
+                editing.UpdatedDate = marrngaadd.UpdatedDate;
 
                
                 _context.SaveChanges();

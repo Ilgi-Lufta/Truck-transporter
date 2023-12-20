@@ -151,7 +151,9 @@ namespace BioLab.Controllers
                         CurrencyId = PagesaPikaShkarkimitsVM.CurrencyId,
                         Pagesa = PagesaPikaShkarkimitsVM.Pagesa,
                         PagesaKryer = PagesaPikaShkarkimitsVM.PagesaKryer,
-                        PikaShkarkimiId = id
+                        PikaShkarkimiId = id,
+                        CreatedDate = editing.CreatedDate,
+                        UpdatedDate = DateTime.Now
                     };
                     // marrngaadd.PagesaPikaShkarkimits.Add(PagesaPikaShkarkimit);
                     _context.Add(PagesaPikaShkarkimit);

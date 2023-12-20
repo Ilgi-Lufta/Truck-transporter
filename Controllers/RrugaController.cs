@@ -267,6 +267,7 @@ namespace BioLab.Controllers
         [HttpPost]
         public IActionResult EditedRruga(int id, Rruga marrngaadd)
         {
+            marrngaadd.ShoferitRrugaVM = marrngaadd.ShoferitRrugaVM.Where(e => e.ShoferId != 0).ToList();
             foreach (var shof in marrngaadd.ShoferitRrugaVM)
             {
                 for (var item = shof.pagesaShoferitVM.Count - 1; item >= 0; item--)
@@ -369,7 +370,23 @@ namespace BioLab.Controllers
                     }
                 }
 
+                editing.UpdatedDate = DateTime.Now;
 
+                foreach (var item in editing.PagesaDoganas)
+                {
+                    item.CreatedDate = editing.CreatedDate;
+                    item.UpdatedDate = DateTime.Now;
+                }
+                foreach (var item in editing.ShoferRrugas)
+                {
+                    item.CreatedDate = editing.CreatedDate;
+                    item.UpdatedDate = DateTime.Now;
+                    foreach (var item2 in item.PagesaShoferits)
+                    {
+                        item2.CreatedDate = editing.CreatedDate;
+                        item.UpdatedDate = DateTime.Now;
+                    }
+                }
 
 
 
@@ -2352,6 +2369,59 @@ namespace BioLab.Controllers
 
             editing.RrugaFitimes = rrugaFitime;
             editing.PagesaKryer = PagesaKryer;
+            editing.UpdatedDate = DateTime.Now;
+
+            foreach (var item in editing.PagesaDoganas)
+            {
+                item.CreatedDate = editing.CreatedDate;
+                item.UpdatedDate = DateTime.Now;
+            }
+            foreach (var item in editing.ShoferRrugas)
+            {
+                item.CreatedDate = editing.CreatedDate;
+                item.UpdatedDate = DateTime.Now;
+                foreach (var item2 in item.PagesaShoferits)
+                {
+                    item2.CreatedDate = editing.CreatedDate;
+                    item.UpdatedDate = DateTime.Now;
+                }
+            }
+            foreach (var item in editing.PikaRrugas)
+            {
+                item.CreatedDate = editing.CreatedDate;
+                item.UpdatedDate = DateTime.Now;
+                foreach (var item2 in item.PikaRrugaPagesa)
+                {
+                    item2.CreatedDate = editing.CreatedDate;
+                    item.UpdatedDate = DateTime.Now;
+                }
+            }
+            foreach (var item in editing.RrugaFitimeEkstras)
+            {
+                item.CreatedDate = editing.CreatedDate;
+                item.UpdatedDate = DateTime.Now;
+            }
+            foreach (var item in editing.RrugaShpenzimeEkstras)
+            {
+                item.CreatedDate = editing.CreatedDate;
+                item.UpdatedDate = DateTime.Now;
+            }
+            foreach (var item in editing.RrugaFitimes)
+            {
+                item.CreatedDate = editing.CreatedDate;
+                item.UpdatedDate = DateTime.Now;
+            }
+            foreach (var item in editing.Nafta)
+            {
+                item.CreatedDate = editing.CreatedDate;
+                item.UpdatedDate = DateTime.Now;
+            }
+            var naftaStocksToUpdateTime = _context.NaftaStocks.Where(e=>e.RrugaId == editing.RrugaId).ToList();
+            foreach (var item in naftaStocksToUpdateTime)
+            {
+                item.CreatedDate = editing.CreatedDate;
+                item.UpdatedDate = DateTime.Now;
+            }
             _context.SaveChanges();
             return RedirectToAction("AllRrugaJoModel");
 
