@@ -161,9 +161,8 @@ namespace BioLab.Controllers
                             Pershkrim = "Shoferi " + rruga.Shofer?.Emri + ", Rruga " + rruga.Rruga?.Emri,
                             Currency = fitim.Currency.CurrencyUnit,
                              Shenime = rruga.Rruga.shenime,
-                            PagesaKryer = fitim.PagesaKryer
-
-
+                            PagesaKryer = fitim.PagesaKryer,
+                            RrugaNaftaID = rruga.RrugaId
                         };
                         llogaris.Add(llogari);
                     }
@@ -186,12 +185,14 @@ namespace BioLab.Controllers
                 Llogari llogari = new Llogari()
                 {
                     Pagesa = fitim.Pagesa,
-                    Tipi = TIPI.RRUGE,
+                    Tipi = TIPI.NDRYSHIMGJENDJE,
                     CreatedDate = fitim.CreatedDate,
                     Pershkrim = "ndryshim gjendje " + fitim.Shofer?.Emri,
                     Currency = fitim.Currency.CurrencyUnit,
                      Shenime = fitim.Shenime,
-                    PagesaKryer = true
+                    PagesaKryer = true,
+                    RrugaNaftaID = fitim.ZbritShtoGjendjaId
+
 
                 };
                 llogaris.Add(llogari);
@@ -213,6 +214,8 @@ namespace BioLab.Controllers
             public string Currency { get; set; }
 
             public string Shenime { get; set; }
+            public int RrugaNaftaID { get; set; }
+
         }
         public enum TIPI
         {
