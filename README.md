@@ -1,28 +1,60 @@
-Ky eshte nje program per nje sistem laboratori qe ben ruajtjen te dhenave te pacinteve dhe rezulatateve te analizave te kryera nga to .Cdo laborator behet sign up dhe mund te krijoj analiza mund te krijoj modele te gatcme per plotesimin e rezultaveve te analizave dhe te ruaj te dhenat per secilin pacient 
+Pasqyra e llogarise shfaq te gjitha hyrje daljet ne llogari ku perfshihen rruget nafta dhe gjendja
 
-Nje flete analize mund ti shtohet dhe hiqet dinamikisht cdo analize qe ekziston ne listen e analizave.
+Jepet mundesia e filtirimit me date
 
-Nje model flete analize mund te perdoret i gatcem nga tekniku i laboratorit me mundesine e shtimit te analizave te tjera ne fleten e e analizes se printuar.
+rruga mer si llogaritje fitimiet e rruges ku perfshihen 
 
-Cdo Laborator permban te dhenat per pacintet e vet dhe rezulatatet e analizave mund te shikohen online nga cdo pacient
+-tipi blerja e naftes qe shtohet si pjese e naftes stock
+-tipi nafte ku nuk llogaritet si shpenzim bleja e naftes e shtuar nga rruga  pasi kjo llogaritet si  shpenzim i vet rruges 
+-tipi ndryshim gjendje  ku llogatritet shtimi ose  ose  ose zbritja nga gjenjda
 
-Tekniku i laboratorit mund te kerkoje pacintet per te shikuar te gjitha rezulatet e testit te analizave te kryera nga nje pacient
+nafta dhe gjendja 
 
-Tekniku i laboratorit mund te kerkoje analizat e kryera duke perzgjedhur perjudhen kohore midis dy datave fikse
+-ketu shfaqet gjendja akutale dhe sasia e naftesa akuale 
 
-Ky program ruan pagesat per secilin test dhe jep mundesine e nxjerrjes se statistikave ne lidhje me fitimet ne kohe te percaktuara
+shofer raport 
 
-Ky program ka nje faqe webi informuese per laboartorin perkates ku cdo vizitor mund te le nje mesazh per laboratorin perkates ,ky mesazh i shfaqet teknikut te laboaratorit
+-jepet mundesia e filtrimit me emer shoferi dhe gjithashtu me kerkim sipas dtave
+-ketu jepert nje rpoport ne lidhje me pagesat te cilat jane te lidhura me  shoferin 
 
-### Permiresime
+pika raport 
 
-Ka ende vend per permiresimi si per shembul duke  krijuar nje mundesi per te lene takime me orare fikse nga pacintet dhe shafqur oraret e zena nga pacinte te tjere
+-jepet mundesia e filtrimit me emer pike dhe gjithashtu me kerkim sipas dttave
+-ketu jepert nje rapoport ne lidhje me pagesat te cilat jane te lidhura me  Piken
 
-Nje liste me kontrollet e e anlizave qe ben nje laborator mund ti degohet automatikisht nje pacinti i cili shton emailin e tij ne faqen e webit
+gjendja 
 
-Perdorimi i AJAX
+- filtrim me data
+- ketu shtohet gjendja
+- shfaqen ndryshimet te bera ne lidhje me gjendjen 
 
-Nje dezajn me bashkekohor per te gjitha view
+rruga 
+
+shtohet si rrugeme fushat
+ shoferin 
+ pagesen e doganes
+ litrat e shpenzuara per kte rruge
+
+me pas kjo rruge mund te perdoret 
+duke shtuar
+-piken e shkarkimit
+-naften e blere
+-shpenzim dhe xhiro ekstra
+
+Pika
+
+- Raport ne lidhje me fitimet
+- filter me date dhe PIke
+
+shoferi
+
+- Raport ne lidhje me fitimet
+- filter me date dhe shofer
+
+Nafta
+
+- Raport ne lidhje me fitimet
+- filter me date 
 
 ### Tekonologjite e perdorura
 
@@ -30,10 +62,5 @@ Nje dezajn me bashkekohor per te gjitha view
 - SQL
 - CSS/HTML
 - Bootstrap
+- AJAX
 
-
-
-to do
-shtimi monedhes per cdo pagese/shpenzim
-implemetimi i shtimit ose zbritjes se gjendjes
-implementimi i query per llogaritjen e gjendjes
