@@ -1,7 +1,33 @@
 @model ZbritShtoGjendja
 <partial name="NavPartial"/>
 <div class="mt-5 container">
+    <div class="row">
+        <div class="col sm-6">
+            <table class="table table-hover table-sm table-info table-bordered  ">
+                <thead>
+                    <tr>
+                        <th scope="col">Gjendja</th>
+                        <th scope="col">GJendja Reale</th>
+                        <th scope="col">Monedha</th>
 
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ViewBag.Totali)
+                    {
+                        <tr>
+                            <td scope="row"> @item.Pagesa</td>
+                            <td scope="row"> @item.PagesaReale</td>
+                            <td scope="row"> @item.Currency.CurrencyUnit</td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div>
+            </div>
+        </div>
+    </div>
 <div class="row">
         <form asp-controller="Gjendja" asp-action="EditedGjendja" asp-route-id="@ViewBag.id" method="post">
     <div class="col-sm-6">

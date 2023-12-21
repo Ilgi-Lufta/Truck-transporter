@@ -215,6 +215,149 @@ namespace BioLab.Controllers
             //    }
             //    ViewBag.PikaShkarkimiIdNames = PikaShkarkimiIdNames;
             //}
+
+
+            var Currencys = _context.Currencys.ToList();
+            List<RrugaFitime> rrugaFitime = new List<RrugaFitime>();
+            List<Llogari> llogaris = new List<Llogari>();
+
+            foreach (var item in Currencys)
+            {
+                var Currency = _context.Currencys.FirstOrDefault(e => e.CurrencyId == item.CurrencyId);
+                RrugaFitime rrugaFitim = new RrugaFitime()
+                {
+                    CurrencyId = item.CurrencyId,
+                    Currency = Currency,
+                    Pagesa = 0
+                };
+                rrugaFitime.Add(rrugaFitim);
+            }
+
+            // rruga
+            var rrugas = _context.Rrugas
+                .Include(e => e.ShoferRrugas).ThenInclude(e => e.Shofer)
+                .Include(e => e.PikaRrugas).ThenInclude(e => e.PikaShkarkimi)
+                .Include(e => e.RrugaFitimes).ThenInclude(e => e.Currency)
+                .Where(e => e.Model == false)
+                .ToList();
+
+            foreach (var rruga in rrugas)
+            {
+                if (rruga.RrugaFitimes.Count > 0)
+                {
+                    foreach (var fitim in rruga.RrugaFitimes)
+                    {
+                        if (fitim.Pagesa == 0) continue;
+                        var rrugaFitim = rrugaFitime.FirstOrDefault(e => e.CurrencyId == fitim.CurrencyId);
+                        rrugaFitim.Pagesa = rrugaFitim.Pagesa + fitim.Pagesa;
+                        rrugaFitim.PagesaReale = rrugaFitim.PagesaReale + fitim.PagesaReale;
+
+                        Llogari llogari = new Llogari()
+                        {
+                            Pagesa = fitim.Pagesa,
+                            Tipi = TIPI.RRUGE,
+                            CreatedDate = rruga.CreatedDate,
+                            Pershkrim = "Fitime Nga Rruga " + rruga.Emri,
+                            Currency = fitim.Currency.CurrencyUnit
+                        };
+                        llogaris.Add(llogari);
+                    }
+                }
+            }
+
+            //gjendja
+            var gjendjas = _context.ZbritShtoGjendjas.Include(e => e.Currency)
+                .ToList();
+
+            foreach (var gjendja in gjendjas)
+            {
+                if (gjendja.Pagesa == 0) continue;
+                if (gjendja.ZbritShtoSelect == "Zbrit")
+                {
+                    var rrugaFitim = rrugaFitime.FirstOrDefault(e => e.CurrencyId == gjendja.CurrencyId);
+                    rrugaFitim.Pagesa = rrugaFitim.Pagesa - gjendja.Pagesa;
+                    rrugaFitim.PagesaReale = rrugaFitim.PagesaReale - gjendja.Pagesa;
+
+                    Llogari llogari = new Llogari()
+                    {
+                        Pagesa = (0 - gjendja.Pagesa),
+                        Tipi = TIPI.NDRYSHIMGJENDJE,
+                        CreatedDate = gjendja.CreatedDate,
+                        Pershkrim = "Zbritje nga gjendja",
+                        Currency = gjendja.Currency.CurrencyUnit
+                    };
+                    llogaris.Add(llogari);
+                }
+                else
+                {
+
+                    var rrugaFitim = rrugaFitime.FirstOrDefault(e => e.CurrencyId == gjendja.CurrencyId);
+                    rrugaFitim.Pagesa = rrugaFitim.Pagesa + gjendja.Pagesa;
+                    rrugaFitim.PagesaReale = rrugaFitim.PagesaReale + gjendja.Pagesa;
+                    Llogari llogari = new Llogari()
+                    {
+                        Pagesa = gjendja.Pagesa,
+                        Tipi = TIPI.NDRYSHIMGJENDJE,
+                        CreatedDate = gjendja.CreatedDate,
+                        Pershkrim = "shtim tek gjendja",
+                        Currency = gjendja.Currency.CurrencyUnit
+
+                    };
+                    llogaris.Add(llogari);
+                }
+            }
+
+            //nafta
+            var naftaStocksShitur = _context.NaftaStocks.Include(e => e.Currency)
+                .Where(e => e.BlereShiturSelect == "Shitur" && e.RrugaId == null)
+                .ToList();
+            foreach (var nafta2 in naftaStocksShitur)
+            {
+                var rrugaFitim = rrugaFitime.FirstOrDefault(e => e.CurrencyId == nafta2.CurrencyId);
+                rrugaFitim.Pagesa = rrugaFitim.Pagesa + nafta2.Pagesa;
+                if (nafta2.PagesaKryer)
+                {
+                    rrugaFitim.PagesaReale = rrugaFitim.PagesaReale + nafta2.Pagesa;
+                }
+                Llogari llogari = new Llogari()
+                {
+                    Pagesa = nafta2.Pagesa,
+                    Tipi = TIPI.NAFTA,
+                    CreatedDate = nafta2.CreatedDate,
+                    Pershkrim = "Shtije nafte",
+                    Currency = nafta2.Currency.CurrencyUnit
+
+                };
+                llogaris.Add(llogari);
+
+            }
+
+            var naftaStocksBlere = _context.NaftaStocks.Include(e => e.Currency)
+                .Where(e => e.BlereShiturSelect == "Blere" && e.Pagesa > 0 && e.RrugaId == null)
+                .ToList();
+
+            foreach (var nafta3 in naftaStocksBlere)
+            {
+                var rrugaFitim = rrugaFitime.FirstOrDefault(e => e.CurrencyId == nafta3.CurrencyId);
+                rrugaFitim.Pagesa = rrugaFitim.Pagesa - nafta3.Pagesa;
+                if (nafta3.PagesaKryer)
+                {
+                    rrugaFitim.PagesaReale = rrugaFitim.PagesaReale - nafta3.Pagesa;
+                }
+                Llogari llogari = new Llogari()
+                {
+                    Pagesa = (0 - nafta3.Pagesa),
+                    Tipi = TIPI.NAFTA,
+                    CreatedDate = nafta3.CreatedDate,
+                    Pershkrim = "Blerje nafte",
+                    Currency = nafta3.Currency.CurrencyUnit
+
+                };
+                llogaris.Add(llogari);
+            }
+            ViewBag.Totali = rrugaFitime;
+            ViewBag.Llogari = llogaris.OrderBy(e => e.CreatedDate);
+
             return View();
         }
 
@@ -307,6 +450,146 @@ namespace BioLab.Controllers
                 });
             }
             ViewBag.PikaShkarkimiIdNames = PikaShkarkimiIdNames;
+            var Currencys = _context.Currencys.ToList();
+            List<RrugaFitime> rrugaFitime = new List<RrugaFitime>();
+            List<Llogari> llogaris = new List<Llogari>();
+
+            foreach (var item in Currencys)
+            {
+                var Currency = _context.Currencys.FirstOrDefault(e => e.CurrencyId == item.CurrencyId);
+                RrugaFitime rrugaFitim = new RrugaFitime()
+                {
+                    CurrencyId = item.CurrencyId,
+                    Currency = Currency,
+                    Pagesa = 0
+                };
+                rrugaFitime.Add(rrugaFitim);
+            }
+
+            // rruga
+            var rrugas = _context.Rrugas
+                .Include(e => e.ShoferRrugas).ThenInclude(e => e.Shofer)
+                .Include(e => e.PikaRrugas).ThenInclude(e => e.PikaShkarkimi)
+                .Include(e => e.RrugaFitimes).ThenInclude(e => e.Currency)
+                .Where(e => e.Model == false)
+                .ToList();
+
+            foreach (var rruga in rrugas)
+            {
+                if (rruga.RrugaFitimes.Count > 0)
+                {
+                    foreach (var fitim in rruga.RrugaFitimes)
+                    {
+                        if (fitim.Pagesa == 0) continue;
+                        var rrugaFitim = rrugaFitime.FirstOrDefault(e => e.CurrencyId == fitim.CurrencyId);
+                        rrugaFitim.Pagesa = rrugaFitim.Pagesa + fitim.Pagesa;
+                        rrugaFitim.PagesaReale = rrugaFitim.PagesaReale + fitim.PagesaReale;
+
+                        Llogari llogari = new Llogari()
+                        {
+                            Pagesa = fitim.Pagesa,
+                            Tipi = TIPI.RRUGE,
+                            CreatedDate = rruga.CreatedDate,
+                            Pershkrim = "Fitime Nga Rruga " + rruga.Emri,
+                            Currency = fitim.Currency.CurrencyUnit
+                        };
+                        llogaris.Add(llogari);
+                    }
+                }
+            }
+
+            //gjendja
+            var gjendjas = _context.ZbritShtoGjendjas.Include(e => e.Currency)
+                .ToList();
+
+            foreach (var gjendja in gjendjas)
+            {
+                if (gjendja.Pagesa == 0) continue;
+                if (gjendja.ZbritShtoSelect == "Zbrit")
+                {
+                    var rrugaFitim = rrugaFitime.FirstOrDefault(e => e.CurrencyId == gjendja.CurrencyId);
+                    rrugaFitim.Pagesa = rrugaFitim.Pagesa - gjendja.Pagesa;
+                    rrugaFitim.PagesaReale = rrugaFitim.PagesaReale - gjendja.Pagesa;
+
+                    Llogari llogari = new Llogari()
+                    {
+                        Pagesa = (0 - gjendja.Pagesa),
+                        Tipi = TIPI.NDRYSHIMGJENDJE,
+                        CreatedDate = gjendja.CreatedDate,
+                        Pershkrim = "Zbritje nga gjendja",
+                        Currency = gjendja.Currency.CurrencyUnit
+                    };
+                    llogaris.Add(llogari);
+                }
+                else
+                {
+
+                    var rrugaFitim = rrugaFitime.FirstOrDefault(e => e.CurrencyId == gjendja.CurrencyId);
+                    rrugaFitim.Pagesa = rrugaFitim.Pagesa + gjendja.Pagesa;
+                    rrugaFitim.PagesaReale = rrugaFitim.PagesaReale + gjendja.Pagesa;
+                    Llogari llogari = new Llogari()
+                    {
+                        Pagesa = gjendja.Pagesa,
+                        Tipi = TIPI.NDRYSHIMGJENDJE,
+                        CreatedDate = gjendja.CreatedDate,
+                        Pershkrim = "shtim tek gjendja",
+                        Currency = gjendja.Currency.CurrencyUnit
+
+                    };
+                    llogaris.Add(llogari);
+                }
+            }
+
+            //nafta
+            var naftaStocksShitur = _context.NaftaStocks.Include(e => e.Currency)
+                .Where(e => e.BlereShiturSelect == "Shitur" && e.RrugaId == null)
+                .ToList();
+            foreach (var nafta2 in naftaStocksShitur)
+            {
+                var rrugaFitim = rrugaFitime.FirstOrDefault(e => e.CurrencyId == nafta2.CurrencyId);
+                rrugaFitim.Pagesa = rrugaFitim.Pagesa + nafta2.Pagesa;
+                if (nafta2.PagesaKryer)
+                {
+                    rrugaFitim.PagesaReale = rrugaFitim.PagesaReale + nafta2.Pagesa;
+                }
+                Llogari llogari = new Llogari()
+                {
+                    Pagesa = nafta2.Pagesa,
+                    Tipi = TIPI.NAFTA,
+                    CreatedDate = nafta2.CreatedDate,
+                    Pershkrim = "Shtije nafte",
+                    Currency = nafta2.Currency.CurrencyUnit
+
+                };
+                llogaris.Add(llogari);
+
+            }
+
+            var naftaStocksBlere = _context.NaftaStocks.Include(e => e.Currency)
+                .Where(e => e.BlereShiturSelect == "Blere" && e.Pagesa > 0 && e.RrugaId == null)
+                .ToList();
+
+            foreach (var nafta3 in naftaStocksBlere)
+            {
+                var rrugaFitim = rrugaFitime.FirstOrDefault(e => e.CurrencyId == nafta3.CurrencyId);
+                rrugaFitim.Pagesa = rrugaFitim.Pagesa - nafta3.Pagesa;
+                if (nafta3.PagesaKryer)
+                {
+                    rrugaFitim.PagesaReale = rrugaFitim.PagesaReale - nafta3.Pagesa;
+                }
+                Llogari llogari = new Llogari()
+                {
+                    Pagesa = (0 - nafta3.Pagesa),
+                    Tipi = TIPI.NAFTA,
+                    CreatedDate = nafta3.CreatedDate,
+                    Pershkrim = "Blerje nafte",
+                    Currency = nafta3.Currency.CurrencyUnit
+
+                };
+                llogaris.Add(llogari);
+            }
+            ViewBag.Totali = rrugaFitime;
+            ViewBag.Llogari = llogaris.OrderBy(e => e.CreatedDate);
 
 
             return View(Editing);
