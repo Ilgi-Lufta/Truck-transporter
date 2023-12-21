@@ -462,7 +462,6 @@ namespace BioLab.Controllers
                     rrugaFitim.Pagesa = rrugaFitim.Pagesa - gjendja.Pagesa;
                     if (gjendja.PagesaKryer)
                     {
-
                     rrugaFitim.PagesaReale = rrugaFitim.PagesaReale - gjendja.Pagesa;
                     }
 

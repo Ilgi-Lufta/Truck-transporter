@@ -79,8 +79,10 @@ namespace BioLab.Controllers
                 {
                     var rrugaFitim = rrugaFitime.FirstOrDefault(e => e.CurrencyId == gjendja.CurrencyId);
                     rrugaFitim.Pagesa = rrugaFitim.Pagesa - gjendja.Pagesa;
-                    rrugaFitim.PagesaReale = rrugaFitim.PagesaReale - gjendja.Pagesa;
-
+                    if (gjendja.PagesaKryer)
+                    {
+                        rrugaFitim.PagesaReale = rrugaFitim.PagesaReale - gjendja.Pagesa;
+                    }
                     Llogari llogari = new Llogari()
                     {
                         Pagesa = (0-gjendja.Pagesa),
@@ -96,7 +98,10 @@ namespace BioLab.Controllers
 
                     var rrugaFitim = rrugaFitime.FirstOrDefault(e => e.CurrencyId == gjendja.CurrencyId);
                     rrugaFitim.Pagesa = rrugaFitim.Pagesa + gjendja.Pagesa;
-                    rrugaFitim.PagesaReale = rrugaFitim.PagesaReale + gjendja.Pagesa;
+                    if (gjendja.PagesaKryer)
+                    {
+                        rrugaFitim.PagesaReale = rrugaFitim.PagesaReale + gjendja.Pagesa;
+                    }
                     Llogari llogari = new Llogari()
                     {
                         Pagesa = gjendja.Pagesa,
