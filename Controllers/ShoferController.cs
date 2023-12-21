@@ -1,5 +1,6 @@
 ﻿using BioLab.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
@@ -179,22 +180,48 @@ namespace BioLab.Controllers
             {
                 if (fitim.Pagesa == 0) continue;
                 var rrugaFitim = rrugaFitime.FirstOrDefault(e => e.CurrencyId == fitim.CurrencyId);
-                rrugaFitim.Pagesa = rrugaFitim.Pagesa + fitim.Pagesa;
-                rrugaFitim.PagesaReale = rrugaFitim.PagesaReale + fitim.Pagesa;
+                if (fitim.ZbritShtoSelect == "Zbrit")
+                {
+                    rrugaFitim.Pagesa = rrugaFitim.Pagesa + fitim.Pagesa;
+
+                    if (fitim.PagesaKryer)
+                    {
+                        rrugaFitim.PagesaReale = rrugaFitim.PagesaReale + fitim.Pagesa;
+                    }
+                }
+                else
+                {
+                    rrugaFitim.Pagesa = rrugaFitim.Pagesa - fitim.Pagesa;
+
+                    if (fitim.PagesaKryer)
+                    {
+                        rrugaFitim.PagesaReale = rrugaFitim.PagesaReale - fitim.Pagesa;
+                    }
+                }
+                
                 rrugaFitim.Emri = fitim.Shofer?.Emri;
                 Llogari llogari = new Llogari()
                 {
-                    Pagesa = fitim.Pagesa,
+
+                    
                     Tipi = TIPI.NDRYSHIMGJENDJE,
                     CreatedDate = fitim.CreatedDate,
                     Pershkrim = "ndryshim gjendje " + fitim.Shofer?.Emri,
                     Currency = fitim.Currency.CurrencyUnit,
                      Shenime = fitim.Shenime,
-                    PagesaKryer = true,
+                    PagesaKryer = fitim.PagesaKryer,
                     RrugaNaftaID = fitim.ZbritShtoGjendjaId
 
 
                 };
+                if (fitim.ZbritShtoSelect == "Zbrit")
+                {
+                    llogari.Pagesa = fitim.Pagesa;
+                }
+                else
+                {
+                    llogari.Pagesa = (0 - fitim.Pagesa);
+                }
                 llogaris.Add(llogari);
             }
 

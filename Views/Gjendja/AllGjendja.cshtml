@@ -32,7 +32,8 @@
 
                         @*    <th scope="col">cmimi Blere-Shitur</th>*@
 
-                        <th scope="col">Pagesa</th>
+                        <th scope="col">Gjendja</th>
+                        <th scope="col">Gjendja Reale</th>
                         <th scope="col">Monedha</th>
 
                     </tr>
@@ -42,6 +43,7 @@
                     {
                         <tr>
                             <td scope="row"> @item.Pagesa</td>
+                            <td scope="row"> @item.PagesaReale</td>
                             <td scope="row"> @item.Currency.CurrencyUnit</td>
 
                         </tr>
@@ -61,6 +63,7 @@
                         <th scope="col">Shuma</th>
                     @*    <th scope="col">cmimi Blere-Shitur</th>*@
                         <th scope="col">Shenime</th>
+                        <th scope="col">Pagesa Kryer</th>
                         <th scope="col">Shtim</th>
                         <th scope="col">Zbritje</th>
                         <th scope="col">Monedha</th>
@@ -77,7 +80,32 @@
                             <td scope="row"> @item.CreatedDate</td>
                             <td scope="row"> @item.Pagesa</td>
                             <td scope="row"> @item.Shenime</td>
+                            @if (item.PagesaKryer)
+                            {
+                                <td scope="row">
+                                    <div>
+                                        <h2>
+                                            <i style="color:green;width:40px;height:40px;" class="bi bi-check-circle-fill">
 
+                                            </i>
+                                            <a class="btn btn-primary" asp-action="EditGjendja" asp-controller="Gjendja" asp-route-id="@item.ZbritShtoGjendjaId">Ndrysho Gjendjen</a>
+                                        </h2>
+                                    </div>
+                                </td>
+                            }
+                            else
+                            {
+                                <td scope="row">
+                                    <div>
+                                        <h2>
+                                            <i style="color:red;width:40px;height:40px;" class="bi bi-exclamation-circle-fill">
+
+                                            </i>
+                                            <a class="btn btn-primary" asp-action="EditGjendja" asp-controller="Gjendja" asp-route-id="@item.ZbritShtoGjendjaId">Ndrysho Gjendjen</a>
+                                        </h2>
+                                    </div>
+                                </td>
+                            }
                             @if (@item.ZbritShtoSelect=="Shto") { 
                             <td scope="row"> Shtim</td>
                             <td scope="row"> </td>

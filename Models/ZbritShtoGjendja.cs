@@ -16,6 +16,8 @@ namespace BioLab.Models
         public string ZbritShtoSelect { get; set; }
         [Display(Name = "Shpenzim/Xhiro")]
         public bool ShpenzimXhiro { get; set; }
+        public bool PagesaKryer { get; set; }
+
         [Display(Name = "Pika Shkarkimit")]
 
         public int? PikaShkarkimiId { get; set; }

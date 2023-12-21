@@ -243,8 +243,23 @@ namespace BioLab.Controllers
             {
                 if (fitim.Pagesa == 0) continue;
                 var rrugaFitim = rrugaFitime.FirstOrDefault(e => e.CurrencyId == fitim.CurrencyId);
-                rrugaFitim.Pagesa = rrugaFitim.Pagesa + fitim.Pagesa;
-                rrugaFitim.PagesaReale = rrugaFitim.PagesaReale + fitim.Pagesa;
+                if (fitim.ZbritShtoSelect == "Zbrit")
+                {
+                    rrugaFitim.Pagesa = rrugaFitim.Pagesa - fitim.Pagesa;
+                    if (fitim.PagesaKryer)
+                    {
+                        rrugaFitim.PagesaReale = rrugaFitim.PagesaReale - fitim.Pagesa;
+                    }
+                }
+                else
+                {
+                    rrugaFitim.Pagesa = rrugaFitim.Pagesa + fitim.Pagesa;
+                    if (fitim.PagesaKryer)
+                    {
+                        rrugaFitim.PagesaReale = rrugaFitim.PagesaReale + fitim.Pagesa;
+                    }
+                }
+                    
                 rrugaFitim.Emri = fitim.PikaShkarkimi?.Emri;
 
                 Llogari llogari = new Llogari()
@@ -255,9 +270,17 @@ namespace BioLab.Controllers
                     Pershkrim = "ndryshim gjendje " + fitim.PikaShkarkimi?.Emri,
                     Currency = fitim.Currency.CurrencyUnit,
                     Shenime = fitim.Shenime,
-                    PagesaKryer = true,
+                    PagesaKryer = fitim.PagesaKryer,
                     RrugaNaftaID = fitim.ZbritShtoGjendjaId
                 };
+                if (fitim.ZbritShtoSelect == "Zbrit")
+                {
+                    llogari.Pagesa = (0 - fitim.Pagesa);
+                }
+                else
+                {
+                    llogari.Pagesa = fitim.Pagesa;
+                }
                 llogaris.Add(llogari);
             }
 
