@@ -56,6 +56,11 @@ Nafta
 - Raport ne lidhje me fitimet
 - filter me date 
 
+bug to fix 
+menuja naftes hiq butonin edito nese nafta vjen nga nnje rruge   
+shitja e naftes ne monedhe tjeter con gjenjden e naftes ene negative
+
+
 ### Tekonologjite e perdorura
 
 - C#/.Net
