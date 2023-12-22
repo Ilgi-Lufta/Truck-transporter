@@ -166,6 +166,28 @@ namespace BioLab.Controllers
                 }
                 ViewBag.numberNames = numberNames;
             }
+             var AllCurrency = _context.Currencys.ToList();
+            if (AllCurrency != null)
+            {
+                // IDictionary<int, string> numberNames = new Dictionary<int, string>();
+                List<SelectListItem> numberNames = new List<SelectListItem>();
+                numberNames.Add(new SelectListItem
+                {
+                    Text = "Zgjidh",
+                    Value = "-1"
+
+                });
+                foreach (var currency in AllCurrency)
+                {
+                    numberNames.Add(new SelectListItem
+                    {
+                        Text = currency.CurrencyUnit,
+                        Value = currency.CurrencyId.ToString()
+
+                    });
+                }
+                ViewBag.NaftaPerShitje = numberNames;
+            }
 
 
             var naftaBlere2 = _context.NaftaStocks.Include(e => e.Currency)
@@ -189,8 +211,8 @@ namespace BioLab.Controllers
         public IActionResult CreateNafta(NaftaStock marrngaadd)
         {
             var litrablere = _context.NaftaStocks.Where(e => e.BlereShiturSelect == "Blere")
-              .GroupBy(e => e.CurrencyId == marrngaadd.CurrencyId)
-              .Select(e => e.Sum(b => b.Litra)).FirstOrDefault();
+              .Where(e => e.CurrencyId == marrngaadd.CurrencyIdShitje)
+              .Sum(b => b.Litra);
         
             if(marrngaadd.Shenime== null)
             {
@@ -201,12 +223,12 @@ namespace BioLab.Controllers
                 {
                     if (litrablere < marrngaadd.Litra)
                     {
-                        return RedirectToAction("AddNafta");
+                    return RedirectToAction("AddNafta");
                     }
                     BlereShitur blereShitur = new BlereShitur();
 
                     var cmimRef = _context.NaftaStocks.Where(e => e.BlereShiturSelect == "Blere")
-                    .GroupBy(e => e.CurrencyId == marrngaadd.CurrencyId)
+                    .GroupBy(e => e.CurrencyId == marrngaadd.CurrencyIdShitje)
                     .Select(e =>
                     (e.Sum(b => b.Pagesa) / e.Sum(b => b.Litra))
                             )
@@ -220,7 +242,7 @@ namespace BioLab.Controllers
                         BlereShiturSelect = "Blere",
                         Litra = (0 - marrngaadd.Litra),
                         Pagesa = 0 - (Math.Round(cmimRef, 2) * marrngaadd.Litra),
-                        CurrencyId = marrngaadd.CurrencyId,
+                        CurrencyId = marrngaadd.CurrencyIdShitje,
                         BlereShiturId = blereShitur.BlereShiturId,
                         PagesaKryer = marrngaadd.PagesaKryer,
                         Shenime = marrngaadd.Shenime

@@ -2279,16 +2279,20 @@ namespace BioLab.Controllers
                     item.UpdatedDate = DateTime.Now;
                 }
             }
-            foreach (var item in editing.PikaRrugas)
+            if (editing.PikaRrugas != null)
             {
-                item.CreatedDate = editing.CreatedDate;
-                item.UpdatedDate = DateTime.Now;
-                foreach (var item2 in item.PikaRrugaPagesa)
+                foreach (var item in editing.PikaRrugas)
                 {
-                    item2.CreatedDate = editing.CreatedDate;
+                    item.CreatedDate = editing.CreatedDate;
                     item.UpdatedDate = DateTime.Now;
+                    foreach (var item2 in item.PikaRrugaPagesa)
+                    {
+                        item2.CreatedDate = editing.CreatedDate;
+                        item.UpdatedDate = DateTime.Now;
+                    }
                 }
             }
+
             foreach (var item in editing.RrugaFitimeEkstras)
             {
                 item.CreatedDate = editing.CreatedDate;

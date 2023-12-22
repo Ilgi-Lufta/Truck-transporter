@@ -34,4 +34,9 @@ public class NaftaStock
     [NotMapped]
     [Precision(18, 2)]
     public decimal Cmimi { get; set; }
+    [NotMapped]
+    [Display(Name = "Zgjidh Naften qe do te shitet")]
+
+    public int CurrencyIdShitje { get; set; }
+
 }

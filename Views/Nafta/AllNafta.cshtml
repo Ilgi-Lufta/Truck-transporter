@@ -143,18 +143,41 @@
                                 </td>
 
                             }
-                            @if (ViewBag.Shofers[i].RrugaId != null || (ViewBag.Shofers[i].BlereShiturSelect == "Blere" && ViewBag.Shofers[i].Pagesa < 0) || i != ViewBag.Shofers.Count-1)
+                            @if ( i != ViewBag.Shofers.Count-1)
                             {
-                                <td scope="row">
-                                    <a class="btn btn-primary" asp-action="EditNafta" asp-controller="Nafta" asp-route-id="@ViewBag.Shofers[i].NaftaStockId"> Edito</a>
-                                </td>
+                                if (ViewBag.Shofers[i].RrugaId != null){
+                                    <td scope="row">
+                                        <a class="btn btn-primary" asp-action="EditRrugaJoModel" asp-controller="Rruga" asp-route-id="@ViewBag.Shofers[i].RrugaId"> Edito rrugen</a>
+                                    </td>
+                                }else{
+                                    <td scope="row">
+                                        <a class="btn btn-primary" asp-action="EditNafta" asp-controller="Nafta" asp-route-id="@ViewBag.Shofers[i].NaftaStockId"> Edito</a>
+                                    </td>
+                                }
+                                
                             }
                             else
                             {
-                                <td scope="row">
+
+                                if (ViewBag.Shofers[i].RrugaId != null)
+                                {
+                                    <td scope="row">
+                                        <a class="btn btn-primary" asp-action="EditRrugaJoModel" asp-controller="Rruga" asp-route-id="@ViewBag.Shofers[i].RrugaId"> Edito rrugen</a>
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td scope="row">
+                                        <a class="btn btn-primary" asp-action="EditNafta" asp-controller="Nafta" asp-route-id="@ViewBag.Shofers[i].NaftaStockId"> Edito</a>
+                                        <a class="btn btn-danger" asp-action="FshiNafta" asp-controller="Nafta" asp-route-id="@ViewBag.Shofers[i].NaftaStockId"> Fshi</a>
+
+                                    </td>
+                                }
+                             @*   <td scope="row">
+
                                     <a class="btn btn-primary" asp-action="EditNafta" asp-controller="Nafta" asp-route-id="@ViewBag.Shofers[i].NaftaStockId"> Edito</a>
                                     <a class="btn btn-danger" asp-action="FshiNafta" asp-controller="Nafta" asp-route-id="@ViewBag.Shofers[i].NaftaStockId"> Fshi</a>
-                                </td>
+                                </td>*@
                             }
                         </tr>
                     }
