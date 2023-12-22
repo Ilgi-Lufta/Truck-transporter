@@ -14,6 +14,7 @@ public class NaftaStock
     [Required]
     [Display(Name = "Blere/Shitur")]
     public string BlereShiturSelect { get; set; }
+    [Display(Name = "Monedha")]
     public int CurrencyId { get; set; }
     public Currency? Currency { get; set; }
     [Precision(18, 2)]

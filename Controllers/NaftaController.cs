@@ -221,7 +221,7 @@ namespace BioLab.Controllers
  
                 if (marrngaadd.BlereShiturSelect == "Shitur")
                 {
-                    if (litrablere < marrngaadd.Litra)
+                    if (litrablere < marrngaadd.Litra || marrngaadd.CurrencyIdShitje == -1)
                     {
                     return RedirectToAction("AddNafta");
                     }
