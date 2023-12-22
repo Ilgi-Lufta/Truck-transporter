@@ -642,7 +642,7 @@ namespace BioLab.Controllers
             }
 
             //gjendja
-            var gjendjas = _context.ZbritShtoGjendjas.Include(e => e.Currency)
+            var gjendjas = _context.ZbritShtoGjendjas.Include(e => e.Currency).Include(e => e.PikaShkarkimi).Include(e => e.Shofer)
                  .Where(m => searchFirstTime != DateTime.MinValue ? m.CreatedDate > searchFirstTime : true)
                 .Where(m => searchSecondTime != DateTime.MinValue ? m.CreatedDate < searchSecondTime : true)
                 .ToList();
@@ -670,8 +670,15 @@ namespace BioLab.Controllers
                         Shenime = gjendja.Shenime,
                         PagesaKryer = gjendja.PagesaKryer,
                         RrugaNaftaID = gjendja.ZbritShtoGjendjaId
-
                     };
+                    if (gjendja.PikaShkarkimiId != null)
+                    {
+                        llogari.Pershkrim = llogari.Pershkrim + ", " + gjendja.PikaShkarkimi.Emri;
+                    }
+                    if (gjendja.ShoferId != null)
+                    {
+                        llogari.Pershkrim = llogari.Pershkrim + ", " + gjendja.Shofer.Emri;
+                    }
                     llogaris.Add(llogari);
                 }
                 else
@@ -692,8 +699,15 @@ namespace BioLab.Controllers
                         Shenime = gjendja.Shenime,
                         PagesaKryer = gjendja.PagesaKryer,
                         RrugaNaftaID = gjendja.ZbritShtoGjendjaId
-
                     };
+                    if (gjendja.PikaShkarkimiId != null)
+                    {
+                        llogari.Pershkrim = llogari.Pershkrim+", " + gjendja.PikaShkarkimi.Emri;
+                    }
+                    if (gjendja.ShoferId != null)
+                    {
+                        llogari.Pershkrim = llogari.Pershkrim + ", " + gjendja.Shofer.Emri;
+                    }
                     llogaris.Add(llogari);
                 }
             }
